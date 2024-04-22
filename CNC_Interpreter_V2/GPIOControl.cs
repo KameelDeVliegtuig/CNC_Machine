@@ -16,6 +16,9 @@ namespace CNC_Interpreter_V2
         public bool ReadPin(int Pin)
         {
             return true;
+
+
+            //GiHub test
         }
 
         public bool SetPWM(int Pin, int DutyCycle)
