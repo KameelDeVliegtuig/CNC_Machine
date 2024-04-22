@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GPIOControl.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Device.Gpio" Version="3.1.0" />
   </ItemGroup>
 

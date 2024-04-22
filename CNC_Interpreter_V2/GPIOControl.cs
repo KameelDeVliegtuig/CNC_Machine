@@ -12,7 +12,9 @@ namespace CNC_Interpreter_V2
 {
     internal class GPIOControl
     {
+     
         private GpioController IOControl = new();
+
 
         public bool SetPin(int IoPin, bool Value)
         {
