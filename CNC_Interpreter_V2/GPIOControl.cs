@@ -17,6 +17,7 @@ namespace CNC_Interpreter_V2
         public bool SetPin(int IoPin, bool Value)
         {
             IOControl.Write(IoPin, Value);
+            return true;
         }
 
         public bool ReadPin(int Pin)
@@ -27,6 +28,7 @@ namespace CNC_Interpreter_V2
 
         public bool SetPWM(bool State, int Channel, int Chip, double DutyCycle)
         {
+            var pwm = PwmChannel.Create(Channel, Chip, 500, DutyCycle);
             if (State == false)
             {
                 pwm.Stop();
@@ -35,7 +37,6 @@ namespace CNC_Interpreter_V2
             else if (State == true)
             {
 
-                var pwm = PwmChannel.Create(Channel, Chip, 500, DutyCycle);
                 pwm.Start();
                 return true;
             }
