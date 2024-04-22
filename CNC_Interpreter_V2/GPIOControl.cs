@@ -29,6 +29,8 @@ namespace CNC_Interpreter_V2
         public bool SetPWM(bool State, int Channel, int Chip, double DutyCycle)
         {
             var pwm = PwmChannel.Create(Channel, Chip, 500, DutyCycle);
+            var pwm = PwmChannel.Create(Channel, Chip, 500, DutyCycle);
+
             if (State == false)
             {
                 pwm.Stop();
