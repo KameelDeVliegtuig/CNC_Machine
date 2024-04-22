@@ -5,11 +5,9 @@ using System.Diagnostics;
 Interpreter interpreter = new Interpreter();
 
 Debug.WriteLine("Hello, World!");
-interpreter.Interpret("G17");
-interpreter.Interpret("G18");
-interpreter.Interpret("G19");
-interpreter.Interpret("G0");
-interpreter.Interpret("X5 Y-2");
+interpreter.Interpret("M0 P2000");
+interpreter.Interpret("M0 S5");
+interpreter.Interpret("M0");
 
 for (int i = 0; i < interpreter.Moves.Count; i++)
 {

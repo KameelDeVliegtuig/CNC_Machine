@@ -13,6 +13,9 @@ namespace CNC_Interpreter_V2
         Settings settings = new Settings(0.0, 0.0, 0.0);
         GPIOControl gpio = new GPIOControl();
 
+        private System.Timers.Timer StopTimer = new System.Timers.Timer();
+        private bool consoleInput;
+
         private List<Coordinate> moves = new List<Coordinate>();
         private string lastCommand;
 
@@ -22,6 +25,7 @@ namespace CNC_Interpreter_V2
         {
             string[] splitted = GCODE.Split(' ');
             Value value = createValue(splitted);
+            //value.Print();
             switch (value.Command)
             {
                 // G Codes
@@ -126,15 +130,45 @@ namespace CNC_Interpreter_V2
                 case "M0":
                 case "M1":
                     Debug.WriteLine("Unconditional STOP");
+                    consoleInput = false;
+                    if(value.P > 0)
+                    {
+                        Debug.WriteLine("StopTime (ms): " +  value.P);
+                        StopTimer = new System.Timers.Timer(value.P); // milliseconds
+                    } else if(value.S > 0)
+                    {
+                        Debug.WriteLine("StopTime (s):" + value.S);
+                        StopTimer = new System.Timers.Timer(value.S * 1000); // seconds * 1000 = milliseconds
+                    } else
+                    {
+                        Debug.WriteLine("Waiting for console input: ");
+                        consoleInput = true;
+                        StopTimer = new System.Timers.Timer(500); // Half a second
+                    }
+                    Debug.WriteLine("StartTime: " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff"));
+                    StopTimer.Enabled = true;
+                    StopTimer.Elapsed += StopTimer_Elapsed;
+                    if (consoleInput)
+                    {
+                        Console.ReadKey();
+                        StopTimer.Stop();
+                    }
+                    while (StopTimer.Enabled) continue;
+                    StopTimer.Dispose();
                     break;
                 case "M3":
                     Debug.WriteLine("Turn on Spindel CW");
+                    settings.SpindelDir = true;
+                    settings.Spindel = true;
                     break;
                 case "M4":
                     Debug.WriteLine("Turn on Spindel CCW");
+                    settings.SpindelDir = false;
+                    settings.Spindel = true;
                     break;
                 case "M5":
                     Debug.WriteLine("Turn off Spindel");
+                    settings.Spindel = false;
                     break;
                 case "M7":
                 case "M8":
@@ -193,7 +227,15 @@ namespace CNC_Interpreter_V2
 
                 case "M42": // Analog or Digital pins
                     Debug.WriteLine("Set pin state");
-                    gpio.SetPin((int)value.P, value.S);
+                    bool sValue;
+                    if(value.S > 0)
+                    {
+                        sValue = true;
+                    } else
+                    {
+                        sValue= false;
+                    }
+                    gpio.SetPin((int)value.P, sValue);
                     break;
                 case "M43":
                     // Also T option, to be checked in further functions
@@ -343,6 +385,13 @@ namespace CNC_Interpreter_V2
             }
         }
 
+        private void StopTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            Debug.WriteLine("Timer Elapsed at {0:HH:mm:ss.fff}", e.SignalTime);
+            if (!consoleInput) { StopTimer.Stop(); }
+            return;
+        }
+
         private Value createValue(string[] Input)
         {
             Value value = new Value();
@@ -363,7 +412,7 @@ namespace CNC_Interpreter_V2
             {
                 value.Command = lastCommand;
             }
-            if (Input.Length > 2)
+            if (Input.Length > 1)
             {
                 for (int i = 1; i < Input.Length; i++)
                 {
@@ -374,11 +423,7 @@ namespace CNC_Interpreter_V2
                         case 'F': // FlowRate
                         case 'S': // Spindel
                                   // Combine all in case of wrong configuration
-                            if (getDouble(Input[i]) > 0)
-                            {
-                                value.S = true;
-                            }
-                            else { value.S = false; }
+                            value.S = getDouble(Input[i]);
                             Debug.WriteLine("S: " + value.S);
                             break;
                         case 'I':
@@ -425,9 +470,10 @@ namespace CNC_Interpreter_V2
         private double getDouble(string Input)
         {
             string number = new string("");
-            for (int i = 1; i < Input.Length; i++)
+            Input.Substring(1);
+            for(int i = 1; i < Input.Length; i++)
             {
-                number.Append(Input[i]);
+                number += Input[i];
             }
             return double.Parse(number.ToString());
         }

@@ -24,6 +24,7 @@ namespace CNC_Interpreter_V2
         private double[] mmpr = {80.0, 80.0, 400.0}; // mm/rotation [x,y,z]
         private bool mm = true; // Units default to mm
         private bool spindel = false; // Spindel default off
+        private bool spindelDir = true; // True = CW, False = CCW
         private bool stepperEnable = false;
         // CurrentFile string??
         private int lineCounter;
@@ -42,6 +43,7 @@ namespace CNC_Interpreter_V2
         public double[] MMpR { get { return mmpr; } }
         public bool MM {  get { return mm; } set { MM = value; } }
         public bool Spindel {  get { return spindel; }  set { if (value.GetType() == typeof(bool) && !emergencyStop) { spindel = value; } } }
+        public bool SpindelDir { get { return spindelDir; } set { spindelDir = value; } }
         public bool StepperEnable { get { return stepperEnable; } set { if (value.GetType() == typeof(bool) && !emergencyStop) {  stepperEnable = value; } } }
         public int LineCounter { get { return lineCounter; } }
         public bool Locked { get { return locked; } }
