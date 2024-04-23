@@ -11,7 +11,7 @@ namespace CNC_Interpreter_V2
     {
         Parser parser = new Parser();
         Settings settings = new Settings(0.0, 0.0, 0.0);
-        GPIOControl gpio = new GPIOControl();
+        //GPIOControl gpio = new GPIOControl();
 
         private System.Timers.Timer StopTimer = new System.Timers.Timer();
         private bool consoleInput;
@@ -44,7 +44,7 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("To Parser to calculate coordinates");
                     try
                     {
-                        moves.AddRange(parser.Parse(value));
+                        moves.AddRange(parser.Parse(new[] {settings.X, settings.Y, settings.Z}, value));
                     } catch(Exception e) { 
                         Debug.WriteLine(e);
                     }
@@ -145,7 +145,7 @@ namespace CNC_Interpreter_V2
                         consoleInput = true;
                         StopTimer = new System.Timers.Timer(500); // Half a second
                     }
-                    Debug.WriteLine("StartTime: " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff"));
+                    Debug.WriteLine("Timer Started at " + DateTime.Now.ToString("HH:mm:ss.fff"));
                     StopTimer.Enabled = true;
                     StopTimer.Elapsed += StopTimer_Elapsed;
                     if (consoleInput)
@@ -233,14 +233,14 @@ namespace CNC_Interpreter_V2
                         sValue = true;
                     } else
                     {
-                        sValue= false;
+                        sValue = false;
                     }
-                    gpio.SetPin((int)value.P, sValue);
+                    //gpio.SetPin((int)value.P, sValue);
                     break;
                 case "M43":
                     // Also T option, to be checked in further functions
                     Debug.WriteLine("Debug / Toggle Pins");
-                    gpio.ReadPin((int)value.P);
+                    //gpio.ReadPin((int)value.P);
                     break;
 
                 // LCD
