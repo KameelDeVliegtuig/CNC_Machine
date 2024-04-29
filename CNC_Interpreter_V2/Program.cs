@@ -10,6 +10,7 @@ interpreter.Interpret("X0 Y4 Z0.1");
 interpreter.Interpret("M0 P2000");
 interpreter.Interpret("M0 S5");
 interpreter.Interpret("G0 X6 Y-2 Z2");
+Console.WriteLine("Interpreter has finished");
 
 for (int i = 0; i < interpreter.Moves.Count; i++)
 {
