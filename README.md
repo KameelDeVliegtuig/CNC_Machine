@@ -4,8 +4,8 @@ CNC machine met ingebouwde beveiliging.
 -	Display met custom GUI
 
 Controllers:
--	Raspberry Pi 4B+
--	Microcontroller
+-	Raspberry Pi Zero 2 W voor CNC besturing
+-	Raspberry Pi 3B+?? voor GUI
 -	Nextion display
 -	Stepper motor drivers
 
@@ -17,15 +17,8 @@ Hardware:
 
 Specialisaties:
 -	GCODE interpreter (Kamiel)
--	GUI (Lasse)
--	Camera (Jamie)
-
-PCB:
--	Caps moeten volgens richtlijn
--	Nieuwe connectoren voor steppers 
--	3x Maken 
--	Kijken voor de hat en IO 
--	Radar/Cam aansluiting 
+-	GUI (Jamie)
+-	Safety (Lasse)
 
 NEMA17:
 -	200 steps 
