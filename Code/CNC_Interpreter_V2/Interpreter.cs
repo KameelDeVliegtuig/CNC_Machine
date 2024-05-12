@@ -473,7 +473,13 @@ namespace CNC_Interpreter_V2
             Input.Substring(1);
             for(int i = 1; i < Input.Length; i++)
             {
-                number += Input[i];
+                if (Input[i] == '.')
+                {
+                    number += ',';
+                } else
+                {
+                    number += Input[i];
+                }
             }
             return double.Parse(number.ToString());
         }

@@ -15,10 +15,11 @@ namespace CNC_Interpreter_V2
             List<Coordinate> result = new List<Coordinate>();
             switch (Input.Command)
             {
-                case "G0":
-                    break;
+                case "G0": // Linear move, spindel off
                     result.Append(new Coordinate(current[0] + Input.X, current[1] + Input.Y, current[2] + Input.Z, false));
-                case "G1":
+                    break;
+                case "G1": // Linear move, spindel on
+                    result.Append(new Coordinate(current[0] + Input.X, current[1] + Input.Y, current[2] + Input.Z, true));
                     break;
                 case "G2":
                     break;
