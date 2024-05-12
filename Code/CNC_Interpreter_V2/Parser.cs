@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace CNC_Interpreter_V2
 {
     internal class Parser
     {
+        private Calculator _calculator = new Calculator(0.005);
         public List<Coordinate> Parse(double[] current, Value Input)
         {
             List<Coordinate> result = new List<Coordinate>();
@@ -25,7 +27,7 @@ namespace CNC_Interpreter_V2
                 case "G4":
                     break;
                 case "G5":
-                    break;
+                    return _calculator.Bezier(current[0], current[1], Input);
                 case "G6":
                     break;
                 default:
