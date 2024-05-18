@@ -71,13 +71,13 @@ namespace CNC_Interpreter_V2
 
             // Set up the pins for the spindle speed and direction control
             _ioControl.OpenPin(_spindlePWM, PinMode.Output);
-            _ioControl.OpenPin(_spindleDir), PinMode.Output);
+            _ioControl.OpenPin(_spindleDir, PinMode.Output);
             
             // Set up the pins for the soft stop
             // Set up pin for the LED transistor
             _ioControl.OpenPin(_softStopLED, PinMode.Output);
             // Set up pin for soft stop button
-            _ioControl.OpenPin(_softStopLED, PinMode.Input);
+            _ioControl.OpenPin(_softStopButton, PinMode.Input);
 
         }
 
