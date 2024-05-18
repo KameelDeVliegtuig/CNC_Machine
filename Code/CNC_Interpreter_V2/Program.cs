@@ -9,7 +9,7 @@ GPIOControl gpioControl = new GPIOControl();
 Debug.WriteLine("Hello, World!");
 
 Console.WriteLine("IO test");
-gpioControl.Test(true);
+gpioControl.ControlSpindel(100, true);
 
 
 interpreter.Interpret("G1");
