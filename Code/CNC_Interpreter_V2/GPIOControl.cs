@@ -37,7 +37,7 @@ namespace CNC_Interpreter_V2
 
         public bool SetPWM(bool State, int Channel, int Chip, double DutyCycle)
         {
-            var pwm = PwmChannel.Create(Channel, Chip, 500, DutyCycle);
+            var pwm = PwmChannel.Create(Chip, Channel, 500, DutyCycle);
 
             if (State == false)
             {
@@ -74,24 +74,10 @@ namespace CNC_Interpreter_V2
                 Speed = 0;
             }
             double DutyCycle = Speed / 100;
-            SetPWM(true, 1, 0, DutyCycle);
+            SetPWM(true, 0, 1, DutyCycle);
             SetPin(6, Dir);
             return true;
 
-        }
-
-        public bool Test(bool state)
-        {
-            SetPin(16, state);
-            Thread.Sleep(1000);
-            SetPin(16, !state);
-            SetPin(16, state);
-            Thread.Sleep(1000);
-            SetPin(16, !state);
-            SetPin(16, state);
-            Thread.Sleep(1000);
-            SetPin(16, !state);
-            return true;
         }
 
 
