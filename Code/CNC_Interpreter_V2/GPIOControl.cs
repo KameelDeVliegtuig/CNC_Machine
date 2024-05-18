@@ -50,7 +50,7 @@ namespace CNC_Interpreter_V2
         {
             
             // Set up the pins for the spindle speed and direction control
-
+            IOControl.OpenPin(16, PinMode.Output);
             IOControl.OpenPin(6, PinMode.Output);
             IOControl.OpenPin(13, PinMode.Output);
 
@@ -72,5 +72,25 @@ namespace CNC_Interpreter_V2
             return true;
 
         }
+
+        public bool Test(bool State)
+        {
+            SetPin(16, State);
+            return true;
+        }
+
+
+        public bool StepControl(int Step,bool Dir)
+        {
+            SetPin(13, Dir);
+            SetPin(19, true);
+            for (int i = 0; i < Step; i++)
+            {
+                SetPin(19, false);
+                SetPin(19, true);
+            }
+            return true;
+        }   
+
     }
 }

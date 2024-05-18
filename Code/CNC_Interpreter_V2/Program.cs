@@ -3,8 +3,13 @@ using CNC_Interpreter_V2;
 using System.Diagnostics;
 
 Interpreter interpreter = new Interpreter();
+GPIOControl gpioControl = new GPIOControl();
+
 
 Debug.WriteLine("Hello, World!");
+
+gpioControl.Test();
+
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");
 interpreter.Interpret("M0 P2000");
