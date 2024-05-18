@@ -18,7 +18,14 @@ namespace CNC_Interpreter_V2
 
         public bool SetPin(int IoPin, bool Value)
         {
-            IOControl.Write(IoPin, Value);
+            if (Value == true)
+            {
+                IOControl.Write(IoPin, PinValue.High);
+            }
+            else
+            {
+                IOControl.Write(IoPin, PinValue.Low);
+            }
             return true;
         }
 
@@ -73,9 +80,17 @@ namespace CNC_Interpreter_V2
 
         }
 
-        public bool Test(bool State)
+        public bool Test(bool state)
         {
-            SetPin(16, State);
+            SetPin(16, state);
+            Thread.Sleep(1000);
+            SetPin(16, !state);
+            SetPin(16, state);
+            Thread.Sleep(1000);
+            SetPin(16, !state);
+            SetPin(16, state);
+            Thread.Sleep(1000);
+            SetPin(16, !state);
             return true;
         }
 
