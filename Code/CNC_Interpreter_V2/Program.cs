@@ -8,7 +8,7 @@ GPIOControl gpioControl = new GPIOControl();
 
 Debug.WriteLine("Hello, World!");
 
-gpioControl.Test();
+gpioControl.Test(true);
 
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");
