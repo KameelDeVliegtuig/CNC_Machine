@@ -98,3 +98,4 @@ namespace MCPController
             _i2cDevice?.Dispose();
         }
     }
+}
