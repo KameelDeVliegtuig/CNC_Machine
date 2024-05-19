@@ -7,7 +7,7 @@ GPIOControl gpioControl = new GPIOControl();
 
 Debug.WriteLine("Hello, World!");
 
-gpioControl.StepControl(1000, true);
+gpioControl.StepControl(3200, true);
 
 
 
