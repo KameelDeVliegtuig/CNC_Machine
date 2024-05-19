@@ -7,10 +7,11 @@ GPIOControl gpioControl = new GPIOControl();
 
 Debug.WriteLine("Hello, World!");
 
-
-Console.WriteLine("Starting Move");
-gpioControl.StepControl(3200*2, true);
-Console.WriteLine("Move ended");
+while (true)
+{
+    Console.WriteLine(gpioControl.readTest());
+    Thread.Sleep(1000);
+}
 
 
 interpreter.Interpret("G1");
