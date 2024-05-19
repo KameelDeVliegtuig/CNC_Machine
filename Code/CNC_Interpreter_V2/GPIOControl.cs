@@ -137,8 +137,8 @@ namespace CNC_Interpreter_V2
 
             for (int i = 0; i < Step; i++)
             {
-                _setPin(_stepX, true);
-                _setPin(_stepX, false);
+                _ioExtender.WritePin(_stepX, true);
+                _ioExtender.WritePin(_stepX, false);
             }
             return true;
         }   
