@@ -145,13 +145,15 @@ namespace CNC_Interpreter_V2
             {
 
                 _ioExtender.WritePin(_stepZ, true);
-                _delay.Enabled = true;
-                _delay.Elapsed += _delayElapsed;
-                while (_delay.Enabled) continue;
+                Thread.Sleep(1);
+                //_delay.Enabled = true;
+                //_delay.Elapsed += _delayElapsed;
+                //while (_delay.Enabled) continue;
                 _ioExtender.WritePin(_stepZ, false);
-                _delay.Enabled = true;
-                _delay.Elapsed += _delayElapsed;
-                while (_delay.Enabled) continue;
+                Thread.Sleep(1);
+                //_delay.Enabled = true;
+                //_delay.Elapsed += _delayElapsed;
+                //while (_delay.Enabled) continue;
             }
             return true;
         }   
