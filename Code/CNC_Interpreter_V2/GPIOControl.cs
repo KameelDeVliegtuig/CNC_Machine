@@ -79,6 +79,8 @@ namespace CNC_Interpreter_V2
             // Set up pin for soft stop button
             _ioControl.OpenPin(_softStopButton, PinMode.Input);
 
+            _setPin(_stepReset, true);
+
         }
 
 
