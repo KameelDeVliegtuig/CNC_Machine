@@ -87,7 +87,7 @@ namespace CNC_Interpreter_V2
 
         public bool readTest ()
         {
-            return _ioExtender.ReadPin(_limitX) == PinValue.High;
+            return _ioExtender.ReadPin(_limitZ) == PinValue.High;
         }
 
         private bool _setPin(int IoPin, bool Value)
