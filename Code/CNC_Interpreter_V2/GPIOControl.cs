@@ -8,6 +8,7 @@ using System.Device.Gpio;
 using System.Device.Pwm;
 using System.ComponentModel.Design;
 using MCPController;
+using UnitsNet;
 
 namespace CNC_Interpreter_V2
 {
@@ -16,8 +17,9 @@ namespace CNC_Interpreter_V2
      
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
+        private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
 
-    // Define the pins for the stepper motor control
+        // Define the pins for the stepper motor control
         // Pin definitions on main board
         private const int _stepEnable = 22;
         private const int _stepReset = 18;
@@ -141,11 +143,27 @@ namespace CNC_Interpreter_V2
 
             for (int i = 0; i < Step; i++)
             {
+
                 _ioExtender.WritePin(_stepY, true);
+                _delay.Enabled = true;
+                _delay.Elapsed += _delayElapsed;
+                while (_delay.Enabled) continue;
                 _ioExtender.WritePin(_stepY, false);
+                _delay.Enabled = true;
+                _delay.Elapsed += _delayElapsed;
+                while (_delay.Enabled) continue;
             }
             return true;
         }   
+        
+
+        private void _delayElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            _delay.Stop();
+            _delay.Enabled = false; 
+        }
 
     }
+
+    
 }
