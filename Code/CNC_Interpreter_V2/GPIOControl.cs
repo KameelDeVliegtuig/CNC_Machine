@@ -133,13 +133,12 @@ namespace CNC_Interpreter_V2
 
         public bool StepControl(int Step,bool Dir)
         {
-            _setPin(_dirZ, Dir);
-            _setPin(_stepZ, true);
+            _ioExtender.WritePin(_dirX, Dir);
+
             for (int i = 0; i < Step; i++)
             {
-
-                _setPin(19, false);
-                _setPin(19, true);
+                _setPin(_stepX, true);
+                _setPin(_stepX, false);
             }
             return true;
         }   
