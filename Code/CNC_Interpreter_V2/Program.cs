@@ -3,10 +3,12 @@ using CNC_Interpreter_V2;
 using System.Diagnostics;
 
 Interpreter interpreter = new Interpreter();
-
-
+GPIOControl gpioControl = new GPIOControl();
 
 Debug.WriteLine("Hello, World!");
+
+gpioControl.StepControl(10, true);
+
 
 
 interpreter.Interpret("G1");
