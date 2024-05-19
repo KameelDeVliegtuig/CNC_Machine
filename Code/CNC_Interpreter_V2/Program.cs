@@ -7,8 +7,11 @@ GPIOControl gpioControl = new GPIOControl();
 
 Debug.WriteLine("Hello, World!");
 
-gpioControl.StepControl(10, true);
-
+while (true)
+{
+    Console.WriteLine(gpioControl.readTest());
+    Thread.Sleep(1000);
+}
 
 
 interpreter.Interpret("G1");

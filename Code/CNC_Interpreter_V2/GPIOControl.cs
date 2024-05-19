@@ -8,6 +8,7 @@ using System.Device.Gpio;
 using System.Device.Pwm;
 using System.ComponentModel.Design;
 using MCPController;
+using UnitsNet;
 
 namespace CNC_Interpreter_V2
 {
@@ -16,8 +17,9 @@ namespace CNC_Interpreter_V2
      
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
+        private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
 
-    // Define the pins for the stepper motor control
+        // Define the pins for the stepper motor control
         // Pin definitions on main board
         private const int _stepEnable = 22;
         private const int _stepReset = 18;
@@ -79,8 +81,14 @@ namespace CNC_Interpreter_V2
             // Set up pin for soft stop button
             _ioControl.OpenPin(_softStopButton, PinMode.Input);
 
+            _setPin(_stepReset, true);
+
         }
 
+        public bool readTest ()
+        {
+            return _ioExtender.ReadPin(_limitZ) == PinValue.High;
+        }
 
         private bool _setPin(int IoPin, bool Value)
         {
@@ -133,15 +141,35 @@ namespace CNC_Interpreter_V2
 
         public bool StepControl(int Step,bool Dir)
         {
-            _ioExtender.WritePin(_dirX, Dir);
+            
+            _setPin(_stepEnable, false);
+            _ioExtender.WritePin(_dirZ, Dir);
 
             for (int i = 0; i < Step; i++)
             {
-                _setPin(_stepX, true);
-                _setPin(_stepX, false);
+
+                _ioExtender.WritePin(_stepZ, true);
+                Thread.Sleep(1);
+                //_delay.Enabled = true;
+                //_delay.Elapsed += _delayElapsed;
+                //while (_delay.Enabled) continue;
+                _ioExtender.WritePin(_stepZ, false);
+                Thread.Sleep(1);
+                //_delay.Enabled = true;
+                //_delay.Elapsed += _delayElapsed;
+                //while (_delay.Enabled) continue;
             }
             return true;
         }   
+        
+
+        private void _delayElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            _delay.Stop();
+            _delay.Enabled = false; 
+        }
 
     }
+
+    
 }
