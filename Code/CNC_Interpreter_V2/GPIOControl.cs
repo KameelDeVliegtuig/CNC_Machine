@@ -137,12 +137,12 @@ namespace CNC_Interpreter_V2
         {
             
             _setPin(_stepEnable, false);
-            _ioExtender.WritePin(_dirX, Dir);
+            _ioExtender.WritePin(_dirY, Dir);
 
             for (int i = 0; i < Step; i++)
             {
-                _ioExtender.WritePin(_stepX, true);
-                _ioExtender.WritePin(_stepX, false);
+                _ioExtender.WritePin(_stepY, true);
+                _ioExtender.WritePin(_stepY, false);
             }
             return true;
         }   
