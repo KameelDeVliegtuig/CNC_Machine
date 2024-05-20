@@ -4,15 +4,15 @@ using System.Diagnostics;
 
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
+PresenceDetector presenceDetector = new PresenceDetector("dev/ttyS0", 256000);
+
 
 Debug.WriteLine("Hello, World!");
 
-while (true)
-{
-    Console.WriteLine(gpioControl.readTest());
-    Thread.Sleep(1000);
-}
 
+    // Example of accessing the IsPresenceDetected property
+    Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
+    presenceDetector.StartListening();
 
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");

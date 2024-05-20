@@ -19,6 +19,8 @@ namespace CNC_Interpreter_V2
         private MCP23017Controller _ioExtender = new();
         private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
 
+
+
         // Define the pins for the stepper motor control
         // Pin definitions on main board
         private const int _stepEnable = 22;
@@ -160,8 +162,9 @@ namespace CNC_Interpreter_V2
                 //while (_delay.Enabled) continue;
             }
             return true;
-        }   
-        
+        }
+
+
 
         private void _delayElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
