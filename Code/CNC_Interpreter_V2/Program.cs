@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
-PresenceDetector presenceDetector = new PresenceDetector("dev/ttyS0", 256000);
+PresenceDetector presenceDetector = new PresenceDetector("serial0", 256000);
 
 
 Debug.WriteLine("Hello, World!");
