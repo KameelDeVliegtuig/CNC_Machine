@@ -9,10 +9,12 @@ PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000)
 
 Debug.WriteLine("Hello, World!");
 
+gpioControl.ControlSpindel(50, true);
 
-    // Example of accessing the IsPresenceDetected property
-    Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
-    presenceDetector.StartListening();
+
+// Example of accessing the IsPresenceDetected property
+//Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
+//presenceDetector.StartListening();
 
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");
