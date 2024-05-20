@@ -160,7 +160,7 @@ namespace CNC_Interpreter_V2
         private double[] isrTime()
         {
             /*
-            steps/s * ratio = steps/s[axis] (e.g 1280 * 0,78.. = 1000)
+            steps/s * ratio = steps/s[axis]
             e.g.:
                 steps/s = 1280
                 ratio = {1, 0.78.., 0.0078..}
