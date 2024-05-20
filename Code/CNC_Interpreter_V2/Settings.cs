@@ -15,6 +15,9 @@ namespace CNC_Interpreter_V2
             YZ
         }
 
+        private Coordinate NOZZLE_PARK_POINT = new Coordinate(0, 0, 150, false);
+        private const int NOZZLE_PARK_Z_RAISE_MIN = 50;
+
         private double x;
         private double y;
         private double z;
@@ -90,5 +93,32 @@ namespace CNC_Interpreter_V2
             spindelToProbe = Offset;
         }
 
+        public Coordinate ParkTool(double P)
+        {
+            Coordinate parkLocation = new Coordinate(0,0,0,false);
+            if(P == 0)
+            {
+                parkLocation = NOZZLE_PARK_POINT;
+                parkLocation.Z = (double)NOZZLE_PARK_Z_RAISE_MIN;
+            }
+            if(P == 1)
+            {
+                parkLocation = NOZZLE_PARK_POINT;
+            }
+            if (P == 2)
+            {
+                parkLocation.Z = NOZZLE_PARK_POINT.Z;
+            }
+            if (P == 3)
+            {
+                parkLocation.Z = (double)NOZZLE_PARK_Z_RAISE_MIN;
+            }
+            if (P == 4)
+            {
+                parkLocation.X = NOZZLE_PARK_POINT.X;
+                parkLocation.Y = NOZZLE_PARK_POINT.Y;
+            }
+            return parkLocation;
+        }
     }
 }

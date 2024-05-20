@@ -74,19 +74,18 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Units mm");
                     settings.MM = true;
                     break;
-                case "G26":
-                    Debug.WriteLine("Validation pattern");
-                    break;
                 case "G27":
                     Debug.WriteLine("Park Toolhead");
+                    try
+                    {
+                        moves.Add(settings.ParkTool(value.P));
+                    } catch(Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
                     break;
                 case "G28":
                     Debug.WriteLine("Auto Home");
-                    break;
-                case "G29": // Multiple options
-                    // Always G28 before G29
-                    Debug.WriteLine("Bed Leveling");
-                    Interpret("G28");
                     break;
                 //case "G34": // Checks if Z-rods are at the same position
                 //    Debug.WriteLine("Z-axis Gantry Calibration");
@@ -96,6 +95,13 @@ namespace CNC_Interpreter_V2
                     break;
                 case "G53":
                     Debug.WriteLine("Move in Machine coordinates (fast move)");
+                    try
+                    {
+                        moves.Add(new Coordinate(value.X, value.Y, value.Z, false));
+                    } catch( Exception e )
+                    {
+                        Debug.WriteLine(e );
+                    }
                     break;
                 case "G54": // Slot 1
                 case "G55": // Slot 2
