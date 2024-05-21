@@ -2,9 +2,11 @@
 
 - 3-assige CNC machine
 - Foutherkenning
-- Display met custom GUI
+- Rpi Zero W2
 
 ## Documentation
+
+Pi's standard network is Houtenbos.
 
 ### Raspberry commands
 
@@ -19,6 +21,8 @@ To speed up the test process a command is used to combine ``` git pull ``` , ```
 #### Emergency stop
 
 The emergensy stop is used to immedialty disable spindle and steppers
+> [!CAUTION]
+> _**Usage may brick PWM signal until reboot!**_
 
 ```bash
 ./stop
@@ -43,6 +47,9 @@ public boolean ControlSpindel(int speed, bool Dir);
 ```
 
 This function is used to control the spindle speed and direction.
+
+Int speed is used as a precentage of the actual speed. 
+
 When speed is equal to 0 the spindle will perform a softstop to minimize load to the motor and controller.
 When speed is less than 0 (-1), the spindle will perform an emergency stop. With this stop the spindle will stop immediatly. This has a negetive effect on the spindle.
 returns true if completed
