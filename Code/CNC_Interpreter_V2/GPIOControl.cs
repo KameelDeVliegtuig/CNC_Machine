@@ -14,7 +14,14 @@ namespace CNC_Interpreter_V2
 {
     internal class GPIOControl
     {
-     
+
+        public enum StepperAxis
+        {
+            X = 8,
+            Y = 9,
+            Z = 10
+        }
+        
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
         private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
@@ -144,21 +151,21 @@ namespace CNC_Interpreter_V2
         }
 
 
-        public bool StepControl(int Step,bool Dir)
+        public bool StepControl(int Step,bool Dir, StepperAxis steppers )
         {
             
             _setPin(_stepEnable, false);
-            _ioExtender.WritePin(_dirX, Dir);
+            _ioExtender.WritePin(((int)steppers + 3), Dir);
 
             for (int i = 0; i < Step; i++)
             {
 
-                _ioExtender.WritePin(_stepX, true);
+                _ioExtender.WritePin((int)steppers, true);
                 Thread.Sleep(1);
                 //_delay.Enabled = true;
                 //_delay.Elapsed += _delayElapsed;
                 //while (_delay.Enabled) continue;
-                _ioExtender.WritePin(_stepX, false);
+                _ioExtender.WritePin((int)steppers, false);
                 Thread.Sleep(1);
                 //_delay.Enabled = true;
                 //_delay.Elapsed += _delayElapsed;
