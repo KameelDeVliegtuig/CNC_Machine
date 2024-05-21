@@ -165,7 +165,7 @@ namespace CNC_Interpreter_V2
                 //_delay.Enabled = true;
                 //_delay.Elapsed += _delayElapsed;
                 //while (_delay.Enabled) continue;
-                _ioExtender.WritePin((int)steppers, false);
+                _ioExtender.WritePin(_stepX, false);
                 Thread.Sleep(1);
                 //_delay.Enabled = true;
                 //_delay.Elapsed += _delayElapsed;
