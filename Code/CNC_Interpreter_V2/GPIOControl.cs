@@ -132,7 +132,7 @@ namespace CNC_Interpreter_V2
             }
             else if (Speed < 0)
             {
-                Speed = 0;
+                Speed = 0;  
             }
             double DutyCycle = (double)Speed / 100;
             _setPWM(true, 1, 0, DutyCycle);

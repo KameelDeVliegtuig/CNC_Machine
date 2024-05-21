@@ -13,7 +13,7 @@ Debug.WriteLine("Hello, World!");
 Console.WriteLine("Using gpioControl: ");
 gpioControl.ControlSpindel(50, true);
 Thread.Sleep(5000);
-gpioControl.ControlSpindel(50, false);
+gpioControl.ControlSpindel(0, true);
 
 // Example of accessing the IsPresenceDetected property
 //Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
