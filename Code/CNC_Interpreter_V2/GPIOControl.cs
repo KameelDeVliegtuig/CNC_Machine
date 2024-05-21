@@ -126,16 +126,18 @@ namespace CNC_Interpreter_V2
 
         public bool ControlSpindel(int Speed, bool Dir)
         {
+            bool state = true;
             if (Speed > 100)
             {
                 Speed = 100;
             }
-            else if (Speed < 0)
+            else if (Speed <= 0)
             {
-                Speed = 0;  
+                Speed = 0;
+                state = false;
             }
             double DutyCycle = (double)Speed / 100;
-            _setPWM(true, 1, 0, DutyCycle);
+            _setPWM(state, 1, 0, DutyCycle);
             _setPin(6, Dir);
             return true;
 
