@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Gpio;
-using System.Device.Pwm;    
+using System.Device.Pwm;
 using System.ComponentModel.Design;
 using MCPController;
 using UnitsNet;
@@ -21,12 +21,12 @@ namespace CNC_Interpreter_V2
             Y = 9,
             Z = 10
         }
-        
+
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
         private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
 
-
+        private int _currentSpindelSpeed;
 
         // Define the pins for the stepper motor control
         // Pin definitions on main board
@@ -41,18 +41,18 @@ namespace CNC_Interpreter_V2
         private const int _dirY = 12;
         private const int _dirZ = 13;
 
-    // Define the pins for the limit switches (IO extender)
+        // Define the pins for the limit switches (IO extender)
         private const int _limitX = 7;
         private const int _limitY = 6;
         private const int _limitZ = 5;
 
-    // Define the pins for the spindle speed and direction control
-    // Pin definitions on main board
+        // Define the pins for the spindle speed and direction control
+        // Pin definitions on main board
         private const int _spindlePWM = 13;
         private const int _spindleDir = 6;
-        
-    // Define the pins for the soft stop
-    // Pin definitions on main board
+
+        // Define the pins for the soft stop
+        // Pin definitions on main board
         private const int _softStopLED = 16;
         private const int _softStopButton = 20;
 
@@ -82,7 +82,7 @@ namespace CNC_Interpreter_V2
 
             // Set up the pins for the spindle speed and direction control
             _ioControl.OpenPin(_spindleDir, PinMode.Output);
-            
+
             // Set up the pins for the soft stop
             // Set up pin for the LED transistor
             _ioControl.OpenPin(_softStopLED, PinMode.Output);
@@ -93,14 +93,14 @@ namespace CNC_Interpreter_V2
 
         }
 
-        public bool readTest ()
+        public bool readTest()
         {
             return _ioExtender.ReadPin(_limitZ) == PinValue.High;
         }
 
         private bool _setPin(int IoPin, bool Value)
         {
-             _ioControl.Write(IoPin, Value ? PinValue.High : PinValue.Low);
+            _ioControl.Write(IoPin, Value ? PinValue.High : PinValue.Low);
             return true;
         }
 
@@ -122,7 +122,6 @@ namespace CNC_Interpreter_V2
             }
             else if (State == true)
             {
-
                 pwm.Start();
                 return true;
             }
@@ -130,31 +129,46 @@ namespace CNC_Interpreter_V2
         }
 
 
-
         public bool ControlSpindel(int Speed, bool Dir)
         {
-            bool state = true;
+            // Constrain speed to 100
+            // If speed is 0 or less, stop the spindle in a controlled manner
+
             if (Speed > 100)
             {
                 Speed = 100;
             }
-            else if (Speed <= 0)
-            {
-                Speed = 0;
-                state = false;
-            }
-            double DutyCycle = (double)Speed / 100;
-            _setPWM(state, 1, 0, DutyCycle);
-            _setPin(6, Dir);
-            Console.WriteLine(DutyCycle);
-            return true;
 
+            if (Speed == 0)
+            {
+                while (_currentSpindelSpeed > 25)
+                {
+                    _currentSpindelSpeed = _currentSpindelSpeed / 2;
+                    _setPWM(true, 1, 0, _currentSpindelSpeed / 100);
+                    Thread.Sleep(1000);
+                }
+                _setPWM(false, 1, 0, 0);
+                return true;
+            }
+            else if (Speed < 0)
+            {   
+                _setPWM(false, 1, 0, 0);
+                return true;
+            }
+            else
+            {
+                double DutyCycle = (double)Speed / 100;
+                _setPWM(true, 1, 0, DutyCycle);
+                _setPin(6, Dir);
+                Console.WriteLine(DutyCycle);
+                return true;
+            }
         }
 
 
-        public bool StepControl(int Step,bool Dir, StepperAxis steppers )
+        public bool StepControl(int Step, bool Dir, StepperAxis steppers)
         {
-            
+
             _setPin(_stepEnable, false);
             _ioExtender.WritePin(((int)steppers + 3), Dir);
 
@@ -180,10 +194,10 @@ namespace CNC_Interpreter_V2
         private void _delayElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             _delay.Stop();
-            _delay.Enabled = false; 
+            _delay.Enabled = false;
         }
 
     }
 
-    
+
 }
