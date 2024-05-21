@@ -17,7 +17,6 @@ gpioControl.ControlSpindel(500, true);
 Thread.Sleep(1000);
 gpioControl.ControlSpindel(250, true);
 Thread.Sleep(1000);
-gpioControl.ControlSpindel(0, true);
 // Example of accessing the IsPresenceDetected property
 //Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
 //presenceDetector.StartListening();
