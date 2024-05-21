@@ -21,11 +21,19 @@ namespace CNC_Interpreter_V2
             Y = 9,
             Z = 10
         }
+        
+        public enum LimitSwitch
+        {
+            X = 7,
+            Y = 6,
+            Z = 5
+        }
 
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
         private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
 
+        // Initialize int for current spindle speed
         private int _currentSpindelSpeed;
 
         // Define the pins for the stepper motor control
@@ -59,8 +67,6 @@ namespace CNC_Interpreter_V2
         public GPIOControl()
         {
 
-
-
             // Set up the pins for the stepper motor control
             _ioControl.OpenPin(_stepEnable, PinMode.Output);
             _ioControl.OpenPin(_stepReset, PinMode.Output);
@@ -93,27 +99,31 @@ namespace CNC_Interpreter_V2
 
         }
 
-        public bool readTest()
-        {
-            return _ioExtender.ReadPin(_limitZ) == PinValue.High;
-        }
-
         private bool _setPin(int IoPin, bool Value)
         {
             _ioControl.Write(IoPin, Value ? PinValue.High : PinValue.Low);
             return true;
         }
 
-        public bool ReadPin(int Pin)
+        // Read a pin
+        public bool ReadPin(int Pin, bool IsOnExtender)
         {
-            return _ioControl.Read(Pin) == PinValue.High;
+            if (IsOnExtender)
+            {
+                return _ioExtender.ReadPin(Pin);
+            }
+            if (!IsOnExtender)
+            {
+                return _ioControl.Read(Pin) == PinValue.High;
+            }
+            return false;
         }
 
+        // Set a PWM signal to specific channel
         private bool _setPWM(bool State, int Channel, int Chip, double DutyCycle)
         {
             var pwm = PwmChannel.Create(Chip, Channel, 5000, DutyCycle);
             pwm.Start();
-
 
             if (State == false)
             {
@@ -128,7 +138,7 @@ namespace CNC_Interpreter_V2
             return false;
         }
 
-
+        // Control the spindle speed, direction and stop mode with PWM 
         public bool ControlSpindel(int Speed, bool Dir)
         {
             // Constrain speed to 100
@@ -165,7 +175,8 @@ namespace CNC_Interpreter_V2
             }
         }
 
-
+        // 200 microsecond delay needs to be implemented
+        // Controls the stepper motors with a specific amount of steps and direction
         public bool StepControl(int Step, bool Dir, StepperAxis steppers)
         {
 
@@ -174,7 +185,6 @@ namespace CNC_Interpreter_V2
 
             for (int i = 0; i < Step; i++)
             {
-
                 _ioExtender.WritePin((int)steppers, true);
                 Thread.Sleep(1);
                 //_delay.Enabled = true;
@@ -189,15 +199,25 @@ namespace CNC_Interpreter_V2
             return true;
         }
 
+        // Read the limit switches
+        public bool ReadLimitSwitch(LimitSwitch limitSwitch)
+        {
+            return _ioExtender.ReadPin((int)limitSwitch);
+        }
 
-
+        // Delay function for the stepper motor control
         private void _delayElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             _delay.Stop();
             _delay.Enabled = false;
         }
 
+        // Emergency stop function
+        public bool EmergencyStop()
+        {
+            _setPin(_stepEnable, true);
+            ControlSpindel(-1, false);
+            return true;
+        }
     }
-
-
 }

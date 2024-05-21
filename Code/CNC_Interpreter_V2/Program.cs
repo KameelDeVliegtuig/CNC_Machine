@@ -13,14 +13,7 @@ Debug.WriteLine("Hello, World!");
 
 gpioControl.ControlSpindel(100, true);
 gpioControl.StepControl(6400, true, GPIOControl.StepperAxis.X);
-gpioControl.ControlSpindel(50, true);
-Thread.Sleep(1000);
-gpioControl.ControlSpindel(25, true);
-Thread.Sleep(1000);
 gpioControl.ControlSpindel(0, true);
-// Example of accessing the IsPresenceDetected property
-//Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
-//presenceDetector.StartListening();
 
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");
