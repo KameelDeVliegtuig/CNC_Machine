@@ -148,17 +148,17 @@ namespace CNC_Interpreter_V2
         {
             
             _setPin(_stepEnable, false);
-            _ioExtender.WritePin(_dirZ, Dir);
+            _ioExtender.WritePin(_dirX, Dir);
 
             for (int i = 0; i < Step; i++)
             {
 
-                _ioExtender.WritePin(_stepZ, true);
+                _ioExtender.WritePin(_stepX, true);
                 Thread.Sleep(1);
                 //_delay.Enabled = true;
                 //_delay.Elapsed += _delayElapsed;
                 //while (_delay.Enabled) continue;
-                _ioExtender.WritePin(_stepZ, false);
+                _ioExtender.WritePin(_stepX, false);
                 Thread.Sleep(1);
                 //_delay.Enabled = true;
                 //_delay.Elapsed += _delayElapsed;

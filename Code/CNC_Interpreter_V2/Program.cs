@@ -10,10 +10,8 @@ Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 Debug.WriteLine("Hello, World!");
-Console.WriteLine("Using gpioControl: ");
-gpioControl.ControlSpindel(50, true);
-Thread.Sleep(5000);
-gpioControl.ControlSpindel(0, true);
+
+gpioControl.StepControl(1000, true);
 
 // Example of accessing the IsPresenceDetected property
 //Console.WriteLine($"Current presence detected: {presenceDetector.IsPresenceDetected}");
