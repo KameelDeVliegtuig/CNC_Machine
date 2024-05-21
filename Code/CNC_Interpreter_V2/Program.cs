@@ -11,7 +11,7 @@ PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000)
 Debug.WriteLine("Hello, World!");
 
 Console.WriteLine("Using PwmChannel: ");
-var pwm = PwmChannel.Create(0, 1, 200, 0.5);
+var pwm = PwmChannel.Create(0, 1, 500, 0.5);
 pwm.Start();
 Thread.Sleep(10000);
 pwm.Stop();

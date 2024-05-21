@@ -105,7 +105,7 @@ namespace CNC_Interpreter_V2
         private bool _setPWM(bool State, int Channel, int Chip, double DutyCycle)
         {
             Console.WriteLine("State: " + State.ToString() + ", Channel: " + Channel.ToString() + ", Chip: " + Chip.ToString() + ", DutyCycle: " + DutyCycle.ToString());
-            var pwm = PwmChannel.Create(Chip, Channel, 400, DutyCycle);
+            var pwm = PwmChannel.Create(Chip, Channel, 500, DutyCycle);
             pwm.Start();
 
 
