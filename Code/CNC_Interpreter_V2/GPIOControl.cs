@@ -146,7 +146,7 @@ namespace CNC_Interpreter_V2
             double DutyCycle = (double)Speed / 100;
             _setPWM(state, 1, 0, DutyCycle);
             _setPin(6, Dir);
-            Console.WriteLine("Dutycycle:" ,DutyCycle);
+            Console.WriteLine(DutyCycle);
             return true;
 
         }
