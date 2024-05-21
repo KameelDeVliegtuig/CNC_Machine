@@ -1,15 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CNC_Interpreter_V2;
+using Iot.Device.Nmea0183.Ais;
+using System.Device.Pwm;
 using System.Diagnostics;
+
 
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
-
-
 Debug.WriteLine("Hello, World!");
 
-gpioControl.ControlSpindel(50, true);
+var pwm = PwmChannel.Create(0, 1, 400, 0.5);
+pwm.Start();
 
 
 // Example of accessing the IsPresenceDetected property

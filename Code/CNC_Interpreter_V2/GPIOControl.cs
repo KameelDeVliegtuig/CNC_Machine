@@ -99,7 +99,7 @@ namespace CNC_Interpreter_V2
 
         public bool ReadPin(int Pin)
         {
-            return _ioControl.Read(Pin) == PinValue.High;
+            return _ioControl.Read(Pin) == PinValue.High;+
         }
 
         private bool _setPWM(bool State, int Channel, int Chip, double DutyCycle)
