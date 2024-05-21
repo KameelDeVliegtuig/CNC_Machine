@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Gpio;
-using System.Device.Pwm;
+using System.Device.Pwm;    
 using System.ComponentModel.Design;
 using MCPController;
 using UnitsNet;
@@ -74,7 +74,6 @@ namespace CNC_Interpreter_V2
             _ioExtender.SetPinDirection(_limitZ, false);
 
             // Set up the pins for the spindle speed and direction control
-            _ioControl.OpenPin(_spindlePWM, PinMode.Output);
             _ioControl.OpenPin(_spindleDir, PinMode.Output);
             
             // Set up the pins for the soft stop
