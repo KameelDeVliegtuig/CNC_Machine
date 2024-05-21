@@ -135,7 +135,7 @@ namespace CNC_Interpreter_V2
             {
                 Speed = 0;
             }
-            Console.WriteLine("DutyCycle Calculation: " + Speed.ToString() + " / 100 = " + (Speed / 100).ToString());
+            Console.WriteLine("DutyCycle Calculation: " + Speed.ToString() + " / 100 = " + ((double)Speed / 100).ToString());
             double DutyCycle = Speed / 100;
             Console.WriteLine("DC: " + DutyCycle.ToString());
             _setPWM(true, 1, 0, DutyCycle);
