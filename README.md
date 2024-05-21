@@ -48,7 +48,8 @@ public boolean ControlSpindel(int speed, bool Dir);
 
 This function is used to control the spindle speed and direction.
 
-Int speed is used as a precentage of the actual speed. 
+> [!IMPORTANT]
+> Int speed is used as a precentage of the actual speed.
 
 When speed is equal to 0 the spindle will perform a softstop to minimize load to the motor and controller.
 When speed is less than 0 (-1), the spindle will perform an emergency stop. With this stop the spindle will stop immediatly. This has a negetive effect on the spindle.
@@ -75,11 +76,17 @@ Stops all active components
 
 ##### ReadPin
 
+> [!NOTE]
+> Only used for non declared pins
+
 ```C#
 public bool ReadPin(int Pin, bool IsOnExtender);
 ```
 
-Returns state of pin. Only used for non declared pins
+Returns state of pin.
+
+> [!WARNING]
+> Some pins have the same number on the extender as well as the pi 
 
 ##### ReadLimitSwitch
 
