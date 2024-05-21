@@ -104,7 +104,9 @@ namespace CNC_Interpreter_V2
 
         private bool _setPWM(bool State, int Channel, int Chip, double DutyCycle)
         {
-            var pwm = PwmChannel.Create(Chip, Channel, 500, DutyCycle);
+            var pwm = PwmChannel.Create(Chip, Channel, 400, DutyCycle);
+            pwm.Start();
+
 
             if (State == false)
             {
@@ -133,7 +135,7 @@ namespace CNC_Interpreter_V2
                 Speed = 0;
             }
             double DutyCycle = Speed / 100;
-            _setPWM(true, 1, 0, DutyCycle);
+            _setPWM(true, 0, 1, DutyCycle);
             _setPin(6, Dir);
             return true;
 
