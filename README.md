@@ -1,24 +1,20 @@
-CNC machine met ingebouwde beveiliging.
+#CNC machine met ingebouwde beveiliging.
 -	3-assige CNC machine
 -	Foutherkenning
 -	Display met custom GUI
 
-Controllers:
+##Documentation
+###Raspberry commands
++
+
+##Hardware
 -	Raspberry Pi Zero 2 W voor CNC besturing
--	Raspberry Pi 3B+?? voor GUI
--	Nextion display
 -	Stepper motor drivers
-
-Hardware:
+-   custom PCB
 -	Stukke Ender 3 V2
--	3 stepper motors (NEMA17)
--	Belts
--	Camera
+-	4 NEMA17
+-	HLK2450 Human Presence radar
 
-Specialisaties:
--	GCODE interpreter (Kamiel)
--	GUI (Jamie)
--	Safety (Lasse)
 
 NEMA17:
 -	200 steps 

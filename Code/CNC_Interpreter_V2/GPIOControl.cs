@@ -177,7 +177,7 @@ namespace CNC_Interpreter_V2
 
         // 200 microsecond delay needs to be implemented
         // Controls the stepper motors with a specific amount of steps and direction
-        public bool StepControl(int Step, bool Dir, StepperAxis steppers)
+        public bool ControlStep(int Step, bool Dir, StepperAxis steppers)
         {
 
             _setPin(_stepEnable, false);
