@@ -135,7 +135,7 @@ namespace CNC_Interpreter_V2
                 Speed = 0;
             }
             double DutyCycle = Speed / 100;
-            _setPWM(true, 0, 0, DutyCycle);
+            _setPWM(true, 1, 0, DutyCycle);
             _setPin(6, Dir);
             return true;
 
