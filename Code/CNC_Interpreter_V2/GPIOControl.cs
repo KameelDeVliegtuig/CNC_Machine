@@ -15,7 +15,6 @@ namespace CNC_Interpreter_V2
 {
     internal class GPIOControl
     {
-
         public enum StepperAxis
         {
             X = 8,
@@ -32,8 +31,7 @@ namespace CNC_Interpreter_V2
 
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
-        private System.Timers.Timer _delay = new System.Timers.Timer(0.2);
-
+        
         // Initialize int for current spindle speed
         private int _currentSpindelSpeed;
 
@@ -180,7 +178,6 @@ namespace CNC_Interpreter_V2
         // Controls the stepper motors with a specific amount of steps and direction
         public bool ControlStep(bool dir, StepperAxis steppers)
         {
-
             _setPin(_stepEnable, false);
             _ioExtender.WritePin(((int)steppers + 3), dir);
 
@@ -192,18 +189,10 @@ namespace CNC_Interpreter_V2
             return true;
         }
 
-
         // Read the limit switches
         public bool ReadLimitSwitch(LimitSwitch limitSwitch)
         {
             return _ioExtender.ReadPin((int)limitSwitch);
-        }
-
-        // Delay function for the stepper motor control
-        private void _delayElapsed(object? sender, System.Timers.ElapsedEventArgs e)
-        {
-            _delay.Stop();
-            _delay.Enabled = false;
         }
 
         // Emergency stop function
