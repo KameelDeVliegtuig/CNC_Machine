@@ -58,7 +58,7 @@ returns true if completed
 ##### ControlStep _**Not finished**_
 
 ```C#
-public bool ControlStep(int Step, bool dir, enum GPIOControl.StepperAxis);
+public bool ControlStep(bool dir, enum GPIOControl.StepperAxis);
 ```
 
 This function controls the steppers. Usage pretty clear.
@@ -86,7 +86,7 @@ public bool ReadPin(int Pin, bool IsOnExtender);
 Returns state of pin.
 
 > [!WARNING]
-> Some pins have the same number on the extender as well as the pi 
+> Some pins have the same number on the extender as well as the pi
 
 ##### ReadLimitSwitch
 
