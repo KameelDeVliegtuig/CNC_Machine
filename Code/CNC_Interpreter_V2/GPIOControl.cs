@@ -22,7 +22,7 @@ namespace CNC_Interpreter_V2
             Y = 9,
             Z = 10
         }
-        
+
         public enum LimitSwitch
         {
             X = 7,
@@ -162,7 +162,7 @@ namespace CNC_Interpreter_V2
                 return true;
             }
             else if (Speed < 0)
-            {   
+            {
                 _setPWM(false, 1, 0, 0);
                 return true;
             }
@@ -178,27 +178,20 @@ namespace CNC_Interpreter_V2
 
         // 200 microsecond delay needs to be implemented
         // Controls the stepper motors with a specific amount of steps and direction
-        public bool ControlStep(int Step, bool Dir, StepperAxis steppers)
+        public bool ControlStep(bool dir, StepperAxis steppers)
         {
 
             _setPin(_stepEnable, false);
-            _ioExtender.WritePin(((int)steppers + 3), Dir);
+            _ioExtender.WritePin(((int)steppers + 3), dir);
 
-            for (int i = 0; i < Step; i++)
-            {
-                _ioExtender.WritePin((int)steppers, true);
-                Thread.Sleep(1);
-                //_delay.Enabled = true;
-                //_delay.Elapsed += _delayElapsed;
-                //while (_delay.Enabled) continue;
-                _ioExtender.WritePin(_stepX, false);
-                Thread.Sleep(1);
-                //_delay.Enabled = true;
-                //_delay.Elapsed += _delayElapsed;
-                //while (_delay.Enabled) continue;
-            }
+            _ioExtender.WritePin((int)steppers, true);
+            UsDelay(200, Stopwatch.GetTimestamp());
+            _ioExtender.WritePin(_stepX, false);
+            UsDelay(200, Stopwatch.GetTimestamp());
+
             return true;
         }
+
 
         // Read the limit switches
         public bool ReadLimitSwitch(LimitSwitch limitSwitch)
@@ -222,7 +215,7 @@ namespace CNC_Interpreter_V2
         }
 
         // Delay for microseconds
-        public long usDelay(int microseconds, long StartTick)
+        public long UsDelay(int microseconds, long StartTick)
         {
             var targetTicks = ((microseconds) * Stopwatch.Frequency) / 1000000;
             while (Stopwatch.GetTimestamp() - StartTick < targetTicks) continue;
