@@ -7,8 +7,9 @@ GPIO.setmode(GPIO.BCM)
 # GPIO 23 set up as input. It is pulled up to stop false signals
 GPIO.setup(20, GPIO.IN)
 # now the program will do nothing until the signal on port 23
-while (GPIO.input(20)) :
+while (GPIO.input(20) == GPIO.LOW) :
    time.sleep(.01)
+
 print ("Stopping the system")
 os.chdir('/home/cnc')
 os.system('./stop')       # clean up GPIO on CTRL+C exit
