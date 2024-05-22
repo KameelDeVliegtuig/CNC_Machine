@@ -5,7 +5,7 @@ import os as os
 import time as time
 GPIO.setmode(GPIO.BCM)
 # GPIO 23 set up as input. It is pulled up to stop false signals
-GPIO.setup(23, GPIO.IN)
+GPIO.setup(20, GPIO.IN)
 # now the program will do nothing until the signal on port 23
 while (GPIO.input(20)) :
    time.sleep(.01)
