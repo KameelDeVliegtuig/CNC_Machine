@@ -182,9 +182,9 @@ namespace CNC_Interpreter_V2
             _ioExtender.WritePin(((int)steppers + 3), dir);
 
             _ioExtender.WritePin((int)steppers, true);
-            UsDelay(10, Stopwatch.GetTimestamp());
+            UsDelay(200, Stopwatch.GetTimestamp());
             _ioExtender.WritePin((int)steppers, false);
-            UsDelay(10, Stopwatch.GetTimestamp());
+            UsDelay(200, Stopwatch.GetTimestamp());
 
             return true;
         }
