@@ -222,16 +222,11 @@ namespace CNC_Interpreter_V2
         }
 
         // Delay for microseconds
-        public void usDelay(int microseconds)
+        public long usDelay(int microseconds, long StartTick)
         {
-            var sw = new SpinWait();
-            var targetTicks = (microseconds * Stopwatch.Frequency) / 1000000;
-            var startTicks = Stopwatch.GetTimestamp();
-
-            while (Stopwatch.GetTimestamp() - startTicks < targetTicks)
-            {
-                sw.SpinOnce();
-            }
+            var targetTicks = ((microseconds) * Stopwatch.Frequency) / 1000000;
+            while (Stopwatch.GetTimestamp() - StartTick < targetTicks) continue;
+            return StartTick;
         }
     }
 }

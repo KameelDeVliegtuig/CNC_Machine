@@ -15,9 +15,7 @@ Debug.WriteLine("Hello, World!");
 //gpioControl.StepControl(6400, true, GPIOControl.StepperAxis.X);
 //gpioControl.ControlSpindel(0, true);
 
-Console.WriteLine("Current timestamp: " + Stopwatch.GetTimestamp());
-gpioControl.usDelay(500);
-Console.WriteLine("Current timestamp: " + Stopwatch.GetTimestamp());
+Console.WriteLine("Total delay (200us): " + gpioControl.usDelay(200, Stopwatch.GetTimestamp()));
 
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");
