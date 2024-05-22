@@ -11,9 +11,13 @@ GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 Debug.WriteLine("Hello, World!");
 
-gpioControl.ControlSpindel(100, true);
-gpioControl.StepControl(6400, true, GPIOControl.StepperAxis.X);
-gpioControl.ControlSpindel(0, true);
+//gpioControl.ControlSpindel(100, true);
+//gpioControl.StepControl(6400, true, GPIOControl.StepperAxis.X);
+//gpioControl.ControlSpindel(0, true);
+
+Console.WriteLine("Current timestamp: " + Stopwatch.GetTimestamp());
+gpioControl.usDelay(500);
+Console.WriteLine("Current timestamp: " + Stopwatch.GetTimestamp());
 
 interpreter.Interpret("G1");
 interpreter.Interpret("X0 Y4 Z0.1");

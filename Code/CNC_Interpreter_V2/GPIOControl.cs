@@ -9,6 +9,7 @@ using System.Device.Pwm;
 using System.ComponentModel.Design;
 using MCPController;
 using UnitsNet;
+using System.Diagnostics;
 
 namespace CNC_Interpreter_V2
 {
@@ -218,6 +219,19 @@ namespace CNC_Interpreter_V2
             _setPin(_stepEnable, true);
             ControlSpindel(-1, false);
             return true;
+        }
+
+        // Delay for microseconds
+        public void usDelay(int microseconds)
+        {
+            var sw = new SpinWait();
+            var targetTicks = (microseconds * Stopwatch.Frequency) / 1000000;
+            var startTicks = Stopwatch.GetTimestamp();
+
+            while (Stopwatch.GetTimestamp() - startTicks < targetTicks)
+            {
+                sw.SpinOnce();
+            }
         }
     }
 }
