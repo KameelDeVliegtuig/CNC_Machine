@@ -13,7 +13,7 @@ Pi's standard network is Houtenbos.
 Stepper Direction truth table
 
 | Direction| X | Y | Direction | Z |
-| ------------- | ------------- |
+| ------------- | ------------- | ----- | ------ | ----- | 
 | Left | `NULL` | `NULL` | Up |  `True` |
 | Right | `NULL` | `NULL` | Down | `False` |
 
