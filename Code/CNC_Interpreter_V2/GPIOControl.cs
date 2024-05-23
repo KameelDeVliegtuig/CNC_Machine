@@ -152,7 +152,7 @@ namespace CNC_Interpreter_V2
             {
                 Console.WriteLine("Spindel controlled stop");
                 Console.WriteLine(_currentSpindelSpeed);
-                while (_currentSpindelSpeed > 25)
+                while (_currentSpindelSpeed > 10)
                 {
                     _currentSpindelSpeed = (int)(_currentSpindelSpeed / 1.2);
                     _setPWM(true, 1, 0, (double)_currentSpindelSpeed / 100);
