@@ -11,19 +11,27 @@ GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 Debug.WriteLine("Hello, World!");
 
+while (true)
+{
+    Console.WriteLine("Direction: ");
+    int dir = Convert.ToInt32(Console.ReadLine());
+    bool d = dir == 1 ? true : false;
+    Console.WriteLine("Steps: ");
+    int stapjes = Convert.ToInt32(Console.ReadLine());
 
-for (int i = 0; i < 4000; i++) {
+    for (int i = 0; i < stapjes; i++)
+    {
 
-    gpioControl.ControlStep(false, GPIOControl.StepperAxis.Z);
+        gpioControl.ControlStep(d, GPIOControl.StepperAxis.Z);
+    }
 }
-
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
 //interpreter.Interpret("M0 P2000");
 //interpreter.Interpret("M0 S5");
 //interpreter.Interpret("G0 X6 Y-2 Z2");
 //interpreter.Interpret("G5 I0 J0 P5 Q2 X10 Y5");
-Console.WriteLine("Interpreter has finished");
+//Console.WriteLine("Interpreter has finished");
 
 for (int i = 0; i < interpreter.Moves.Count; i++)
 {
