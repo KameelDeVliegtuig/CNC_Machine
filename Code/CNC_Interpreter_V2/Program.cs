@@ -13,6 +13,9 @@ Debug.WriteLine("Hello, World!");
 
 gpioControl.ControlSpindel(100, true);
 Thread.Sleep(5000);
+gpioControl.ControlSpindel(50, true);
+Thread.Sleep(5000);
+gpioControl.ControlSpindel(100, true);
 gpioControl.ControlSpindel(0, true);
 
 

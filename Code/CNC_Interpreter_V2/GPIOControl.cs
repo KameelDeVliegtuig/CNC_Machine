@@ -150,7 +150,7 @@ namespace CNC_Interpreter_V2
 
             if (Speed == 0)
             {
-                Console.WriteLine("Spindel controlled stop /n");
+                Console.WriteLine("Spindel controlled stop");
                 Console.WriteLine(_currentSpindelSpeed);
                 while (_currentSpindelSpeed > 25)
                 {
@@ -171,8 +171,9 @@ namespace CNC_Interpreter_V2
                 double DutyCycle = (double)Speed / 100;
                 _setPWM(true, 1, 0, DutyCycle);
                 _setPin(6, Dir);
-                Console.WriteLine(DutyCycle);
-                return true;
+                Console.WriteLine("Spindel Controls");
+                Console.WriteLine(_currentSpindelSpeed);
+
             }
             _currentSpindelSpeed = Speed;
             return true;
