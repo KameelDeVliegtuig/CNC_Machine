@@ -141,7 +141,7 @@ namespace CNC_Interpreter_V2
         public bool ControlSpindel(int Speed, bool Dir)
         {
             // Constrain speed to 100
-            // If speed is 0 or less, stop the spindle in a controlled manner
+            // If speed is lessthan 0, stop the spindle in a hard manner
 
             if (Speed > 100)
             {
