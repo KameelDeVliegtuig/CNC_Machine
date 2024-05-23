@@ -13,7 +13,8 @@ Debug.WriteLine("Hello, World!");
 
 
 for (int i = 0; i < 4000; i++) {
-    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
+
+    gpioControl.ControlStep(false, GPIOControl.StepperAxis.Z);
 }
 
 //interpreter.Interpret("G1");
