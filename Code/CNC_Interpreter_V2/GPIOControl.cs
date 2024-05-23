@@ -150,6 +150,7 @@ namespace CNC_Interpreter_V2
 
             if (Speed == 0)
             {
+                Console.WriteLine("Spindel controlled stop");
                 while (_currentSpindelSpeed > 25)
                 {
                     _currentSpindelSpeed = _currentSpindelSpeed / 2;
