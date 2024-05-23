@@ -11,14 +11,19 @@ namespace CNC_Interpreter_V2
 {
     internal class AxisControl
     {
+        // Positive and negative movement of axis
+        private const bool NEGATIVE = false;
+        private const bool POSITIVE = true;
+
         private GPIOControl gpioControl = new GPIOControl();
         private double speed; // millimeter per second
-        private int steps = 1280; // Steps per mm (default 1280 (80*16))
-        private double stepPerSecond;
+        private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
+        private double[] stepPerSecond = new double[3];
         private bool done = false;
 
         private int[] stepsToDo = new int[3];
-        private int[] stepsDone = new int[] {0, 0, 0};
+        private int[] stepsDone = new int[] { 0, 0, 0 };
+        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE}; // All increasing distance compared to 0
 
         private double[] ratio = new double[3];
 
@@ -26,30 +31,56 @@ namespace CNC_Interpreter_V2
         System.Timers.Timer TimerY = new System.Timers.Timer(1);
         System.Timers.Timer TimerZ = new System.Timers.Timer(1);
 
-        AxisControl(double Speed, int Steps)
+        // Speed: mm/s, Steps: steps/mm
+        AxisControl(double Speed, int[]? Steps)
         {
             this.speed = Speed;
-            this.steps = Steps;
+            if (Steps != null && Steps.Length == 3)
+            {
+                this.steps = Steps;
+
+            }
             // mm/s and steps/mm to steps/s
             // 1/2 *    3/1 =       3/2
-            this.stepPerSecond = speed * steps;
+            for (int i = 0; i < steps.Length; i++)
+            {
+                if (speed * steps[i] <= 1000)
+                {
+                    this.stepPerSecond[i] = speed * steps[i];
+                }
+                else
+                {
+                    this.stepPerSecond[i] = 1000;
+                }
+            }
+
         }
 
-        public bool Move(double x, double y, double z)
+        public bool Move(Coordinate coordinate)
         {
+            double[] moveLocation = new double[3];
+            moveLocation[0] = coordinate.X;
+            moveLocation[1] = coordinate.Y;
+            moveLocation[2] = coordinate.Z;
+
             this.done = false;
-            stepsDone = new int[] {0,0,0};
-            stepsToDo = new int[]
+            stepsDone = new int[] { 0, 0, 0 };
+            for (int i = 0; i < moveLocation.Length; i++)
             {
-                (int)(x * steps),
-                (int)(y * steps),
-                (int)(z * steps)
-            };
+                if (moveLocation[i] < 0)
+                {
+                    dir[i] = NEGATIVE;
+                    stepsToDo[i] = (int)(moveLocation[i] * steps[i] * -1);
+                } else
+                {
+                    stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
+                }
+            }
 
 
             try
             {
-                getRatio(new double[] { x, y, z });
+                getRatio(new double[] { coordinate.X, coordinate.Y, coordinate.Z });
             }
             catch (Exception e)
             {
@@ -71,7 +102,8 @@ namespace CNC_Interpreter_V2
                 TimerX.Elapsed += TimerX_Elapsed;
                 TimerY.Elapsed += TimerY_Elapsed;
                 TimerZ.Elapsed += TimerZ_Elapsed;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
                 return false;
@@ -80,7 +112,7 @@ namespace CNC_Interpreter_V2
 
             while (!done)
             {
-                if(!(TimerX.Enabled || TimerY.Enabled || TimerZ.Enabled))
+                if (!(TimerX.Enabled || TimerY.Enabled || TimerZ.Enabled))
                 {
                     done = true;
                 }
@@ -90,16 +122,18 @@ namespace CNC_Interpreter_V2
 
         private void TimerZ_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            stepsDone[0]++;
-            if (stepsDone[0] >= stepsToDo[0])
+            gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
+            stepsDone[2]++;
+            if (stepsDone[2] >= stepsToDo[2])
             {
-                TimerX.Stop();
-                TimerX.Dispose();
+                TimerZ.Stop();
+                TimerZ.Dispose();
             }
         }
 
         private void TimerY_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
             stepsDone[1]++;
             if (stepsDone[1] >= stepsToDo[1])
             {
@@ -110,14 +144,12 @@ namespace CNC_Interpreter_V2
 
         private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            // GPIO Step functie??
-
-
-            stepsDone[2]++;
-            if (stepsDone[2] >= stepsToDo[2])
+            gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
+            stepsDone[0]++;
+            if (stepsDone[0] >= stepsToDo[0])
             {
-                TimerZ.Stop();
-                TimerZ.Dispose();
+                TimerX.Stop();
+                TimerX.Dispose();
             }
         }
 
@@ -147,7 +179,7 @@ namespace CNC_Interpreter_V2
         private int max(double[] Coordinates)
         {
             int max = 0;
-            for(int i = 1; i < Coordinates.Length; i++)
+            for (int i = 1; i < Coordinates.Length; i++)
             {
                 if (Coordinates[i] > Coordinates[max])
                 {
@@ -162,15 +194,15 @@ namespace CNC_Interpreter_V2
             /*
             steps/s * ratio = steps/s[axis]
             e.g.:
-                steps/s = 1280
-                ratio = {1, 0.78.., 0.0078..}
+                steps/s = 1000
+                ratio = {1, 0.5, 0.01}
 
-                X = 1280 steps/s
-                Y = 1000 steps/s
+                X = 1000 steps/s
+                Y = 500 steps/s
                 Z = 10 steps/s
             
-                X timer = 1000(ms) / 1280(steps/s) = 0,78..ms delay
-                Y timer = 1000(ms) / 1000(steps/s) = 1ms delay
+                X timer = 1000(ms) / 1000(steps/s) = 1ms delay
+                Y timer = 1000(ms) / 5000(steps/s) = 2ms delay
                 Z timer = 1000(ms) / 10(steps/s) = 100ms delay
 
              Timer[axis](1000 / steps/s[axis])
@@ -178,9 +210,9 @@ namespace CNC_Interpreter_V2
              */
             double[] isrTimes = new double[3];
 
-            isrTimes[0] = (1000 / (stepPerSecond * ratio[0]));
-            isrTimes[1] = (1000 / (stepPerSecond * ratio[1]));
-            isrTimes[2] = (1000 / (stepPerSecond * ratio[2]));
+            isrTimes[0] = (1000 / (stepPerSecond[0] * ratio[0]));
+            isrTimes[1] = (1000 / (stepPerSecond[1] * ratio[1]));
+            isrTimes[2] = (1000 / (stepPerSecond[2] * ratio[2]));
 
             return isrTimes;
         }
