@@ -156,6 +156,7 @@ namespace CNC_Interpreter_V2
                 {
                     _currentSpindelSpeed = _currentSpindelSpeed / 2;
                     _setPWM(true, 1, 0, _currentSpindelSpeed / 100);
+                    _currentSpindelSpeed = Speed;
                     Thread.Sleep(1000);
                 }
                 _setPWM(false, 1, 0, 0);
@@ -164,18 +165,18 @@ namespace CNC_Interpreter_V2
             else if (Speed < 0)
             {
                 _setPWM(false, 1, 0, 0);
-                return true;
+                _currentSpindelSpeed = Speed;
             }
             else if (Speed > 0 && Speed <= 100)
             {
                 double DutyCycle = (double)Speed / 100;
                 _setPWM(true, 1, 0, DutyCycle);
                 _setPin(6, Dir);
+                _currentSpindelSpeed = Speed;
                 Console.WriteLine("Spindel Controls");
                 Console.WriteLine(_currentSpindelSpeed);
-
+                
             }
-            _currentSpindelSpeed = Speed;
             return true;
         }
 
