@@ -11,14 +11,10 @@ GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 Debug.WriteLine("Hello, World!");
 
-gpioControl.ControlSpindel(100, true);
-Thread.Sleep(5000);
-gpioControl.ControlSpindel(50, true);
-Thread.Sleep(5000);
-gpioControl.ControlSpindel(100, true);
-Thread.Sleep(5000);
-gpioControl.ControlSpindel(0, true);
 
+for (int i = 0; i < 4000; i++) {
+    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
+}
 
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");

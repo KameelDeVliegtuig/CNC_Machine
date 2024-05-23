@@ -31,7 +31,7 @@ namespace CNC_Interpreter_V2
 
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
-        
+
         // Initialize int for current spindle speed
         private int _currentSpindelSpeed;
 
@@ -151,7 +151,7 @@ namespace CNC_Interpreter_V2
             if (Speed == 0)
             {
                 Console.WriteLine("Spindel controlled stop");
-                Console.WriteLine(_currentSpindelSpeed);
+
                 while (_currentSpindelSpeed > 10)
                 {
                     _currentSpindelSpeed = _currentSpindelSpeed / 2;
@@ -159,12 +159,13 @@ namespace CNC_Interpreter_V2
                     _currentSpindelSpeed = Speed;
                     Thread.Sleep(2000);
                 }
-                 
+
                 _setPWM(false, 1, 0, 0);
                 return true;
             }
             else if (Speed < 0)
             {
+                Console.WriteLine("Emergency stop");
                 _setPWM(false, 1, 0, 0);
                 _currentSpindelSpeed = Speed;
             }
@@ -174,9 +175,8 @@ namespace CNC_Interpreter_V2
                 _setPWM(true, 1, 0, DutyCycle);
                 _setPin(6, Dir);
                 _currentSpindelSpeed = Speed;
-                Console.WriteLine("Spindel Controls");
-                Console.WriteLine(_currentSpindelSpeed);
-                
+                Console.WriteLine("Set spindel to: " + Speed);
+
             }
             return true;
         }
