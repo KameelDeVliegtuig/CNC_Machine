@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Iot.Device.CharacterLcd;
+using Iot.Device.Pn532;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,11 +16,14 @@ namespace CNC_Interpreter_V2
         //GPIOControl gpio = new GPIOControl();
         AxisControl axisControl = new AxisControl(0.1, null);
 
+        const string firmwareInfo = "CNC Machine V0.1 by Lasse Houtenbos and Kamiel Groot ©2024";
+
         private System.Timers.Timer StopTimer = new System.Timers.Timer();
         private bool consoleInput;
 
         private List<Coordinate> moves = new List<Coordinate>();
         private string lastCommand;
+        private int passcode = 0000;
 
         public List<Coordinate> Moves { get { return moves; } }
 
@@ -187,11 +192,6 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Turn off Spindel");
                     settings.Spindel = false;
                     break;
-                case "M7":
-                case "M8":
-                case "M9":
-                    Debug.WriteLine("Coolant Controls");
-                    break;
                 case "M16":
                     // Always return true (no printer check)
                     Debug.WriteLine("Device checker");
@@ -200,6 +200,7 @@ namespace CNC_Interpreter_V2
                 case "M84":
                     Debug.WriteLine("Disable all steppers");
                     settings.StepperEnable = false;
+                    axisControl.DisableStepper();
                     break;
 
                 // Only when using SD Card
@@ -242,7 +243,7 @@ namespace CNC_Interpreter_V2
                     break;
                 // End of SD Card Section
 
-                case "M42": // Analog or Digital pins
+                case "M42": // Digital pins
                     Debug.WriteLine("Set pin state");
                     bool sValue;
                     if (value.S > 0)
@@ -283,16 +284,10 @@ namespace CNC_Interpreter_V2
                     {
                         //if(value.E)
                     }
-
-
-                    // Hello Github?!
                     break;
                 case "M100":
                     GC.Collect();
                     //return Process.GetCurrentProcess().PrivateMemorySize64;
-                    break;
-                case "M102":
-                    Debug.WriteLine("Configure Bed Distance Sensor");
                     break;
                 case "M105":
                     Debug.WriteLine("Temperature Report");
@@ -302,24 +297,33 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M112":
                     Debug.WriteLine("Full Shutdown");
+                    Console.WriteLine("Shutting down within 1 minute...");
+                    System.Diagnostics.Process.Start(new ProcessStartInfo() { FileName = "sudo", Arguments = "shutdown" });
                     break;
                 case "M114":
                     Debug.WriteLine("Get Current Position");
+                    Coordinate currentPos = new Coordinate(settings.X, settings.Y, settings.Z, settings.Spindel);
+                    Console.WriteLine("Current Position");
+                    currentPos.Print();
                     break;
                 case "M115":
                     Debug.WriteLine("Firmware Info");
+                    Console.WriteLine(firmwareInfo);
                     break;
                 case "M117":
                     Debug.WriteLine("Set LCD Message");
-                    break;
-                case "M118":
-                    Debug.WriteLine("Serial Print");
+                    Console.WriteLine("LCD Message");
                     break;
                 case "M119":
                     Debug.WriteLine("Endstop States");
+                    Console.WriteLine("Endstop States:");
+                    Console.Write("X: " + axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.X));
+                    Console.Write(", Y: " + axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Y));
+                    Console.WriteLine(", Z: " + axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z));
                     break;
                 case "M149":
                     Debug.WriteLine("Set Temperature Units (C/F/K)");
+                    Console.WriteLine("FUCK YOU!!!! It's Celsius, take it or leave it!");
                     break;
                 case "M150":
                     Debug.WriteLine("Set LED(strip) RGB(W) Color");
@@ -336,6 +340,32 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M226":
                     Debug.WriteLine("Wait for pin state (0/1/-1)");
+                    bool wanted = false;
+                    bool[] currentState;
+                    switch (value.S)
+                    {
+                        case 0:
+                            wanted = false;
+                            break;
+                        case 1:
+                            wanted = true;
+                            break;
+                        case -1:
+                            currentState = axisControl.ReadPin((int)value.P);
+                            if (currentState[0])
+                            {
+                                wanted = !currentState[1];
+                            } else
+                            {
+                                Console.WriteLine("Unable to read pin, check pin number");
+                                break;
+                            }
+                            break;
+                    }
+                    currentState = axisControl.ReadPin((int)value.P);
+                    while (currentState[0] && currentState[1] != wanted){
+                        currentState = axisControl.ReadPin((int)value.P);
+                    }
                     break;
                 case "M256":
                     Debug.WriteLine("Set/Get LCD Brightness");
@@ -346,6 +376,7 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M305":
                     Debug.WriteLine("Set MicroStepping");
+                    Console.WriteLine("Microstepping fixed at 1/16");
                     break;
                 case "M355":
                     Debug.WriteLine("Case Light Control");
@@ -353,15 +384,22 @@ namespace CNC_Interpreter_V2
 
                 case "M400":
                     Debug.WriteLine("Wait for moves to finish");
+                    if(moves.Count != 0)
+                    {
+                        Console.WriteLine("Moves is not empty");
+                    }
                     break;
                 case "M401":
                     Debug.WriteLine("Deploy Bed Probe");
+                    Console.WriteLine("Place Z-axis limit switch");
                     break;
                 case "M402":
                     Debug.WriteLine("Stow Bed Probe");
+                    Console.WriteLine("Remove Z-axis limit switch");
                     break;
                 case "M410":
                     Debug.WriteLine("Stop all stepper instantly");
+                    axisControl.DisableStepper();
                     break;
                 case "M420":
                     Debug.WriteLine("Get/Set Bed Leveling State");
@@ -372,12 +410,18 @@ namespace CNC_Interpreter_V2
 
                 case "M510":
                     Debug.WriteLine("Lock Machine");
+                    settings.Lock(passcode);
                     break;
                 case "M511":
                     Debug.WriteLine("Unlock Machine");
+                    settings.Unlock((int)value.P);
                     break;
                 case "M512":
                     Debug.WriteLine("Set Passcode");
+                    if((int)value.P == passcode)
+                    {
+                        passcode = (int)value.S;
+                    }
                     break;
                 case "M524":
                     Debug.WriteLine("Abort Print in Progress");
@@ -396,6 +440,7 @@ namespace CNC_Interpreter_V2
                 case "X0":
                     Debug.WriteLine("Selective Stop");
                     settings.EmergencyStop = true;
+                    axisControl.EmergencyStop();
                     break;
                 default:
                     Debug.WriteLine("Code not Found");
@@ -565,15 +610,15 @@ namespace CNC_Interpreter_V2
             switch (Axis)
             {
                 case GPIOControl.StepperAxis.X:
-                    settings.X = stepsBack / settings.StepsPerMM[0];
+                    settings.X = (stepsBack / settings.StepsPerMM[0]) + settings.SpindelToProbe[0];
                     Thread.Sleep(100);
                     break;
                 case GPIOControl.StepperAxis.Y:
-                    settings.Y = stepsBack / settings.StepsPerMM[1];
+                    settings.Y = stepsBack / settings.StepsPerMM[1] + settings.SpindelToProbe[1];
                     Thread.Sleep(100);
                     break;
                 case GPIOControl.StepperAxis.Z:
-                    settings.Z = stepsBack / settings.StepsPerMM[2];
+                    settings.Z = stepsBack / settings.StepsPerMM[2] + settings.SpindelToProbe[2];
                     Console.WriteLine("Remove Z-axis Switch");
                     // Wait 5 seconds for switch to be removed
                     Thread.Sleep(5000);
