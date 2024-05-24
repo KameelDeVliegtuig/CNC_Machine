@@ -254,12 +254,13 @@ namespace CNC_Interpreter_V2
                     {
                         sValue = false;
                     }
-                    //gpio.SetPin((int)value.P, sValue);
-                    break;
-                case "M43":
-                    // Also T option, to be checked in further functions
-                    Debug.WriteLine("Debug / Toggle Pins");
-                    //gpio.ReadPin((int)value.P);
+                    if(axisControl.SetPin((int)value.P, sValue))
+                    {
+                        Console.WriteLine("Pin " + value.P + " set to " + sValue);
+                    } else
+                    {
+                        Console.WriteLine("Could not set pin " + value.P);
+                    }
                     break;
 
                 // LCD
@@ -303,7 +304,7 @@ namespace CNC_Interpreter_V2
                 case "M114":
                     Debug.WriteLine("Get Current Position");
                     Coordinate currentPos = new Coordinate(settings.X, settings.Y, settings.Z, settings.Spindel);
-                    Console.WriteLine("Current Position");
+                    Console.WriteLine("Current Position: ");
                     currentPos.Print();
                     break;
                 case "M115":

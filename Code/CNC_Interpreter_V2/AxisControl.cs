@@ -246,5 +246,17 @@ namespace CNC_Interpreter_V2
         {
             gpioControl.EmergencyStop();
         }
+
+        public bool SetPin(int pin, bool state)
+        {
+            if(pin < 5)
+            {
+                gpioControl.SetPin(pin, state);
+            } else
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
