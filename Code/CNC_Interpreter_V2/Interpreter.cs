@@ -25,6 +25,8 @@ namespace CNC_Interpreter_V2
         private string lastCommand;
         private int passcode = 0000;
 
+        private long startTime;
+
         public List<Coordinate> Moves { get { return moves; } }
 
         public void Interpret(string GCODE)
@@ -237,9 +239,14 @@ namespace CNC_Interpreter_V2
 
                 case "M31":
                     Debug.WriteLine("Print Time");
+                    if (startTime != null)
+                    {
+                        Console.WriteLine("Time Elapsed: " + Stopwatch.GetElapsedTime(startTime));
+                    }
                     break;
                 case "M32":
                     Debug.WriteLine("Begin from SD File");
+                    startTime = Stopwatch.GetTimestamp();
                     break;
                 // End of SD Card Section
 
