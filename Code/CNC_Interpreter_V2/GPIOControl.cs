@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using CNC_Interpreter_V2;
 using System.Collections.Generic;
 using System.Linq;
@@ -192,7 +192,7 @@ namespace CNC_Interpreter_V2
             UsDelay(300, Stopwatch.GetTimestamp());
             _ioExtender.WritePin((int)steppers, false);
             UsDelay(300, Stopwatch.GetTimestamp());
-            
+
 
             return true;
         }
@@ -201,6 +201,22 @@ namespace CNC_Interpreter_V2
         public bool ReadLimitSwitch(LimitSwitch limitSwitch)
         {
             return _ioExtender.ReadPin((int)limitSwitch);
+        }
+
+        public bool DisableSteppers()
+        {
+            _setPin(_stepEnable, true);
+            return true;
+        }
+
+        public bool SetPin(int pin, bool state)
+        {
+            if (pin < 5)
+            {
+                _ioExtender.WritePin(pin, true);
+                return true;
+            }
+            else { return false; }
         }
 
         // Emergency stop function

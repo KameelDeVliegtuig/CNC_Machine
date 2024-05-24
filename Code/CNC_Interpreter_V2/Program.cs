@@ -30,7 +30,4 @@ while (true)
 //interpreter.Interpret("M0 S5");
 //interpreter.Interpret("G0 X6 Y-2 Z2");
 //interpreter.Interpret("G5 I0 J0 P5 Q2 X10 Y5");
-//Console.WriteLine("Interpreter has finished");
-
-
-Debug.WriteLine("GoodBye");
+//Console.WriteLine("Interpreter has finished");    
