@@ -74,16 +74,16 @@ namespace CNC_Interpreter_V2
             return distance;
         }
 
-        private Coordinate newCoordinate(Coordinate Coordinates, Settings.workplanes Workplane)
+        private Coordinate newCoordinate(Coordinate Coordinate, Settings.workplanes Workplane)
         {
             switch (Workplane)
             {
                 case Settings.workplanes.XY: // (X, Y) -> (X, Y)
-                    return new Coordinate(Coordinates.X, Coordinates.Y, Coordinates.Z, Coordinates.Spindel);
+                    return new Coordinate(Coordinate.X, Coordinate.Y, Coordinate.Z, Coordinate.Spindel);
                 case Settings.workplanes.YZ: // (X, Y) -> (Y, Z)
-                    return new Coordinate(Coordinates.Z, Coordinates.X, Coordinates.Y, Coordinates.Spindel);
+                    return new Coordinate(Coordinate.Z, Coordinate.X, Coordinate.Y, Coordinate.Spindel);
                 case Settings.workplanes.ZX: // (X, Y) -> (Z, X)
-                    return new Coordinate(Coordinates.Y, Coordinates.Z, Coordinates.X, Coordinates.Spindel);
+                    return new Coordinate(Coordinate.Y, Coordinate.Z, Coordinate.X, Coordinate.Spindel);
                 default:
                     return null;
             }

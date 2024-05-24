@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using CNC_Interpreter_V2;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace CNC_Interpreter_V2
 
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
-        
+
         // Initialize int for current spindle speed
         private int _currentSpindelSpeed;
 
@@ -141,7 +141,7 @@ namespace CNC_Interpreter_V2
         public bool ControlSpindel(int Speed, bool Dir)
         {
             // Constrain speed to 100
-            // If speed is 0 or less, stop the spindle in a controlled manner
+            // If speed is lessthan 0, stop the spindle in a hard manner
 
             if (Speed > 100)
             {
@@ -150,28 +150,35 @@ namespace CNC_Interpreter_V2
 
             if (Speed == 0)
             {
-                while (_currentSpindelSpeed > 25)
+                Console.WriteLine("Spindel controlled stop");
+
+                while (_currentSpindelSpeed > 10)
                 {
                     _currentSpindelSpeed = _currentSpindelSpeed / 2;
-                    _setPWM(true, 1, 0, _currentSpindelSpeed / 100);
-                    Thread.Sleep(1000);
+                    _setPWM(true, 1, 0, (double)_currentSpindelSpeed / 100);
+                    _currentSpindelSpeed = Speed;
+                    Thread.Sleep(2000);
                 }
+
                 _setPWM(false, 1, 0, 0);
                 return true;
             }
             else if (Speed < 0)
             {
+                Console.WriteLine("Emergency stop");
                 _setPWM(false, 1, 0, 0);
-                return true;
+                _currentSpindelSpeed = Speed;
             }
-            else
+            else if (Speed > 0 && Speed <= 100)
             {
                 double DutyCycle = (double)Speed / 100;
                 _setPWM(true, 1, 0, DutyCycle);
                 _setPin(6, Dir);
-                Console.WriteLine(DutyCycle);
-                return true;
+                _currentSpindelSpeed = Speed;
+                Console.WriteLine("Set spindel to: " + Speed);
+
             }
+            return true;
         }
 
         // 200 microsecond delay needs to be implemented
@@ -182,9 +189,10 @@ namespace CNC_Interpreter_V2
             _ioExtender.WritePin(((int)steppers + 3), dir);
 
             _ioExtender.WritePin((int)steppers, true);
-            UsDelay(1, Stopwatch.GetTimestamp());
+            UsDelay(500, Stopwatch.GetTimestamp());
             _ioExtender.WritePin((int)steppers, false);
-            UsDelay(1, Stopwatch.GetTimestamp());
+            UsDelay(500, Stopwatch.GetTimestamp());
+            
 
             return true;
         }
