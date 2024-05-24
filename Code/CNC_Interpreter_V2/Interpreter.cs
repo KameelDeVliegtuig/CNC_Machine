@@ -12,6 +12,7 @@ namespace CNC_Interpreter_V2
         Parser parser = new Parser();
         Settings settings = new Settings(0.0, 0.0, 0.0);
         //GPIOControl gpio = new GPIOControl();
+        AxisControl axisControl = new AxisControl(0.1, null);
 
         private System.Timers.Timer StopTimer = new System.Timers.Timer();
         private bool consoleInput;
@@ -40,12 +41,14 @@ namespace CNC_Interpreter_V2
                 case "G5":
                 //Debug.WriteLine("Bézier cubic spline");
                 case "G6":
-                //Debug.WriteLine("Direct Stepper Move");
+                    //Debug.WriteLine("Direct Stepper Move");
                     Debug.WriteLine("To Parser to calculate coordinates");
                     try
                     {
-                        moves.AddRange(parser.Parse(new[] {settings.X, settings.Y, settings.Z}, value));
-                    } catch(Exception e) { 
+                        moves.AddRange(parser.Parse(new[] { settings.X, settings.Y, settings.Z }, value));
+                    }
+                    catch (Exception e)
+                    {
                         Debug.WriteLine(e);
                     }
                     break;
@@ -79,13 +82,18 @@ namespace CNC_Interpreter_V2
                     try
                     {
                         moves.Add(settings.ParkTool(value.P));
-                    } catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e);
                     }
                     break;
                 case "G28":
                     Debug.WriteLine("Auto Home");
+                    AutoHome(GPIOControl.StepperAxis.Z, GPIOControl.LimitSwitch.Z);
+                    AutoHome(GPIOControl.StepperAxis.X, GPIOControl.LimitSwitch.X);
+                    AutoHome(GPIOControl.StepperAxis.Y, GPIOControl.LimitSwitch.Y);
+                    Debug.WriteLine("Auto Home Complete");
                     break;
                 //case "G34": // Checks if Z-rods are at the same position
                 //    Debug.WriteLine("Z-axis Gantry Calibration");
@@ -98,9 +106,10 @@ namespace CNC_Interpreter_V2
                     try
                     {
                         moves.Add(new Coordinate(value.X, value.Y, value.Z, false));
-                    } catch( Exception e )
+                    }
+                    catch (Exception e)
                     {
-                        Debug.WriteLine(e );
+                        Debug.WriteLine(e);
                     }
                     break;
                 case "G54": // Slot 1
@@ -137,15 +146,17 @@ namespace CNC_Interpreter_V2
                 case "M1":
                     Debug.WriteLine("Unconditional STOP");
                     consoleInput = false;
-                    if(value.P > 0)
+                    if (value.P > 0)
                     {
-                        Debug.WriteLine("StopTime (ms): " +  value.P);
+                        Debug.WriteLine("StopTime (ms): " + value.P);
                         StopTimer = new System.Timers.Timer(value.P); // milliseconds
-                    } else if(value.S > 0)
+                    }
+                    else if (value.S > 0)
                     {
                         Debug.WriteLine("StopTime (s):" + value.S);
                         StopTimer = new System.Timers.Timer(value.S * 1000); // seconds * 1000 = milliseconds
-                    } else
+                    }
+                    else
                     {
                         Debug.WriteLine("Waiting for console input: ");
                         consoleInput = true;
@@ -234,10 +245,11 @@ namespace CNC_Interpreter_V2
                 case "M42": // Analog or Digital pins
                     Debug.WriteLine("Set pin state");
                     bool sValue;
-                    if(value.S > 0)
+                    if (value.S > 0)
                     {
                         sValue = true;
-                    } else
+                    }
+                    else
                     {
                         sValue = false;
                     }
@@ -477,17 +489,98 @@ namespace CNC_Interpreter_V2
         {
             string number = new string("");
             Input.Substring(1);
-            for(int i = 1; i < Input.Length; i++)
+            for (int i = 1; i < Input.Length; i++)
             {
                 if (Input[i] == '.')
                 {
                     number += ',';
-                } else
+                }
+                else
                 {
                     number += Input[i];
                 }
             }
             return double.Parse(number.ToString());
         }
+
+        private bool AutoHome(GPIOControl.StepperAxis Axis, GPIOControl.LimitSwitch Switch)
+        {
+            int stepsBack = 400;
+            Coordinate Up = new Coordinate(0, 0, 0, false);
+            Coordinate Down = new Coordinate(0, 0, 0, false);
+
+            if (Axis == GPIOControl.StepperAxis.X)
+            {
+                Up = new Coordinate(0.1, 0, 0, false);
+                Down = new Coordinate(-0.1, 0, 0, false);
+            }
+
+            if (Axis == GPIOControl.StepperAxis.Y)
+            {
+                Up = new Coordinate(0, 0.1, 0, false);
+                Down = new Coordinate(0, -0.1, 0, false);
+            }
+
+            if (Axis == GPIOControl.StepperAxis.Z)
+            {
+                // Connect and press limitswitch manually
+                Console.WriteLine("Connect Z-axis limit switch and press manually");
+                while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
+                while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
+
+                Up = new Coordinate(0, 0, 0.1, false);
+                Down = new Coordinate(0, 0, -0.1, false);
+            }
+
+            Console.WriteLine("Starting Auto Home");
+            // Move axis until it is touching limitswitch
+            while (axisControl.ReadLimitSwitch(Switch))
+            {
+                axisControl.Move(Down);
+            }
+
+
+            // Move back up
+            for (int i = 0; i < stepsBack; i++)
+            {
+                axisControl.Move(Up);
+            }
+
+            // Move down slower
+            while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z))
+            {
+                axisControl.Move(Down);
+                axisControl.UsDelay(50, Stopwatch.GetTimestamp());
+            }
+
+            // Set position to 0
+            settings.Z = 0.0;
+
+            // Move back up to remove switch
+            for (int i = 0; i < stepsBack; i++)
+            {
+                axisControl.Move(Up);
+            }
+
+            switch (Axis)
+            {
+                case GPIOControl.StepperAxis.X:
+                    settings.X = stepsBack / settings.StepsPerMM[0];
+                    Thread.Sleep(100);
+                    break;
+                case GPIOControl.StepperAxis.Y:
+                    settings.Y = stepsBack / settings.StepsPerMM[1];
+                    Thread.Sleep(100);
+                    break;
+                case GPIOControl.StepperAxis.Z:
+                    settings.Z = stepsBack / settings.StepsPerMM[2];
+                    Console.WriteLine("Remove Z-axis Switch");
+                    // Wait 5 seconds for switch to be removed
+                    Thread.Sleep(5000);
+                    break;
+            }
+            return true;
+        }
+
     }
 }

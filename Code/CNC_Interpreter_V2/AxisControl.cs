@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using UnitsNet;
+using static CNC_Interpreter_V2.GPIOControl;
 
 namespace CNC_Interpreter_V2
 {
@@ -16,6 +17,7 @@ namespace CNC_Interpreter_V2
         private const bool POSITIVE = true;
 
         private GPIOControl gpioControl = new GPIOControl();
+
         private double speed; // millimeter per second
         private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
         private double[] stepPerSecond = new double[3];
@@ -32,7 +34,7 @@ namespace CNC_Interpreter_V2
         System.Timers.Timer TimerZ = new System.Timers.Timer(1);
 
         // Speed: mm/s, Steps: steps/mm
-        AxisControl(double Speed, int[]? Steps)
+        public AxisControl(double Speed, int[]? Steps)
         {
             this.speed = Speed;
             if (Steps != null && Steps.Length == 3)
@@ -215,6 +217,15 @@ namespace CNC_Interpreter_V2
             isrTimes[2] = (1000 / (stepPerSecond[2] * ratio[2]));
 
             return isrTimes;
+        }
+
+        public bool ReadLimitSwitch(GPIOControl.LimitSwitch limitSwitch) {
+            return gpioControl.ReadLimitSwitch(limitSwitch);
+        }
+
+        public long UsDelay(int microseconds, long StartTick)
+        {
+            return gpioControl.UsDelay(microseconds, StartTick);
         }
     }
 }

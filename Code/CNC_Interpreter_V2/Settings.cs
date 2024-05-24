@@ -37,9 +37,9 @@ namespace CNC_Interpreter_V2
         private bool emergencyStop;
         private double[] spindelToProbe = { 1.0, 1.0, 0.0};
 
-        public double X { get { return x; } }
-        public double Y { get { return y; } }
-        public double Z { get { return z; } }
+        public double X { get { return x; } set { if (value.GetType() == typeof(double)) { x = value; } } }
+        public double Y { get { return y; } set { if (value.GetType() == typeof(double)) { y = value; } } }
+        public double Z { get { return z; } set { if (value.GetType() == typeof(double)) { z = value; } } }
         public workplanes Workplane { get { return workplane; } set { if (Enum.IsDefined(value)) { workplane = value; } } }
         public double MMpS { get { return mmps; } }
         public double[] StepsPerMM { get { return stepsPerMM; } set { if (value.Length == 3) { stepsPerMM = value; } } }
