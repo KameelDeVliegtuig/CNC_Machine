@@ -14,8 +14,8 @@ Pi's standard network is Houtenbos.
 
 | Axis | Steps | mm |
 | ---- | ----- | -- |
-| X | 0 | 0 |
-| Y | 0 | 0 |
+| X | 80 | 1 |
+| Y | 80 | 1 |
 | Z | 400 | 1 |
 
 #### Directions
@@ -47,8 +47,7 @@ Pi's standard network is Houtenbos.
 | Emergency button| NC | Takes all power off machine |
 
 >[!NOTE]
-> NC (Normally Closed)
-> NO (Normally Open)
+> NC (Normally Closed) NO (Normally Open)
 
 ### Raspberry commands
 
