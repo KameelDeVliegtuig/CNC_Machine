@@ -14,8 +14,8 @@ Pi's standard network is Houtenbos.
 
 | Axis | Steps | mm |
 | ---- | ----- | -- |
-| X | 0 | 0 |
-| Y | 0 | 0 |
+| X | 80 | 1 |
+| Y | 80 | 1 |
 | Z | 400 | 1 |
 
 #### Directions
@@ -40,15 +40,14 @@ Pi's standard network is Houtenbos.
 
 | Switch/Button | Contact type | Usage |
 | ------------- | ------------ | ----- |
-| Limit switch X | NC | Used for zero-ing spindle's X-axis |
-| Limit switch Y | NC | Used for zero-ing spindle's Y-axis |
-| Limit switch Z | NO | Used for zero-ing spindle's Z-axis, is connected via magnets |
+| Limit switch X | NC / active `LOW` | Used for zero-ing spindle's X-axis |
+| Limit switch Y | NC / active `LOW`| Used for zero-ing spindle's Y-axis |
+| Limit switch Z | NO / active `HIGH`| Used for zero-ing spindle's Z-axis, is connected via magnets |
 | E-Stop | NO | Used to stop all moving parts |
 | Emergency button| NC | Takes all power off machine |
 
 >[!NOTE]
-> NC (Normally Closed)
-> NO (Normally Open)
+> NC (Normally Closed) NO (Normally Open)
 
 ### Raspberry commands
 
