@@ -21,7 +21,6 @@ while (true)
 
     for (int i = 0; i < stapjes; i++)
     {
-
         gpioControl.ControlStep(d, GPIOControl.StepperAxis.Z);
     }
 }
@@ -33,10 +32,5 @@ while (true)
 //interpreter.Interpret("G5 I0 J0 P5 Q2 X10 Y5");
 //Console.WriteLine("Interpreter has finished");
 
-for (int i = 0; i < interpreter.Moves.Count; i++)
-{
-    Debug.Write("Moves " + i + ": ");
-    Debug.WriteLine(interpreter.Moves[i]);
-}
 
 Debug.WriteLine("GoodBye");
