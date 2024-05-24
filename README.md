@@ -40,9 +40,9 @@ Pi's standard network is Houtenbos.
 
 | Switch/Button | Contact type | Usage |
 | ------------- | ------------ | ----- |
-| Limit switch X | NC | Used for zero-ing spindle's X-axis |
-| Limit switch Y | NC | Used for zero-ing spindle's Y-axis |
-| Limit switch Z | NO | Used for zero-ing spindle's Z-axis, is connected via magnets |
+| Limit switch X | NC / active `HIGH` | Used for zero-ing spindle's X-axis |
+| Limit switch Y | NC / active `HIGH`| Used for zero-ing spindle's Y-axis |
+| Limit switch Z | NO / active `LOW`| Used for zero-ing spindle's Z-axis, is connected via magnets |
 | E-Stop | NO | Used to stop all moving parts |
 | Emergency button| NC | Takes all power off machine |
 
