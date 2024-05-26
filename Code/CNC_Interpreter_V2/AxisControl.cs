@@ -97,19 +97,19 @@ namespace CNC_Interpreter_V2
             try
             {
                 double[] isrTimes = isrTime();
-                if (ratio[0] != 0)
+                if (coordinate.X != 0)
                 {
                     TimerX = new System.Timers.Timer(isrTimes[0]);
                     TimerX.Enabled = true;
                     TimerX.Elapsed += TimerX_Elapsed;
                 }
-                if (ratio[1] != 0)
+                if (coordinate.Y != 0)
                 {
                     TimerY = new System.Timers.Timer(isrTimes[1]);
                     TimerY.Enabled = true;
                     TimerY.Elapsed += TimerY_Elapsed;
                 }
-                if (ratio[2] != 0)
+                if (coordinate.Z != 0)
                 {
                     TimerZ = new System.Timers.Timer(isrTimes[2]);
                     TimerZ.Enabled = true;
