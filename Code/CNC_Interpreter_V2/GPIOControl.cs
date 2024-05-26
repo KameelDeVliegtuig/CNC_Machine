@@ -213,7 +213,7 @@ namespace CNC_Interpreter_V2
         {
             if (pin < 5)
             {
-                _ioExtender.WritePin(pin, true);
+                _ioExtender.WritePin(pin, state);
                 return true;
             }
             else { return false; }

@@ -227,5 +227,36 @@ namespace CNC_Interpreter_V2
         {
             return gpioControl.UsDelay(microseconds, StartTick);
         }
+
+        public void DisableStepper()
+        {
+            gpioControl.DisableSteppers();
+        }
+
+        public bool[] ReadPin(int pin)
+        {
+            if(pin < 5)
+            {
+                return new[] {true, gpioControl.ReadPin(pin, true)};
+            }
+            return new[] {false, false};
+        }
+
+        public void EmergencyStop()
+        {
+            gpioControl.EmergencyStop();
+        }
+
+        public bool SetPin(int pin, bool state)
+        {
+            if(pin < 5)
+            {
+                gpioControl.SetPin(pin, state);
+            } else
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
