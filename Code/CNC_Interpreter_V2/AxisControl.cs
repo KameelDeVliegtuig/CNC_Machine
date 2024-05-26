@@ -94,17 +94,24 @@ namespace CNC_Interpreter_V2
             try
             {
                 double[] isrTimes = isrTime();
-                TimerX = new System.Timers.Timer(isrTimes[0]);
-                TimerY = new System.Timers.Timer(isrTimes[1]);
-                TimerZ = new System.Timers.Timer(isrTimes[2]);
-
-                TimerX.Enabled = true;
-                TimerY.Enabled = true;
-                TimerZ.Enabled = true;
-
-                TimerX.Elapsed += TimerX_Elapsed;
-                TimerY.Elapsed += TimerY_Elapsed;
-                TimerZ.Elapsed += TimerZ_Elapsed;
+                if (ratio[0] != 0)
+                {
+                    TimerX = new System.Timers.Timer(isrTimes[0]);
+                    TimerX.Enabled = true;
+                    TimerX.Elapsed += TimerX_Elapsed;
+                }
+                if (ratio[1] != 0)
+                {
+                    TimerY = new System.Timers.Timer(isrTimes[1]);
+                    TimerY.Enabled = true;
+                    TimerY.Elapsed += TimerY_Elapsed;
+                }
+                if (ratio[2] != 0)
+                {
+                    TimerZ = new System.Timers.Timer(isrTimes[2]);
+                    TimerZ.Enabled = true;
+                    TimerZ.Elapsed += TimerZ_Elapsed;
+                }
             }
             catch (Exception e)
             {
@@ -213,6 +220,7 @@ namespace CNC_Interpreter_V2
              Timer[axis].Elapse += axisElapse -> step;
              */
             double[] isrTimes = new double[3];
+
 
             isrTimes[0] = (1000 / (stepPerSecond[0] * ratio[0]));
             isrTimes[1] = (1000 / (stepPerSecond[1] * ratio[1]));
