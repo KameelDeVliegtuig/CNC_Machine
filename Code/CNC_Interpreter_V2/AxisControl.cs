@@ -144,6 +144,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerY_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("Y");
             gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
             stepsDone[1]++;
             if (stepsDone[1] >= stepsToDo[1])
@@ -155,6 +156,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("X");
             gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
             stepsDone[0]++;
             if (stepsDone[0] >= stepsToDo[0])
