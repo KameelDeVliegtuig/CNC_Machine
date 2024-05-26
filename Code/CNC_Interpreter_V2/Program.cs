@@ -9,21 +9,10 @@ using System.Diagnostics;
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
+AxisControl axisControl = new AxisControl(5, null);
 Debug.WriteLine("Hello, World!");
-
-while (true)
-{
-    Console.WriteLine("Direction: ");
-    int dir = Convert.ToInt32(Console.ReadLine());
-    bool d = dir == 1 ? true : false;
-    Console.WriteLine("Steps: ");
-    int stapjes = Convert.ToInt32(Console.ReadLine());
-
-    for (int i = 0; i < stapjes; i++)
-    {
-        gpioControl.ControlStep(d, GPIOControl.StepperAxis.Z);
-    }
-}
+Coordinate coordinate = new Coordinate(0, 10, 10, false);
+axisControl.Move(coordinate);
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
 //interpreter.Interpret("M0 P2000");
