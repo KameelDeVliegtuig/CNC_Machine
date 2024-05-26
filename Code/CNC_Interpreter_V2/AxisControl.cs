@@ -78,11 +78,12 @@ namespace CNC_Interpreter_V2
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
-
+            Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
 
             try
             {
                 getRatio(new double[] { coordinate.X, coordinate.Y, coordinate.Z });
+                Console.WriteLine("Ratio: " + ratio[0] + " " + ratio[1] + " " + ratio[2]);
             }
             catch (Exception e)
             {
@@ -124,6 +125,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerZ_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("Z"); // Debug
             gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
             stepsDone[2]++;
             if (stepsDone[2] >= stepsToDo[2])
