@@ -17,6 +17,9 @@ namespace CNC_Interpreter_V2
         private const bool POSITIVE = true;
 
         private GPIOControl gpioControl = new GPIOControl();
+        private GPIOControl gpioControlX = new GPIOControl();
+        private GPIOControl gpioControlY = new GPIOControl();
+        private GPIOControl gpioControlZ = new GPIOControl();
 
         private double speed; // millimeter per second
         private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
@@ -133,7 +136,7 @@ namespace CNC_Interpreter_V2
         private void TimerZ_Elapsed(object? sender, ElapsedEventArgs e)
         {
             Console.WriteLine("Z"); // Debug
-            gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
+            gpioControlZ.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
             stepsDone[2]++;
             if (stepsDone[2] >= stepsToDo[2])
             {
@@ -145,7 +148,7 @@ namespace CNC_Interpreter_V2
         private void TimerY_Elapsed(object? sender, ElapsedEventArgs e)
         {
             Console.WriteLine("Y");
-            gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
+            gpioControlY.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
             stepsDone[1]++;
             if (stepsDone[1] >= stepsToDo[1])
             {
@@ -157,7 +160,7 @@ namespace CNC_Interpreter_V2
         private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
         {
             Console.WriteLine("X");
-            gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
+            gpioControlX.ControlStep(dir[0], GPIOControl.StepperAxis.X);
             stepsDone[0]++;
             if (stepsDone[0] >= stepsToDo[0])
             {
