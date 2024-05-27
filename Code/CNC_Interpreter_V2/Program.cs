@@ -11,19 +11,9 @@ GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 AxisControl axisControl = new AxisControl(35, null);
 Debug.WriteLine("Hello, World!");
-
-<<<<<<< HEAD
-//Coordinate coordinate = new Coordinate(0, 10, 20, false);
-//axisControl.Move(coordinate);
-=======
-Coordinate coordinate = new Coordinate(0, 10, 10, true);
-axisControl.Move(coordinate);
-
->>>>>>> parent of b4ef6c4 (Ik hoop dat dit werkt ander spring ik)
-
 while (true)
 {
-    gpioControl.ControlStep(false, GPIOControl.StepperAxis.X);
+    Console.WriteLine(gpioControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z));
 }
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
