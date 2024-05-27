@@ -9,6 +9,8 @@ using System.Device.Pwm;
 using System.ComponentModel.Design;
 using UnitsNet;
 using System.Diagnostics;
+using System.Threading;
+using System.Device.I2c;
 
 namespace CNC_Interpreter_V2
 {
@@ -28,8 +30,10 @@ namespace CNC_Interpreter_V2
             Z = 5
         }
 
+
+
         private GpioController _ioControl = new();
-        private MCP23017Controller _ioExtender = new();
+        private MCP23017Controller _ioExtender = new(I2cDevice.Create(new I2cConnectionSettings(1, 0x20)));
 
         private bool extenderBusy = false;
         public bool ExtenderBusy { get { return extenderBusy; } }
