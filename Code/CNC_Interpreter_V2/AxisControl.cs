@@ -73,8 +73,10 @@ namespace CNC_Interpreter_V2
                 {
                     dir[i] = NEGATIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i] * -1);
+                    moveLocation[i] = moveLocation[i] * -1;
                 } else
                 {
+                    dir[i] = POSITIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
