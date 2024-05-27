@@ -17,7 +17,7 @@ Debug.WriteLine("Hello, World!");
 
 while (true)
 {
-    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
+    gpioControl.ControlStep(false, GPIOControl.StepperAxis.X);
 }
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
