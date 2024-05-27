@@ -12,8 +12,16 @@ PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000)
 AxisControl axisControl = new AxisControl(1000, null);
 Debug.WriteLine("Hello, World!");
 
-Coordinate coordinate = new Coordinate(10, 100, -100, false);
-axisControl.Move(coordinate);
+
+while(true)
+{
+    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
+}
+
+//Coordinate coordinate = new Coordinate(10, 100, -100, false);
+//axisControl.Move(coordinate);
+
+
 
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
