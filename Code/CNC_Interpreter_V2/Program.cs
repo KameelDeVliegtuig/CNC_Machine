@@ -13,13 +13,8 @@ AxisControl axisControl = new AxisControl(1000, null);
 Debug.WriteLine("Hello, World!");
 
 
-while(true)
-{
-    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
-}
-
-//Coordinate coordinate = new Coordinate(10, 100, -100, false);
-//axisControl.Move(coordinate);
+Coordinate coordinate = new Coordinate(30, 30, 30, false);
+axisControl.Move(coordinate);
 
 
 
