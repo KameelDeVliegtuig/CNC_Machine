@@ -12,7 +12,7 @@ PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000)
 AxisControl axisControl = new AxisControl(35, null);
 Debug.WriteLine("Hello, World!");
 
-Coordinate coordinate = new Coordinate(0, 10, 10, false);
+Coordinate coordinate = new Coordinate(0, 10, 10, true);
 axisControl.Move(coordinate);
 
 
