@@ -29,7 +29,7 @@ namespace MCPController
         {
             var i2cConnectionSettings = new I2cConnectionSettings(i2cBusId, deviceAddress);
             _i2cDevice = I2cDevice.Create(i2cConnectionSettings);
-            WriteRegister(IOCON, 0b00000000); // Set BANK bit to 1
+            WriteRegister(IOCON, 0b10000000); // Set BANK bit to 1
 
         }
 
