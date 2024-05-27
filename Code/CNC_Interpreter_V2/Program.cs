@@ -14,6 +14,11 @@ Debug.WriteLine("Hello, World!");
 
 //Coordinate coordinate = new Coordinate(0, 10, 20, false);
 //axisControl.Move(coordinate);
+=======
+Coordinate coordinate = new Coordinate(0, 10, 10, true);
+axisControl.Move(coordinate);
+
+>>>>>>> parent of b4ef6c4 (Ik hoop dat dit werkt ander spring ik)
 
 while (true)
 {
