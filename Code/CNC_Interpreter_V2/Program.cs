@@ -9,7 +9,7 @@ using System.Diagnostics;
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
-AxisControl axisControl = new AxisControl(30, null);
+AxisControl axisControl = new AxisControl(1000, null);
 Debug.WriteLine("Hello, World!");
 
 Coordinate coordinate = new Coordinate(10, 100, -100, false);
