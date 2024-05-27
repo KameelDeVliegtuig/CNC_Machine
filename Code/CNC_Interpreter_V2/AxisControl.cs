@@ -29,7 +29,9 @@ namespace CNC_Interpreter_V2
 
         private double[] ratio = new double[3];
         
-        System.Timers.Timer TimerX, TimerY, TimerZ;
+        System.Timers.Timer TimerX = new System.Timers.Timer(1);
+        System.Timers.Timer TimerY = new System.Timers.Timer(1);
+        System.Timers.Timer TimerZ = new System.Timers.Timer(1);
 
         // Speed: mm/s, Steps: steps/mm
         public AxisControl(double Speed, int[]? Steps)
