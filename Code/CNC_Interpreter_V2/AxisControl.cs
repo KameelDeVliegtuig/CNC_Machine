@@ -139,6 +139,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerZ_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("Z Timer Elapsed");
             while (gpioControl.ExtenderBusy) continue;
             gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
             stepsDone[2]++;
@@ -151,6 +152,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerY_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("Y Timer Elapsed");
             while (gpioControl.ExtenderBusy) continue;
             gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
             stepsDone[1]++;
@@ -163,6 +165,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            Console.WriteLine("X Timer Elapsed");
             while (gpioControl.ExtenderBusy) continue;
             gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
             stepsDone[0]++;
