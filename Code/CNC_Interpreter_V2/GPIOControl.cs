@@ -32,6 +32,9 @@ namespace CNC_Interpreter_V2
         private GpioController _ioControl = new();
         private MCP23017Controller _ioExtender = new();
 
+        private bool extenderBusy = false;
+        public bool ExtenderBusy { get { return extenderBusy; } }
+
         // Initialize int for current spindle speed
         private int _currentSpindelSpeed;
 
@@ -186,6 +189,7 @@ namespace CNC_Interpreter_V2
         public bool ControlStep(bool dir, StepperAxis steppers)
         {
             Console.WriteLine((int)steppers);
+            extenderBusy = true;
             _setPin(_stepEnable, false);
             _ioExtender.WritePin(((int)steppers + 3), dir);
 
@@ -193,7 +197,7 @@ namespace CNC_Interpreter_V2
             UsDelay(150, Stopwatch.GetTimestamp());
             _ioExtender.WritePin((int)steppers, false);
             UsDelay(150, Stopwatch.GetTimestamp());
-
+            extenderBusy = false;
 
             return true;
         }
