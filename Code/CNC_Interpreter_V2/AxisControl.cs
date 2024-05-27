@@ -85,7 +85,7 @@ namespace CNC_Interpreter_V2
 
             try
             {
-                getRatio(new double[] { coordinate.X, coordinate.Y, coordinate.Z });
+                getRatio(moveLocation);
                 Console.WriteLine("Ratio: " + ratio[0] + " " + ratio[1] + " " + ratio[2]);
             }
             catch (Exception e)
