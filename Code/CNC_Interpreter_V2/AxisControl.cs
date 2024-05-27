@@ -97,6 +97,7 @@ namespace CNC_Interpreter_V2
             try
             {
                 double[] isrTimes = isrTime();
+                Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
                 if (coordinate.X != 0)
                 {
 
