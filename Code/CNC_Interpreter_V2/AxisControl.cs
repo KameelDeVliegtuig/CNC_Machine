@@ -100,19 +100,21 @@ namespace CNC_Interpreter_V2
                 Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
                 if (coordinate.X != 0)
                 {
-
+                    Console.WriteLine("X Timer");
                     TimerX = new System.Timers.Timer(isrTimes[0]);
                     TimerX.Enabled = true;
                     TimerX.Elapsed += TimerX_Elapsed;
                 }
                 if (coordinate.Y != 0)
                 {
+                    Console.WriteLine("Y Timer");
                     TimerY = new System.Timers.Timer(isrTimes[1]);
                     TimerY.Enabled = true;
                     TimerY.Elapsed += TimerY_Elapsed;
                 }
                 if (coordinate.Z != 0)
                 {
+                    Console.WriteLine("Z Timer");
                     TimerZ = new System.Timers.Timer(isrTimes[2]);
                     TimerZ.Enabled = true;
                     TimerZ.Elapsed += TimerZ_Elapsed;
