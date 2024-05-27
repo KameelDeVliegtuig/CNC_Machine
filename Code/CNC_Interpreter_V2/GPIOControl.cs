@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Device.Gpio;
 using System.Device.Pwm;
 using System.ComponentModel.Design;
-using MCPController;
 using UnitsNet;
 using System.Diagnostics;
 
