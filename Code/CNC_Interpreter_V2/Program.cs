@@ -11,10 +11,10 @@ GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 AxisControl axisControl = new AxisControl(35, null);
 Debug.WriteLine("Hello, World!");
-while (true)
-{
-    Console.WriteLine(gpioControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z));
-}
+
+Coordinate coordinate = new Coordinate(0, 10, 10, false);
+axisControl.Move(coordinate);
+
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
 //interpreter.Interpret("M0 P2000");
