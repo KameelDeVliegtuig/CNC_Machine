@@ -80,6 +80,7 @@ namespace CNC_Interpreter_V2
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
+            Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]); 
             Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
 
             try
@@ -136,7 +137,6 @@ namespace CNC_Interpreter_V2
         private void TimerZ_Elapsed(object? sender, ElapsedEventArgs e)
         {
             while (gpioControl.ExtenderBusy) continue;
-            Console.WriteLine("Z"); // Debug
             gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
             stepsDone[2]++;
             if (stepsDone[2] >= stepsToDo[2])
@@ -149,7 +149,6 @@ namespace CNC_Interpreter_V2
         private void TimerY_Elapsed(object? sender, ElapsedEventArgs e)
         {
             while (gpioControl.ExtenderBusy) continue;
-            Console.WriteLine("Y");
             gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
             stepsDone[1]++;
             if (stepsDone[1] >= stepsToDo[1])
@@ -162,7 +161,6 @@ namespace CNC_Interpreter_V2
         private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
         {
             while (gpioControl.ExtenderBusy) continue;
-            Console.WriteLine("X");
             gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
             stepsDone[0]++;
             if (stepsDone[0] >= stepsToDo[0])

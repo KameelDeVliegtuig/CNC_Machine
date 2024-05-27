@@ -188,7 +188,6 @@ namespace CNC_Interpreter_V2
         // Controls the stepper motors with a specific amount of steps and direction
         public bool ControlStep(bool dir, StepperAxis steppers)
         {
-            Console.WriteLine((int)steppers);
             extenderBusy = true;
             _setPin(_stepEnable, false);
             _ioExtender.WritePin(((int)steppers + 3), dir);
