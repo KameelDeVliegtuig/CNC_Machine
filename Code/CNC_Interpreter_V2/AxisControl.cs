@@ -46,13 +46,13 @@ namespace CNC_Interpreter_V2
             // 1/2 *    3/1 =       3/2
             for (int i = 0; i < steps.Length; i++)
             {
-                if (speed * steps[i] <= 1000)
+                if (speed * steps[i] <= 100)
                 {
                     this.stepPerSecond[i] = speed * steps[i];
                 }
                 else
                 {
-                    this.stepPerSecond[i] = 1000;
+                    this.stepPerSecond[i] = 100;
                 }
             }
 
@@ -234,9 +234,9 @@ namespace CNC_Interpreter_V2
             double[] isrTimes = new double[3];
 
 
-            isrTimes[0] = (1000 / (stepPerSecond[0] * ratio[0]));
-            isrTimes[1] = (1000 / (stepPerSecond[1] * ratio[1]));
-            isrTimes[2] = (1000 / (stepPerSecond[2] * ratio[2]));
+            isrTimes[0] = (100 / (stepPerSecond[0] * ratio[0]));
+            isrTimes[1] = (100 / (stepPerSecond[1] * ratio[1]));
+            isrTimes[2] = (100 / (stepPerSecond[2] * ratio[2]));
 
             return isrTimes;
         }
