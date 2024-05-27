@@ -84,7 +84,7 @@ namespace CNC_Interpreter_V2
 
 
             // Set up the pins for limit switches
-            _ioExtender.SetPinDirection(_limitX, false);
+            _ioExtender.SetPinDirection(_limitX, true);
             _ioExtender.SetPinDirection(_limitY, false);
             _ioExtender.SetPinDirection(_limitZ, false);
 

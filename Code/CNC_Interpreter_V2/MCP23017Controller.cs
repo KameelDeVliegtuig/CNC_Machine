@@ -7,12 +7,13 @@ namespace MCPController
 {
     public class MCP23017Controller : IDisposable
     {
+        private const byte IOCON = 0x05;
         private const byte IODIRA = 0x00;
-        private const byte IODIRB = 0x01;
-        private const byte GPIOA = 0x12;
-        private const byte GPIOB = 0x13;
-        private const byte OLATA = 0x14;
-        private const byte OLATB = 0x15;
+        private const byte IODIRB = 0x10;
+        private const byte GPIOA = 0x09;
+        private const byte GPIOB = 0x19;
+        private const byte OLATA = 0x0A;
+        private const byte OLATB = 0x1A;
 
         private I2cDevice _i2cDevice;
 
@@ -20,6 +21,8 @@ namespace MCPController
         {
             var i2cConnectionSettings = new I2cConnectionSettings(i2cBusId, deviceAddress);
             _i2cDevice = I2cDevice.Create(i2cConnectionSettings);
+            WriteRegister(IOCON, 0b10000000); // Set BANK bit to 1
+
         }
 
         public void SetPinDirection(int pin, bool isOutput)
