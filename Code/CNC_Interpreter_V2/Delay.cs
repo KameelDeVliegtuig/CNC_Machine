@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,23 +11,34 @@ namespace CNC_Interpreter_V2
 	internal class Delay : IDisposable
 	{
 
+
+		// A minimum of ~400us delay
+
 		public event EventHandler DelayComplete;
+
+		private bool enabled = false;
+
+		public bool Enabled { get { return enabled; } }
 
 		// Delay for microseconds
 		public async Task UsDelay(int microseconds, long StartTick)
 		{
-			var targetTicks = ((microseconds) * Stopwatch.Frequency) / 1000000;
-			while (Stopwatch.GetTimestamp() - StartTick < targetTicks)
+			long endTick = ((microseconds) * Stopwatch.Frequency) / 1000000;
+			//long endTick = Stopwatch.Frequency / 1000000;
+			while (Stopwatch.GetTimestamp() - StartTick < endTick)
 			{
-				await Task.Yield(); // Non-blocking wait
+				//await Task.Run(() => 1-0);
+				await Task.Delay(0);
 			}
-
-			OnDelayComplete(EventArgs.Empty);
+			if (enabled)
+			{
+				DelayComplete?.Invoke(this, EventArgs.Empty);
+			}
 		}
 
-		protected virtual void OnDelayComplete(EventArgs e)
+		public void AutoDispose(object? sender, EventArgs e)
 		{
-			DelayComplete?.Invoke(this, e);
+			Dispose();
 		}
 
 		public void Dispose()
@@ -42,6 +54,16 @@ namespace CNC_Interpreter_V2
 				// Dispose managed resources
 				DelayComplete = null;
 			}
+		}
+
+		public void Enable()
+		{
+			enabled = true;
+		}
+
+		public void Disable()
+		{
+			enabled = false;
 		}
 	}
 }
