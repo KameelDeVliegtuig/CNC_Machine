@@ -190,7 +190,8 @@ namespace CNC_Interpreter_V2
 
 		// 200 microsecond delay needs to be implemented
 		// Controls the stepper motors with a specific amount of steps and direction
-		public async Task<bool> ControlStep(bool dir, StepperAxis steppers)
+		// Thread.Sleep(0) 400 times is ~100us
+		public bool ControlStep(bool dir, StepperAxis steppers)
 		{
 			Console.WriteLine("ControlStep called" + (int)steppers);
 			extenderBusy = true;
@@ -198,10 +199,15 @@ namespace CNC_Interpreter_V2
 			_ioExtender.WritePin(((int)steppers + 3), dir);
 
 			_ioExtender.WritePin((int)steppers, true);
-			delay.UsDelay(200, Stopwatch.GetTimestamp());
-			await delay.DelayComplete += ToggleStepPin();
+			for (int i = 0; i < 400; i++)
+			{
+				Thread.Sleep(0);
+			}
 			_ioExtender.WritePin((int)steppers, false);
-			delay.UsDelay(200, Stopwatch.GetTimestamp());
+			for (int i = 0; i < 400; i++)
+			{
+				Thread.Sleep(0);
+			}
 			extenderBusy = false;
 
 			return true;
