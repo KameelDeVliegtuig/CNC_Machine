@@ -28,6 +28,8 @@ namespace CNC_Interpreter_V2
         private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE}; // All increasing distance compared to 0
 
         private double[] ratio = new double[3];
+
+        private int SpindelSpeed = 100; // 100%
         
         System.Timers.Timer TimerX = new System.Timers.Timer(1);
         System.Timers.Timer TimerY = new System.Timers.Timer(1);
@@ -98,20 +100,32 @@ namespace CNC_Interpreter_V2
             {
                 double[] isrTimes = isrTime();
                 Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
+                gpioControl.ControlSpindel(coordinate.Spindel ? 0 : SpindelSpeed, true);
                 if (coordinate.X != 0)
                 {
                     Console.WriteLine("X Timer");
-                    TimerX = new System.Timers.Timer(isrTimes[0]);
-                    TimerX.Enabled = true;
-                    TimerX.Elapsed += TimerX_Elapsed;
+                    gpioControl.UsDelay((int)isrTimes[0], Stopwatch.GetTimestamp(), () =>
+                    {
+                        Console.WriteLine("X Timer Elapsed");
+                        while (gpioControl.ExtenderBusy) continue;
+                        gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
+                        stepsDone[0]++;
+                        if (stepsDone[0] >= stepsToDo[0])
+                        {
+                            TimerX.Stop();
+                            TimerX.Dispose();
+                        }
+                    });
                 }
+
                 if (coordinate.Y != 0)
                 {
                     Console.WriteLine("Y Timer");
-                    TimerY = new System.Timers.Timer(isrTimes[1]);
-                    TimerY.Enabled = true;
-                    TimerY.Elapsed += TimerY_Elapsed;
-                }
+                    gpioControl.UsDelay((int)isrTimes[0], Stopwatch.GetTimestamp(), () =>
+                    { 
+                    
+                    });
+					}
                 if (coordinate.Z != 0)
                 {
                     Console.WriteLine("Z Timer");
@@ -165,15 +179,7 @@ namespace CNC_Interpreter_V2
 
         private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("X Timer Elapsed");
-            while (gpioControl.ExtenderBusy) continue;
-            gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
-            stepsDone[0]++;
-            if (stepsDone[0] >= stepsToDo[0])
-            {
-                TimerX.Stop();
-                TimerX.Dispose();
-            }
+            
         }
 
         private double[] getRatio(double[] Coordinates)
