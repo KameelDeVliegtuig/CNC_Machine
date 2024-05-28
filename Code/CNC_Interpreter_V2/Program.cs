@@ -13,8 +13,7 @@ AxisControl axisControl = new AxisControl(1000, null);
 Debug.WriteLine("Hello, World!");
 
 
-Coordinate coordinate = new Coordinate(30, 30, 30, false);
-axisControl.Move(coordinate);
+presenceDetector.StartListening();
 
 
 
