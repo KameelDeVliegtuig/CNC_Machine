@@ -26,12 +26,12 @@ namespace CNC_Interpreter_V2
 
         private int[] stepsToDo = new int[3];
         private int[] stepsDone = new int[] { 0, 0, 0 };
-        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE}; // All increasing distance compared to 0
+        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE }; // All increasing distance compared to 0
 
         private double[] ratio = new double[3];
 
         private int SpindelSpeed = 100; // 100%
-        
+
         System.Timers.Timer TimerX = new System.Timers.Timer();
         System.Timers.Timer TimerY = new System.Timers.Timer();
         System.Timers.Timer TimerZ = new System.Timers.Timer();
@@ -78,13 +78,14 @@ namespace CNC_Interpreter_V2
                     dir[i] = NEGATIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i] * -1);
                     moveLocation[i] = moveLocation[i] * -1;
-                } else
+                }
+                else
                 {
                     dir[i] = POSITIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
-            Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]); 
+            Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]);
             Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
 
             try
@@ -117,7 +118,7 @@ namespace CNC_Interpreter_V2
                     TimerY.Interval = isrTimes[1];
                     TimerY.Start();
                     TimerY.Elapsed += TimerY_Elapsed;
-					}
+                }
 
                 if (coordinate.Z != 0)
                 {
@@ -240,14 +241,15 @@ namespace CNC_Interpreter_V2
             double[] isrTimes = new double[3];
 
 
-            isrTimes[0] = (100 / (stepPerSecond[0] * ratio[0]));
-            isrTimes[1] = (100 / (stepPerSecond[1] * ratio[1]));
-            isrTimes[2] = (100 / (stepPerSecond[2] * ratio[2]));
+            isrTimes[0] = (1000 / (stepPerSecond[0] * ratio[0])) / 10;
+            isrTimes[1] = (1000 / (stepPerSecond[1] * ratio[1])) / 10;
+            isrTimes[2] = (1000 / (stepPerSecond[2] * ratio[2])) / 10;
 
             return isrTimes;
         }
 
-        public bool ReadLimitSwitch(GPIOControl.LimitSwitch limitSwitch) {
+        public bool ReadLimitSwitch(GPIOControl.LimitSwitch limitSwitch)
+        {
             return gpioControl.ReadLimitSwitch(limitSwitch);
         }
 
@@ -263,11 +265,11 @@ namespace CNC_Interpreter_V2
 
         public bool[] ReadPin(int pin)
         {
-            if(pin < 5)
+            if (pin < 5)
             {
-                return new[] {true, gpioControl.ReadPin(pin, true)};
+                return new[] { true, gpioControl.ReadPin(pin, true) };
             }
-            return new[] {false, false};
+            return new[] { false, false };
         }
 
         public void EmergencyStop()
@@ -277,10 +279,11 @@ namespace CNC_Interpreter_V2
 
         public bool SetPin(int pin, bool state)
         {
-            if(pin < 5)
+            if (pin < 5)
             {
                 gpioControl.SetPin(pin, state);
-            } else
+            }
+            else
             {
                 return false;
             }
