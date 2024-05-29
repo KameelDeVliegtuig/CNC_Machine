@@ -19,6 +19,7 @@ Debug.WriteLine("Hello, World!");
 
 axisControl.Move(coordinate);
 
+gpioControl.ControlSpindel(0, true);
 
 //presenceDetector.StartListening();
 
