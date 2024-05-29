@@ -11,7 +11,7 @@ using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorit
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
-Coordinate coordinate = new Coordinate(10, 10, 0, false);
+Coordinate coordinate = new Coordinate(10, 10, 0, true);
 
 AxisControl axisControl = new AxisControl(100000, null);
 Debug.WriteLine("Hello, World!");
