@@ -109,7 +109,6 @@ namespace CNC_Interpreter_V2
                     TimerX = new Delay();
 					Task DelayX = TimerX.UsDelay((int)isrTimes[0], Stopwatch.GetTimestamp());
                     TimerX.Enable();
-                    DelayX.Start();
                     TimerX.DelayComplete += TimerX_Elapsed;
                 }
 
@@ -119,7 +118,6 @@ namespace CNC_Interpreter_V2
                     TimerY = new Delay();
                     Task DelayY = TimerY.UsDelay((int)isrTimes[0], Stopwatch.GetTimestamp());
                     TimerY.Enable();
-                    DelayY.Start();
                     TimerY.DelayComplete += TimerY_Elapsed;
 					}
                 if (coordinate.Z != 0)
@@ -128,7 +126,6 @@ namespace CNC_Interpreter_V2
                     TimerZ = new Delay();
                     Task DelayZ = TimerZ.UsDelay((int)isrTimes[2], Stopwatch.GetTimestamp());
                     TimerZ.Enable();
-                    DelayZ.Start();
                     TimerZ.DelayComplete += TimerZ_Elapsed;
                 }
             }
