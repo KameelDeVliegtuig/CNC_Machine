@@ -8,14 +8,19 @@ using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorit
 
 
 
-//Interpreter interpreter = new Interpreter();
-//GPIOControl gpioControl = new GPIOControl();
+Interpreter interpreter = new Interpreter();
+GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
-//AxisControl axisControl = new AxisControl(1000, null);
+Coordinate coordinate = new Coordinate(10, 10, 20, false);
+
+AxisControl axisControl = new AxisControl(1000, null);
 Debug.WriteLine("Hello, World!");
+ 
+
+axisControl.Move(coordinate);
 
 
-presenceDetector.StartListening();
+//presenceDetector.StartListening();
 
 
 
