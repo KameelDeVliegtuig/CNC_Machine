@@ -13,7 +13,7 @@ GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/serial0", 256000);
 Coordinate coordinate = new Coordinate(10, 10, 20, false);
 
-AxisControl axisControl = new AxisControl(1000, null);
+AxisControl axisControl = new AxisControl(100000, null);
 Debug.WriteLine("Hello, World!");
  
 
