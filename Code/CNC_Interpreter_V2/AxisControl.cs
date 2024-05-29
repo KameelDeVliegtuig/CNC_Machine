@@ -32,9 +32,9 @@ namespace CNC_Interpreter_V2
 
         private int SpindelSpeed = 100; // 100%
         
-        Delay TimerX = new Delay();
-        Delay TimerY = new Delay();
-        Delay TimerZ = new Delay();
+        System.Timers.Timer TimerX = new System.Timers.Timer();
+        System.Timers.Timer TimerY = new System.Timers.Timer();
+        System.Timers.Timer TimerZ = new System.Timers.Timer();
         Delay CommonTimer = new Delay();
 
         // Speed: mm/s, Steps: steps/mm
@@ -50,13 +50,13 @@ namespace CNC_Interpreter_V2
             // 1/2 *    3/1 =       3/2
             for (int i = 0; i < steps.Length; i++)
             {
-                if (speed * steps[i] <= 100)
+                if (speed * steps[i] <= 1000)
                 {
                     this.stepPerSecond[i] = speed * steps[i];
                 }
                 else
                 {
-                    this.stepPerSecond[i] = 100;
+                    this.stepPerSecond[i] = 1000;
                 }
             }
 
@@ -106,27 +106,25 @@ namespace CNC_Interpreter_V2
                 if (coordinate.X != 0)
                 {
                     Console.WriteLine("X Timer");
-                    TimerX = new Delay();
-					Task DelayX = TimerX.UsDelay((int)isrTimes[0], Stopwatch.GetTimestamp());
-                    TimerX.Enable();
-                    TimerX.DelayComplete += TimerX_Elapsed;
+                    TimerX.Interval = isrTimes[0];
+                    TimerX.Start();
+                    TimerX.Elapsed += TimerX_Elapsed;
                 }
 
                 if (coordinate.Y != 0)
                 {
                     Console.WriteLine("Y Timer");
-                    TimerY = new Delay();
-                    Task DelayY = TimerY.UsDelay((int)isrTimes[0], Stopwatch.GetTimestamp());
-                    TimerY.Enable();
-                    TimerY.DelayComplete += TimerY_Elapsed;
+                    TimerY.Interval = isrTimes[1];
+                    TimerY.Start();
+                    TimerY.Elapsed += TimerY_Elapsed;
 					}
+
                 if (coordinate.Z != 0)
                 {
                     Console.WriteLine("Z Timer");
-                    TimerZ = new Delay();
-                    Task DelayZ = TimerZ.UsDelay((int)isrTimes[2], Stopwatch.GetTimestamp());
-                    TimerZ.Enable();
-                    TimerZ.DelayComplete += TimerZ_Elapsed;
+                    TimerZ.Interval = isrTimes[2];
+                    TimerZ.Start();
+                    TimerZ.Elapsed += TimerZ_Elapsed;
                 }
             }
             catch (Exception e)
@@ -154,7 +152,8 @@ namespace CNC_Interpreter_V2
             stepsDone[2]++;
             if (stepsDone[2] >= stepsToDo[2])
             {
-                TimerZ.Disable();
+                TimerZ.Stop();
+                TimerZ.Dispose();
             }
         }
 
@@ -166,7 +165,8 @@ namespace CNC_Interpreter_V2
             stepsDone[1]++;
             if (stepsDone[1] >= stepsToDo[1])
             {
-                TimerY.Disable();
+                TimerY.Stop();
+                TimerY.Dispose();
             }
         }
 
@@ -177,7 +177,8 @@ namespace CNC_Interpreter_V2
             stepsDone[0]++;
             if (stepsDone[0] >= stepsToDo[0])
             {
-                TimerX.Disable();
+                TimerX.Stop();
+                TimerX.Dispose();
             }
         }
 
