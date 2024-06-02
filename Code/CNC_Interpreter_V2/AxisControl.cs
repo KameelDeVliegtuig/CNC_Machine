@@ -126,6 +126,9 @@ namespace CNC_Interpreter_V2
                                 done[0] = true;
                             }
                         }
+                    } else
+                    {
+                        done[0] = true;
                     }
 
                     if (coordinate.Y != 0 && done[1] == false)
@@ -142,6 +145,9 @@ namespace CNC_Interpreter_V2
                                 done[1] = true;
                             }
                         }
+                    } else
+                    {
+                        done[1] = true;
                     }
 
                     if (coordinate.Z != 0 && done[2] == false)
@@ -158,6 +164,9 @@ namespace CNC_Interpreter_V2
                                 done[2] = true;
                             }
                         }
+                    } else
+                    {
+                        done[2] == true;
                     }
                 }
             }
