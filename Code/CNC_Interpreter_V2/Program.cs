@@ -16,6 +16,12 @@ Coordinate coordinate = new Coordinate(10, 10, 0, true);
 AxisControl axisControl = new AxisControl(100000, null);
 Debug.WriteLine("Hello, World!");
  
+for(int i = 0; i < 800; i++)
+{
+    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
+}
+Console.WriteLine("Done Only Gpio Control");
+Thread.Sleep(1000);
 
 axisControl.Move(coordinate);
 
