@@ -166,7 +166,7 @@ namespace CNC_Interpreter_V2
                         }
                     } else
                     {
-                        done[2] == true;
+                        done[2] = true;
                     }
                 }
             }
