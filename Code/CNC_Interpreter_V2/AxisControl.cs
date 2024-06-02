@@ -121,7 +121,7 @@ namespace CNC_Interpreter_V2
 
                             if(gpioControl.ControlStep(dir[0], StepperAxis.X)) stepsDone[0]++;
 
-                            if (stepsToDo[0] >= stepsDone[0])
+                            if (stepsDone[0] >= stepsToDo[0])
                             {
                                 done[0] = true;
                             }
@@ -137,7 +137,7 @@ namespace CNC_Interpreter_V2
 
                             if (gpioControl.ControlStep(dir[1], StepperAxis.Y)) stepsDone[1]++;
 
-                            if (stepsToDo[1] >= stepsDone[1])
+                            if (stepsDone[1] >= stepsToDo[1])
                             {
                                 done[1] = true;
                             }
@@ -153,7 +153,7 @@ namespace CNC_Interpreter_V2
 
                             if (gpioControl.ControlStep(dir[2], StepperAxis.Z)) stepsDone[2]++;
 
-                            if (stepsToDo[2] >= stepsDone[2])
+                            if (stepsDone[2] >= stepsToDo[2])
                             {
                                 done[2] = true;
                             }
