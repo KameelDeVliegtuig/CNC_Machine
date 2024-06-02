@@ -22,7 +22,7 @@ namespace CNC_Interpreter_V2
         private double speed; // millimeter per second
         private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
         private double[] stepPerSecond = new double[3];
-        private bool done = false;
+        private bool[] done = { false, false, false };
 
         private int[] stepsToDo = new int[3];
         private int[] stepsDone = new int[] { 0, 0, 0 };
@@ -69,7 +69,7 @@ namespace CNC_Interpreter_V2
             moveLocation[1] = coordinate.Y;
             moveLocation[2] = coordinate.Z;
 
-            this.done = false;
+            this.done = new[] { false, false, false };
             stepsDone = new int[] { 0, 0, 0 };
             for (int i = 0; i < moveLocation.Length; i++)
             {
@@ -107,28 +107,58 @@ namespace CNC_Interpreter_V2
                 // Spindel on or off depending on given variable
                 gpioControl.ControlSpindel(coordinate.Spindel ? SpindelSpeed : 0, true);
 
-                if (coordinate.X != 0)
+                // Move axis
+                long[] timeStamp = { Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp() };
+                while (done != new[] { true, true, true })
                 {
-                    Console.WriteLine("X Timer");
-                    TimerX.Interval = isrTimes[0];
-                    TimerX.Start();
-                    TimerX.Elapsed += TimerX_Elapsed;
-                }
+                    TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
+                    if (coordinate.X != 0 && done[0] == false)
+                    {
+                        if (ElapsedTime[0].Microseconds % isrTimes[0] != ElapsedTime[0].Microseconds)
+                        {
+                            timeStamp[0] = Stopwatch.GetTimestamp();
+                            Console.WriteLine("X");
 
-                if (coordinate.Y != 0)
-                {
-                    Console.WriteLine("Y Timer");
-                    TimerY.Interval = isrTimes[1];
-                    TimerY.Start();
-                    TimerY.Elapsed += TimerY_Elapsed;
-                }
+                            if(gpioControl.ControlStep(dir[0], StepperAxis.X)) stepsDone[0]++;
 
-                if (coordinate.Z != 0)
-                {
-                    Console.WriteLine("Z Timer");
-                    TimerZ.Interval = isrTimes[2];
-                    TimerZ.Start();
-                    TimerZ.Elapsed += TimerZ_Elapsed;
+                            if (stepsToDo[0] >= stepsDone[0])
+                            {
+                                done[0] = true;
+                            }
+                        }
+                    }
+
+                    if (coordinate.Y != 0 && done[1] == false)
+                    {
+                        if (ElapsedTime[1].Microseconds % isrTimes[1] != ElapsedTime[1].Microseconds)
+                        {
+                            timeStamp[1] = Stopwatch.GetTimestamp();
+                            Console.WriteLine("Y");
+
+                            if (gpioControl.ControlStep(dir[1], StepperAxis.Y)) stepsDone[1]++;
+
+                            if (stepsToDo[1] >= stepsDone[1])
+                            {
+                                done[1] = true;
+                            }
+                        }
+                    }
+
+                    if (coordinate.Z != 0 && done[2] == false)
+                    {
+                        if (ElapsedTime[2].Microseconds % isrTimes[2] != ElapsedTime[2].Microseconds)
+                        {
+                            timeStamp[2] = Stopwatch.GetTimestamp();
+                            Console.WriteLine("Z");
+
+                            if (gpioControl.ControlStep(dir[2], StepperAxis.Z)) stepsDone[2]++;
+
+                            if (stepsToDo[2] >= stepsDone[2])
+                            {
+                                done[2] = true;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -136,54 +166,7 @@ namespace CNC_Interpreter_V2
                 Console.WriteLine(e);
                 return false;
             }
-
-
-            while (!done)
-            {
-                if (!(TimerX.Enabled || TimerY.Enabled || TimerZ.Enabled))
-                {
-                    done = true;
-                }
-            }
             return true;
-        }
-
-        private void TimerZ_Elapsed(object? sender, EventArgs e)
-        {
-            Console.WriteLine("Z Timer Elapsed");
-            while (gpioControl.ExtenderBusy) continue;
-            gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
-            stepsDone[2]++;
-            if (stepsDone[2] >= stepsToDo[2])
-            {
-                TimerZ.Stop();
-                TimerZ.Dispose();
-            }
-        }
-
-        private void TimerY_Elapsed(object? sender, EventArgs e)
-        {
-            Console.WriteLine("Y Timer Elapsed");
-            while (gpioControl.ExtenderBusy) continue;
-            gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
-            stepsDone[1]++;
-            if (stepsDone[1] >= stepsToDo[1])
-            {
-                TimerY.Stop();
-                TimerY.Dispose();
-            }
-        }
-
-        private void TimerX_Elapsed(object? sender, EventArgs e)
-        {
-            Console.WriteLine("X Timer Elapsed");
-            gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
-            stepsDone[0]++;
-            if (stepsDone[0] >= stepsToDo[0])
-            {
-                TimerX.Stop();
-                TimerX.Dispose();
-            }
         }
 
         private double[] getRatio(double[] Coordinates)
@@ -234,9 +217,9 @@ namespace CNC_Interpreter_V2
                 Y = 500 steps/s
                 Z = 10 steps/s
             
-                X timer = 1000(ms) / 1000(steps/s) = 1ms delay
-                Y timer = 1000(ms) / 5000(steps/s) = 2ms delay
-                Z timer = 1000(ms) / 10(steps/s) = 100ms delay
+                X timer = 500.000(us) / 1000(steps/s) = 500us delay
+                Y timer = 500.000(us) / 5000(steps/s) = 1000us delay
+                Z timer = 500.000(us) / 10(steps/s) = 50000us delay
 
              Timer[axis](1000 / steps/s[axis])
              Timer[axis].Elapse += axisElapse -> step;
@@ -244,9 +227,9 @@ namespace CNC_Interpreter_V2
             double[] isrTimes = new double[3];
 
 
-            isrTimes[0] = (1000 / (stepPerSecond[0] * ratio[0])) / 10;
-            isrTimes[1] = (1000 / (stepPerSecond[1] * ratio[1])) / 10;
-            isrTimes[2] = (1000 / (stepPerSecond[2] * ratio[2])) / 10;
+            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0]));
+            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1]));
+            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2]));
 
             return isrTimes;
         }
