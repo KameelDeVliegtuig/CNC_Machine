@@ -227,9 +227,12 @@ namespace CNC_Interpreter_V2
             double[] isrTimes = new double[3];
 
 
-            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0]));
-            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1]));
-            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2]));
+            //isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0]));
+            //isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1]));
+            //isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2]));
+            isrTimes[0] = 0;
+            isrTimes[1] = 0;
+            isrTimes[2] = 0;
 
             return isrTimes;
         }
