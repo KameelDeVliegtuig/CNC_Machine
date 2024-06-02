@@ -199,12 +199,12 @@ namespace CNC_Interpreter_V2
 			_ioExtender.WritePin(((int)steppers + 3), dir);
 
 			_ioExtender.WritePin((int)steppers, true);
-			for (int i = 0; i < 800; i++)
+			for (int i = 0; i < 200; i++)
 			{
 				Thread.Sleep(0);
 			}
 			_ioExtender.WritePin((int)steppers, false);
-			for (int i = 0; i < 800; i++)
+			for (int i = 0; i < 200; i++)
 			{
 				Thread.Sleep(0);
 			}
