@@ -50,7 +50,7 @@ namespace CNC_Interpreter_V2
                 //Debug.WriteLine("Bézier cubic spline");
                 case "G6":
                     //Debug.WriteLine("Direct Stepper Move");
-                    Debug.WriteLine("To Parser to calculate coordinates");
+                    Console.WriteLine("To Parser to calculate coordinates");
                     try
                     {
                         moves.AddRange(parser.Parse(new[] { settings.X, settings.Y, settings.Z }, value));
