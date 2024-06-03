@@ -109,7 +109,7 @@ namespace CNC_Interpreter_V2
 
                 // Move axis
                 long[] timeStamp = { Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp() };
-                while (done != new[] { true, true, true })
+                while (!done[0] || !done[1] || !done[2])
                 {
                     TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
                     if (coordinate.X != 0 && done[0] == false)
