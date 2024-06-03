@@ -11,7 +11,7 @@ using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorit
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/ttyUSB0", 256000);
-Coordinate coordinate = new Coordinate(10, 10, -20, true);
+Coordinate coordinate = new Coordinate(10, 10, 10, true);
 
 AxisControl axisControl = new AxisControl(100000, null);
 Debug.WriteLine("Hello, World!");
@@ -26,7 +26,7 @@ Thread.Sleep(1000);
 axisControl.Move(coordinate);
 
 // Auto Home
-//interpreter.Interpret("G28");
+interpreter.Interpret("G28");
 
 gpioControl.ControlSpindel(1, true);
 

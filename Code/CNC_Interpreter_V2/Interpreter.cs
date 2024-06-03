@@ -580,7 +580,7 @@ namespace CNC_Interpreter_V2
                 Console.WriteLine("Connect Z-axis limit switch and press manually");
                 while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
                 while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
-
+                Thread.Sleep(3020);
                 Up = new Coordinate(0, 0, 0.1, false);
                 Down = new Coordinate(0, 0, -0.1, false);
             }
