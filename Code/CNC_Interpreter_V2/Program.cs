@@ -32,6 +32,17 @@ gpioControl.ControlSpindel(10, true);
 
 presenceDetector.StartListening();
 
+while (true)
+{
+    string? GCode = Console.ReadLine();
+    if(GCode == null) break;
+    interpreter.Interpret(GCode);
+    while(interpreter.Moves.Count > 0)
+    {
+        interpreter.Moves[0].Print();
+        axisControl.Move(interpreter.Moves[0]);
+    }
+}
 
 
 //interpreter.Interpret("G1");
