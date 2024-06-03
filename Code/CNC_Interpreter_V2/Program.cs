@@ -27,6 +27,7 @@ while (true)
     {
         interpreter.Moves[0].Print();
         axisControl.Move(interpreter.Moves[0]);
+        interpreter.Moves.RemoveAt(0);
     }
 }
 

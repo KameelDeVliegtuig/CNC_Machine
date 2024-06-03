@@ -19,11 +19,11 @@ namespace CNC_Interpreter_V2
                     Console.WriteLine("G0 Linear Move Without Spindel");
                     Coordinate G0 = new Coordinate(Input.X, Input.Y, Input.Z, false);
                     G0.Print();
-                    result.Append(G0);
+                    result.Add(G0);
                     break;
                 case "G1": // Linear move, spindel on
                     Console.WriteLine("G1 Linear Move With Spindel");
-                    result.Append(new Coordinate(Input.X, Input.Y, Input.Z, true));
+                    result.Add(new Coordinate(Input.X, Input.Y, Input.Z, true));
                     break;
                 case "G2":
                     break;
