@@ -117,7 +117,7 @@ namespace CNC_Interpreter_V2
                         if (ElapsedTime[0].Microseconds % isrTimes[0] != ElapsedTime[0].Microseconds)
                         {
                             timeStamp[0] = Stopwatch.GetTimestamp();
-                            Console.WriteLine("X");
+                            //Console.WriteLine("X");
 
                             if(gpioControl.ControlStep(dir[0], StepperAxis.X)) stepsDone[0]++;
 
@@ -136,7 +136,7 @@ namespace CNC_Interpreter_V2
                         if (ElapsedTime[1].Microseconds % isrTimes[1] != ElapsedTime[1].Microseconds)
                         {
                             timeStamp[1] = Stopwatch.GetTimestamp();
-                            Console.WriteLine("Y");
+                            //Console.WriteLine("Y");
 
                             if (gpioControl.ControlStep(dir[1], StepperAxis.Y)) stepsDone[1]++;
 
@@ -155,7 +155,7 @@ namespace CNC_Interpreter_V2
                         if (ElapsedTime[2].Microseconds % isrTimes[2] != ElapsedTime[2].Microseconds)
                         {
                             timeStamp[2] = Stopwatch.GetTimestamp();
-                            Console.WriteLine("Z");
+                            //Console.WriteLine("Z");
 
                             if (gpioControl.ControlStep(dir[2], StepperAxis.Z)) stepsDone[2]++;
 
