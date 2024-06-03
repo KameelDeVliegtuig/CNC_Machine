@@ -625,6 +625,10 @@ namespace CNC_Interpreter_V2
 
             switch (Axis)
             {
+                case GPIOControl.StepperAxis.Y:
+                    Up = new Coordinate(0, settings.SpindelToProbe[1], 0, false);
+                    axisControl.Move(Up);
+                    break;
                 case GPIOControl.StepperAxis.Z:
                     axisControl.Move(Up);
                     settings.Z = backDistance + settings.SpindelToProbe[2];
