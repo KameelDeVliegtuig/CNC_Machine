@@ -14,7 +14,7 @@ namespace CNC_Interpreter_V2
     {
         Parser parser = new Parser();
         Settings settings = new Settings(0.0, 0.0, 0.0);
-        //GPIOControl gpio = new GPIOControl();
+        GPIOControl gpio = new GPIOControl();
         AxisControl axisControl = new AxisControl(0.1, null);
 
         const string firmwareInfo = "CNC Machine V0.1 by Lasse Houtenbos and Kamiel Groot ©2024";
@@ -185,15 +185,18 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Turn on Spindel CW");
                     settings.SpindelDir = true;
                     settings.Spindel = true;
+                    gpio.ControlSpindel(100, true);
                     break;
                 case "M4":
                     Debug.WriteLine("Turn on Spindel CCW");
                     settings.SpindelDir = false;
                     settings.Spindel = true;
+                    gpio.ControlSpindel(100, false);
                     break;
                 case "M5":
                     Debug.WriteLine("Turn off Spindel");
                     settings.Spindel = false;
+                    gpio.ControlSpindel(0, false);
                     break;
                 case "M16":
                     // Always return true (no printer check)
