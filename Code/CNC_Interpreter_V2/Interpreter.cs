@@ -586,9 +586,9 @@ namespace CNC_Interpreter_V2
             {
                 // Connect and press limitswitch manually
                 Console.WriteLine("Connect Z-axis limit switch and press manually");
-                while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
                 while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
-                Thread.Sleep(3000);
+                while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
+                Thread.Sleep(500);
                 Up = new Coordinate(0, 0, backDistance, false);
                 Down = new Coordinate(0, 0, -1.0, false);
             }
@@ -603,7 +603,7 @@ namespace CNC_Interpreter_V2
             Console.WriteLine("Starting Auto Home");
             // Move axis until it is touching limitswitch
             Console.WriteLine("Move axis until it is touching limitswitch");
-            while (axisControl.ReadLimitSwitch(Switch))
+            while (!axisControl.ReadLimitSwitch(Switch))
             {
                 axisControl.Move(Down);
             }
@@ -615,7 +615,7 @@ namespace CNC_Interpreter_V2
 
             // Move down slower
             Console.WriteLine("Moving down slower");
-            while (axisControl.ReadLimitSwitch(Switch))
+            while (!axisControl.ReadLimitSwitch(Switch))
             {
                 axisControl.Move(Down);
                 Thread.Sleep(0);
