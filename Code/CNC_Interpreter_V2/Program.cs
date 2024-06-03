@@ -28,7 +28,7 @@ axisControl.Move(coordinate);
 // Auto Home
 interpreter.Interpret("G28");
 
-Coordinate zerood = new Coordinate(0, 20, -21.5, false);
+Coordinate zerood = new Coordinate(0, 0, -21.5, false);
 
 axisControl.Move(zerood);
 
