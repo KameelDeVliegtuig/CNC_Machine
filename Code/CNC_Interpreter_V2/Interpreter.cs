@@ -565,7 +565,7 @@ namespace CNC_Interpreter_V2
             // Make sure everything is off and stationary
             axisControl.Move(new Coordinate(0,0,0,false));
 
-            double backDistance = 50.0;
+            double backDistance = 10.0;
             Coordinate Up = new Coordinate(0, 0, 0, false);
             Coordinate Down = new Coordinate(0, 0, 0, false);
 
