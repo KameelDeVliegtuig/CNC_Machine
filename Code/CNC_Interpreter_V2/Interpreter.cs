@@ -562,20 +562,24 @@ namespace CNC_Interpreter_V2
 
         private bool AutoHome(GPIOControl.StepperAxis Axis, GPIOControl.LimitSwitch Switch)
         {
+            // Make sure everything is off and stationary
+            axisControl.Move(new Coordinate(0,0,0,false));
+
             int backDistance = 50;
             Coordinate Up = new Coordinate(0, 0, 0, false);
             Coordinate Down = new Coordinate(0, 0, 0, false);
 
+
             if (Axis == GPIOControl.StepperAxis.X)
             {
                 Up = new Coordinate(backDistance, 0, 0, false);
-                Down = new Coordinate(-0.1, 0, 0, false);
+                Down = new Coordinate(-1, 0, 0, false);
             }
 
             if (Axis == GPIOControl.StepperAxis.Y)
             {
                 Up = new Coordinate(0, backDistance, 0, false);
-                Down = new Coordinate(0, -0.1, 0, false);
+                Down = new Coordinate(0, -1, 0, false);
             }
 
             if (Axis == GPIOControl.StepperAxis.Z)
@@ -586,7 +590,7 @@ namespace CNC_Interpreter_V2
                 while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
 
                 Up = new Coordinate(0, 0, backDistance, false);
-                Down = new Coordinate(0, 0, -0.1, false);
+                Down = new Coordinate(0, 0, -1, false);
             }
 
             Console.WriteLine("Starting Auto Home");
