@@ -594,12 +594,6 @@ namespace CNC_Interpreter_V2
                 Down = new Coordinate(0, 0, (-0.1), false);
             }
 
-            Console.WriteLine("Up: ");
-            Console.WriteLine("X: " + Up.X + ", Y: " + Up.Y + ", Z: ", Up.Z);
-
-            Console.WriteLine("Down: ");
-            Console.WriteLine("X: " + Down.X + ", Y: " + Down.Y + ", Z: ", Down.Z);
-
 
             Console.WriteLine("Starting Auto Home");
             // Move axis until it is touching limitswitch
