@@ -28,7 +28,7 @@ axisControl.Move(coordinate);
 // Auto Home
 interpreter.Interpret("G28");
 
-gpioControl.ControlSpindel(1, true);
+gpioControl.ControlSpindel(10, true);
 
 presenceDetector.StartListening();
 
