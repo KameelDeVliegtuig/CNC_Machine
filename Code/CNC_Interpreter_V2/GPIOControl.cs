@@ -193,7 +193,6 @@ namespace CNC_Interpreter_V2
 		// Thread.Sleep(0) 400 times is ~100us
 		public bool ControlStep(bool dir, StepperAxis steppers)
 		{
-			Console.WriteLine("ControlStep called" + (int)steppers);
 			extenderBusy = true;
 			_setPin(_stepEnable, false);
 			_ioExtender.WritePin(((int)steppers + 3), dir);

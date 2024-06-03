@@ -168,7 +168,6 @@ namespace CNC_Interpreter_V2
                     {
                         done[2] = true;
                     }
-                    Console.WriteLine("X: " + done[0] + ", Y: " + done[1] + ", Z: " + done[2]);
                 }
             }
             catch (Exception e)
