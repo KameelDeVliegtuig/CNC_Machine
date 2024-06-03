@@ -57,7 +57,7 @@ namespace CNC_Interpreter_V2
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e);
+                        Console.WriteLine(e);
                     }
                     break;
 
