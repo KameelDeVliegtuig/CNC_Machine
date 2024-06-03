@@ -35,7 +35,7 @@ namespace CNC_Interpreter_V2
         private int passcode;
         private short logging;
         private bool emergencyStop;
-        private double[] spindelToProbe = { 1.0, 1.0, 0.0};
+        private double[] spindelToProbe = { 0.0, 20.0, 21.5};
 
         public double X { get { return x; } set { if (value.GetType() == typeof(double)) { x = value; } } }
         public double Y { get { return y; } set { if (value.GetType() == typeof(double)) { y = value; } } }
