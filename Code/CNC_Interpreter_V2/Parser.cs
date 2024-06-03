@@ -16,13 +16,10 @@ namespace CNC_Interpreter_V2
             switch (Input.Command)
             {
                 case "G0": // Linear move, spindel off
-                    Console.WriteLine("G0 Linear Move Without Spindel");
                     Coordinate G0 = new Coordinate(Input.X, Input.Y, Input.Z, false);
-                    G0.Print();
                     result.Add(G0);
                     break;
                 case "G1": // Linear move, spindel on
-                    Console.WriteLine("G1 Linear Move With Spindel");
                     result.Add(new Coordinate(Input.X, Input.Y, Input.Z, true));
                     break;
                 case "G2":
@@ -37,11 +34,6 @@ namespace CNC_Interpreter_V2
                     break;
                 default:
                     break;
-            }
-            Console.WriteLine("Parser Moves:");
-            for (int i = 0; i < result.Count; i++)
-            {
-                Console.WriteLine(i + ": " + result[i]);
             }
             return result;
 

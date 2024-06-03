@@ -23,10 +23,10 @@ namespace CNC_Interpreter_V2
         private bool consoleInput;
 
         private List<Coordinate> moves = new List<Coordinate>();
-        private string lastCommand;
+        private string lastCommand = "";
         private int passcode = 0000;
 
-        private long startTime;
+        private long startTime = Stopwatch.GetTimestamp();
 
         public List<Coordinate> Moves { get { return moves; } }
 
@@ -54,7 +54,6 @@ namespace CNC_Interpreter_V2
                     try
                     {
                         moves.AddRange(parser.Parse(new[] { settings.X, settings.Y, settings.Z }, value));
-                        Console.WriteLine("It tried");
                     }
                     catch (Exception e)
                     {
@@ -244,10 +243,7 @@ namespace CNC_Interpreter_V2
 
                 case "M31":
                     Debug.WriteLine("Print Time");
-                    if (startTime != null)
-                    {
                         Console.WriteLine("Time Elapsed: " + Stopwatch.GetElapsedTime(startTime));
-                    }
                     break;
                 case "M32":
                     Debug.WriteLine("Begin from SD File");
@@ -462,6 +458,10 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Code not Found");
                     break;
             }
+            settings.X += moves[moves.Count - 1].X;
+            settings.Y += moves[moves.Count - 1].Y;
+            settings.Z += moves[moves.Count - 1].Z;
+            settings.Spindel = moves[moves.Count - 1].Spindel;
         }
 
         private void StopTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -477,7 +477,7 @@ namespace CNC_Interpreter_V2
             value.Workplane = settings.Workplane;
             if (Input == null)
             {
-                return null;
+                return new Value();
             }
             if (Input[0][0] == 'G' || Input[0][0] == 'M' || Input[0][0] == 'X')
             {

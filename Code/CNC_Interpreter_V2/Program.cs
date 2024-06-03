@@ -8,31 +8,47 @@ using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorit
 
 
 
-Interpreter interpreter = new Interpreter();
-GPIOControl gpioControl = new GPIOControl();
-PresenceDetector presenceDetector = new PresenceDetector("/dev/ttyUSB0", 256000);
-Coordinate coordinate = new Coordinate(10, 10, 10, true);
-
-AxisControl axisControl = new AxisControl(100000, null);
-Debug.WriteLine("Hello, World!");
- 
-
-while (true)
+static void Main(string[] args)
 {
-    string? GCode = Console.ReadLine();
-    if(GCode == null) break;
-    interpreter.Interpret(GCode);
-    Console.WriteLine("Moves length: " + interpreter.Moves.Count());
-    for(int i = 0; i < interpreter.Moves.Count; i++)
+    Interpreter interpreter = new Interpreter();
+    GPIOControl gpioControl = new GPIOControl();
+    PresenceDetector presenceDetector = new PresenceDetector("/dev/ttyUSB0", 256000);
+    Coordinate coordinate = new Coordinate(10, 10, 10, true);
+
+    AxisControl axisControl = new AxisControl(100000, null);
+
+
+
+    if (args.Length == 0)
     {
-        interpreter.Moves[0].Print();
-        axisControl.Move(interpreter.Moves[0]);
-        interpreter.Moves.RemoveAt(0);
+        Console.WriteLine("No arguments while starting program");
+    } else
+    {
+        for(int i = 0; i < args.Length; i++)
+        {
+            Console.WriteLine("Argument " + i+1 + ": " + args[i]);
+        }
     }
-    interpreter.Interpret("M5"); // Stop spindel at the end
+
+    Console.WriteLine("Hello, World!");
+
+
+    while (true)
+    {
+        string? GCode = Console.ReadLine();
+        if (GCode == null) break;
+        interpreter.Interpret(GCode);
+        Console.WriteLine("Moves length: " + interpreter.Moves.Count());
+        for (int i = 0; i < interpreter.Moves.Count; i++)
+        {
+            interpreter.Moves[0].Print();
+            axisControl.Move(interpreter.Moves[0]);
+            interpreter.Moves.RemoveAt(0);
+        }
+        interpreter.Interpret("M5"); // Stop spindel at the end
+    }
+
 }
-
-
 //interpreter.Interpret("G1");
 //interpreter.Interpret("X0 Y4 Z0.1");
 //interpreter.Interpret("M0 P2000");
