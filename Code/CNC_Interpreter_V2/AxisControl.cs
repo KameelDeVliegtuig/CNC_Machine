@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using UnitsNet;
+using static CNC_Interpreter_V2.GPIOControl;
 
 namespace CNC_Interpreter_V2
 {
@@ -16,23 +18,27 @@ namespace CNC_Interpreter_V2
         private const bool POSITIVE = true;
 
         private GPIOControl gpioControl = new GPIOControl();
+
         private double speed; // millimeter per second
         private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
         private double[] stepPerSecond = new double[3];
-        private bool done = false;
+        private bool[] done = { false, false, false };
 
         private int[] stepsToDo = new int[3];
         private int[] stepsDone = new int[] { 0, 0, 0 };
-        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE}; // All increasing distance compared to 0
+        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE }; // All increasing distance compared to 0
 
         private double[] ratio = new double[3];
 
-        System.Timers.Timer TimerX = new System.Timers.Timer(1);
-        System.Timers.Timer TimerY = new System.Timers.Timer(1);
-        System.Timers.Timer TimerZ = new System.Timers.Timer(1);
+        private int SpindelSpeed = 100; // 100%
+
+        System.Timers.Timer TimerX = new System.Timers.Timer();
+        System.Timers.Timer TimerY = new System.Timers.Timer();
+        System.Timers.Timer TimerZ = new System.Timers.Timer();
+        Delay CommonTimer = new Delay();
 
         // Speed: mm/s, Steps: steps/mm
-        AxisControl(double Speed, int[]? Steps)
+        public AxisControl(double Speed, int[]? Steps)
         {
             this.speed = Speed;
             if (Steps != null && Steps.Length == 3)
@@ -63,7 +69,7 @@ namespace CNC_Interpreter_V2
             moveLocation[1] = coordinate.Y;
             moveLocation[2] = coordinate.Z;
 
-            this.done = false;
+            this.done = new[] { false, false, false };
             stepsDone = new int[] { 0, 0, 0 };
             for (int i = 0; i < moveLocation.Length; i++)
             {
@@ -71,86 +77,105 @@ namespace CNC_Interpreter_V2
                 {
                     dir[i] = NEGATIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i] * -1);
-                } else
+                    moveLocation[i] = moveLocation[i] * -1;
+                }
+                else
                 {
+                    dir[i] = POSITIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
-
+            Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]);
+            Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
 
             try
             {
-                getRatio(new double[] { coordinate.X, coordinate.Y, coordinate.Z });
+                getRatio(moveLocation);
+                Console.WriteLine("Ratio: " + ratio[0] + " " + ratio[1] + " " + ratio[2]);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
                 return false;
             }
 
             try
             {
                 double[] isrTimes = isrTime();
-                TimerX = new System.Timers.Timer(isrTimes[0]);
-                TimerY = new System.Timers.Timer(isrTimes[1]);
-                TimerZ = new System.Timers.Timer(isrTimes[2]);
+                Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
 
-                TimerX.Enabled = true;
-                TimerY.Enabled = true;
-                TimerZ.Enabled = true;
+                // Spindel on or off depending on given variable
+                gpioControl.ControlSpindel(coordinate.Spindel ? SpindelSpeed : 0, true);
 
-                TimerX.Elapsed += TimerX_Elapsed;
-                TimerY.Elapsed += TimerY_Elapsed;
-                TimerZ.Elapsed += TimerZ_Elapsed;
+                // Move axis
+                long[] timeStamp = { Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp() };
+                while (!done[0] || !done[1] || !done[2])
+                {
+                    TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
+                    if (coordinate.X != 0 && done[0] == false)
+                    {
+                        if (ElapsedTime[0].Microseconds % isrTimes[0] != ElapsedTime[0].Microseconds)
+                        {
+                            timeStamp[0] = Stopwatch.GetTimestamp();
+                            //Console.WriteLine("X");
+
+                            if(gpioControl.ControlStep(dir[0], StepperAxis.X)) stepsDone[0]++;
+
+                            if (stepsDone[0] >= stepsToDo[0])
+                            {
+                                done[0] = true;
+                            }
+                        }
+                    } else
+                    {
+                        done[0] = true;
+                    }
+
+                    if (coordinate.Y != 0 && done[1] == false)
+                    {
+                        if (ElapsedTime[1].Microseconds % isrTimes[1] != ElapsedTime[1].Microseconds)
+                        {
+                            timeStamp[1] = Stopwatch.GetTimestamp();
+                            //Console.WriteLine("Y");
+
+                            if (gpioControl.ControlStep(dir[1], StepperAxis.Y)) stepsDone[1]++;
+
+                            if (stepsDone[1] >= stepsToDo[1])
+                            {
+                                done[1] = true;
+                            }
+                        }
+                    } else
+                    {
+                        done[1] = true;
+                    }
+
+                    if (coordinate.Z != 0 && done[2] == false)
+                    {
+                        if (ElapsedTime[2].Microseconds % isrTimes[2] != ElapsedTime[2].Microseconds)
+                        {
+                            timeStamp[2] = Stopwatch.GetTimestamp();
+                            //Console.WriteLine("Z");
+
+                            if (gpioControl.ControlStep(dir[2], StepperAxis.Z)) stepsDone[2]++;
+
+                            if (stepsDone[2] >= stepsToDo[2])
+                            {
+                                done[2] = true;
+                            }
+                        }
+                    } else
+                    {
+                        done[2] = true;
+                    }
+                }
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
                 return false;
             }
-
-
-            while (!done)
-            {
-                if (!(TimerX.Enabled || TimerY.Enabled || TimerZ.Enabled))
-                {
-                    done = true;
-                }
-            }
             return true;
-        }
-
-        private void TimerZ_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            gpioControl.ControlStep(dir[2], GPIOControl.StepperAxis.Z);
-            stepsDone[2]++;
-            if (stepsDone[2] >= stepsToDo[2])
-            {
-                TimerZ.Stop();
-                TimerZ.Dispose();
-            }
-        }
-
-        private void TimerY_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            gpioControl.ControlStep(dir[1], GPIOControl.StepperAxis.Y);
-            stepsDone[1]++;
-            if (stepsDone[1] >= stepsToDo[1])
-            {
-                TimerY.Stop();
-                TimerY.Dispose();
-            }
-        }
-
-        private void TimerX_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            gpioControl.ControlStep(dir[0], GPIOControl.StepperAxis.X);
-            stepsDone[0]++;
-            if (stepsDone[0] >= stepsToDo[0])
-            {
-                TimerX.Stop();
-                TimerX.Dispose();
-            }
         }
 
         private double[] getRatio(double[] Coordinates)
@@ -201,20 +226,66 @@ namespace CNC_Interpreter_V2
                 Y = 500 steps/s
                 Z = 10 steps/s
             
-                X timer = 1000(ms) / 1000(steps/s) = 1ms delay
-                Y timer = 1000(ms) / 5000(steps/s) = 2ms delay
-                Z timer = 1000(ms) / 10(steps/s) = 100ms delay
+                X timer = 500.000(us) / 1000(steps/s) = 500us delay
+                Y timer = 500.000(us) / 5000(steps/s) = 1000us delay
+                Z timer = 500.000(us) / 10(steps/s) = 50000us delay
 
              Timer[axis](1000 / steps/s[axis])
              Timer[axis].Elapse += axisElapse -> step;
              */
             double[] isrTimes = new double[3];
 
-            isrTimes[0] = (1000 / (stepPerSecond[0] * ratio[0]));
-            isrTimes[1] = (1000 / (stepPerSecond[1] * ratio[1]));
-            isrTimes[2] = (1000 / (stepPerSecond[2] * ratio[2]));
+
+            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0]));
+            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1]));
+            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2]) * (80/400));
+            //isrTimes[0] = 1;
+            //isrTimes[1] = 1;
+            //isrTimes[2] = 1;
 
             return isrTimes;
+        }
+
+        public bool ReadLimitSwitch(GPIOControl.LimitSwitch limitSwitch)
+        {
+            return gpioControl.ReadLimitSwitch(limitSwitch);
+        }
+
+        public async Task UsDelay(int microseconds, long StartTick)
+        {
+            await CommonTimer.UsDelay(microseconds, StartTick);
+        }
+
+        public void DisableStepper()
+        {
+            gpioControl.DisableSteppers();
+        }
+
+        public bool[] ReadPin(int pin)
+        {
+            if (pin < 5)
+            {
+                return new[] { true, gpioControl.ReadPin(pin, true) };
+            }
+            return new[] { false, false };
+        }
+
+        public void EmergencyStop()
+        {
+            gpioControl.EmergencyStop();
+        }
+
+        public bool SetPin(int pin, bool state)
+        {
+            if (pin < 5)
+            {
+                gpioControl.SetPin(pin, state);
+            }
+            else
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
