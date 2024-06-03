@@ -41,6 +41,7 @@ while (true)
     string? GCode = Console.ReadLine();
     if(GCode == null) break;
     interpreter.Interpret(GCode);
+    Console.WriteLine("Moves length: " + interpreter.Moves.Count());
     while(interpreter.Moves.Count > 0)
     {
         interpreter.Moves[0].Print();

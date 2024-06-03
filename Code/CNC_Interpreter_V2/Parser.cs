@@ -16,10 +16,10 @@ namespace CNC_Interpreter_V2
             switch (Input.Command)
             {
                 case "G0": // Linear move, spindel off
-                    result.Append(new Coordinate(current[0] + Input.X, current[1] + Input.Y, current[2] + Input.Z, false));
+                    result.Append(new Coordinate(Input.X, Input.Y, Input.Z, false));
                     break;
                 case "G1": // Linear move, spindel on
-                    result.Append(new Coordinate(current[0] + Input.X, current[1] + Input.Y, current[2] + Input.Z, true));
+                    result.Append(new Coordinate(Input.X, Input.Y, Input.Z, true));
                     break;
                 case "G2":
                     break;
