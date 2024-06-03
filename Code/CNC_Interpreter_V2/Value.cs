@@ -20,7 +20,7 @@ namespace CNC_Interpreter_V2
         private double q;
         private double r;
         private double s; // Spindel On/Off
-        private Settings.workplanes workplane;
+        private Settings.Workplanes workplane;
         private bool mm;
 
         public string Command { get { return command; } set { if (value.GetType() == typeof(string)) { command = value; } } }
@@ -33,7 +33,7 @@ namespace CNC_Interpreter_V2
         public double Q { get { return q; } set { if (!Double.IsNaN(value)) { q = value; }; } }
         public double R { get { return r; } set { if (!Double.IsNaN(value)) { r = value; }; } }
         public double S { get { return s; } set { if (value.GetType() == typeof(double)) { s = value; }; } }
-        public Settings.workplanes Workplane { get { return workplane; } set { if (value.GetType() == typeof(Settings.workplanes)) { workplane = value; } } }
+        public Settings.Workplanes Workplane { get { return workplane; } set { if (value.GetType() == typeof(Settings.Workplanes)) { workplane = value; } } }
         public bool MM { get { return MM; } set { MM = value; } }
 
         public void Print()

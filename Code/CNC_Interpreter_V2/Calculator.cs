@@ -21,24 +21,20 @@ namespace CNC_Interpreter_V2
 
             double[] point1 = new double[2];
             // Check for values
-            if (CurrentX == null || CurrentY == null)
+            if (!(CurveValues.I == 0.0) && !(CurveValues.J == 0.0))
             {
-                return new List<Coordinate>();
-            }
-            if (!(CurveValues.I == null) && !(CurveValues.J == null))
-            {
-                point1[0] = CurveValues.I;
-                point1[1] = CurveValues.J;
+                point1[0] = CurveValues.I - CurrentX;
+                point1[1] = CurveValues.J - CurrentY;
             } else
             {
-                point1[0] = CurveValues.X;
-                point1[1] = CurveValues.Y;
+                point1[0] = CurveValues.X - CurrentX;
+                point1[1] = CurveValues.Y - CurrentY;
             }
-            if (CurveValues.P == null || CurveValues.Q == null)
+            if (CurveValues.P == 0.0 || CurveValues.Q == 0.0)
             {
                 return new List<Coordinate>();
             }
-            if (CurveValues.X == null || CurveValues.Y == null)
+            if (CurveValues.X == 0.0 || CurveValues.Y == 0.0)
             {
                 return new List<Coordinate>();
             }
@@ -46,8 +42,8 @@ namespace CNC_Interpreter_V2
             double previousX = 0, previousY = 0;
             bool Spindel = bool.Parse(CurveValues.S.ToString());
             double[] origin = {CurrentX, CurrentY};
-            double[] point2 = { CurveValues.P, CurveValues.Q };
-            double[] destination = { CurveValues.X,  CurveValues.Y};
+            double[] point2 = { CurveValues.P-CurrentX, CurveValues.Q-CurrentY };
+            double[] destination = { CurveValues.X-CurrentX,  CurveValues.Y-CurrentY};
             for (double t = 0; t <= 1; t += 0.001)
             {
                 double x = (1 - t) * ((1 - t) * ((1 - t) * origin[0] + t * point1[0]) + t * ((1 - t) * point1[0] + t * point2[0])) + t * ((1 - t) * ((1 - t) * point1[0] + t * point2[0]) + t * ((1 - t) * point2[0] + t * destination[0]));
@@ -74,18 +70,18 @@ namespace CNC_Interpreter_V2
             return distance;
         }
 
-        private Coordinate newCoordinate(Coordinate Coordinate, Settings.workplanes Workplane)
+        private Coordinate newCoordinate(Coordinate Coordinate, Settings.Workplanes Workplane)
         {
             switch (Workplane)
             {
-                case Settings.workplanes.XY: // (X, Y) -> (X, Y)
+                case Settings.Workplanes.XY: // (X, Y) -> (X, Y)
                     return new Coordinate(Coordinate.X, Coordinate.Y, Coordinate.Z, Coordinate.Spindel);
-                case Settings.workplanes.YZ: // (X, Y) -> (Y, Z)
+                case Settings.Workplanes.YZ: // (X, Y) -> (Y, Z)
                     return new Coordinate(Coordinate.Z, Coordinate.X, Coordinate.Y, Coordinate.Spindel);
-                case Settings.workplanes.ZX: // (X, Y) -> (Z, X)
+                case Settings.Workplanes.ZX: // (X, Y) -> (Z, X)
                     return new Coordinate(Coordinate.Y, Coordinate.Z, Coordinate.X, Coordinate.Spindel);
                 default:
-                    return null;
+                    return new Coordinate(0,0,0,false);
             }
         }
     }
