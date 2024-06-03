@@ -54,6 +54,7 @@ namespace CNC_Interpreter_V2
                     try
                     {
                         moves.AddRange(parser.Parse(new[] { settings.X, settings.Y, settings.Z }, value));
+                        Console.WriteLine("It tried");
                     }
                     catch (Exception e)
                     {

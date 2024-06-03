@@ -23,7 +23,7 @@ while (true)
     if(GCode == null) break;
     interpreter.Interpret(GCode);
     Console.WriteLine("Moves length: " + interpreter.Moves.Count());
-    while(interpreter.Moves.Count > 0)
+    for(int i = 0; i < interpreter.Moves.Count; i++)
     {
         interpreter.Moves[0].Print();
         axisControl.Move(interpreter.Moves[0]);
