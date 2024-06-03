@@ -39,6 +39,7 @@ namespace CNC_Interpreter_V2
             {
                 // G Codes
                 case "G0":
+                    moves.Append(new Coordinate(value.X, value.Y, value.Z, false)); break;
                 case "G1":
                 //Debug.WriteLine("Linear Move");
                 case "G2":
