@@ -619,28 +619,20 @@ namespace CNC_Interpreter_V2
 
             // Set position to 0
             Console.WriteLine("Setting " + Axis + " to 0.0mm");
-            if (Axis == GPIOControl.StepperAxis.X) settings.X = 0.0;
-            if (Axis == GPIOControl.StepperAxis.Y) settings.Y = 0.0;
-            if (Axis == GPIOControl.StepperAxis.Z) settings.Z = 0.0;
-
-            // Move back up to remove switch
-            axisControl.Move(Up);
+            if (Axis == GPIOControl.StepperAxis.X) settings.X = 0.0 + settings.SpindelToProbe[0];
+            if (Axis == GPIOControl.StepperAxis.Y) settings.Y = 0.0 + settings.SpindelToProbe[1];
+            if (Axis == GPIOControl.StepperAxis.Z) settings.Z = 0.0 + settings.SpindelToProbe[2];
 
             switch (Axis)
             {
-                case GPIOControl.StepperAxis.X:
-                    settings.X = (backDistance) + settings.SpindelToProbe[0];
-                    Thread.Sleep(100);
-                    break;
-                case GPIOControl.StepperAxis.Y:
-                    settings.Y = backDistance + settings.SpindelToProbe[1];
-                    Thread.Sleep(100);
-                    break;
                 case GPIOControl.StepperAxis.Z:
+                    axisControl.Move(Up);
                     settings.Z = backDistance + settings.SpindelToProbe[2];
                     Console.WriteLine("Remove Z-axis Switch");
-                    // Wait 5 seconds for switch to be removed
+                    // Wait for switch to be removed
                     Thread.Sleep(5000);
+                    break;
+                default:
                     break;
             }
             return true;
