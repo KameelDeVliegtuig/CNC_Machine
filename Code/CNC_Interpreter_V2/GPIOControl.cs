@@ -221,8 +221,11 @@ namespace CNC_Interpreter_V2
 		// Read the limit switches
 		public bool ReadLimitSwitch(LimitSwitch limitSwitch)
 		{
+			if (limitSwitch == LimitSwitch.Z) 
+			return !_ioExtender.ReadPin((int)limitSwitch);
 			return _ioExtender.ReadPin((int)limitSwitch);
 		}
+		
 
 		public bool DisableSteppers()
 		{
