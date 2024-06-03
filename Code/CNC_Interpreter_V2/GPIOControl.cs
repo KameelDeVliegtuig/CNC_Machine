@@ -34,7 +34,6 @@ namespace CNC_Interpreter_V2
 
 		private GpioController _ioControl = new();
 		private MCP23017Controller _ioExtender = new(I2cDevice.Create(new I2cConnectionSettings(1, 0x20)));
-		private Delay delay = new Delay();
 
 		private bool extenderBusy = false;
 		public bool ExtenderBusy { get { return extenderBusy; } }

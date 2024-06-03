@@ -35,7 +35,6 @@ namespace CNC_Interpreter_V2
         System.Timers.Timer TimerX = new System.Timers.Timer();
         System.Timers.Timer TimerY = new System.Timers.Timer();
         System.Timers.Timer TimerZ = new System.Timers.Timer();
-        Delay CommonTimer = new Delay();
 
         // Speed: mm/s, Steps: steps/mm
         public AxisControl(double Speed, int[]? Steps)
@@ -257,9 +256,9 @@ namespace CNC_Interpreter_V2
             return gpioControl.ReadLimitSwitch(limitSwitch);
         }
 
-        public async Task UsDelay(int microseconds, long StartTick)
+        public static void UsDelay(int microseconds, long StartTick)
         {
-            await CommonTimer.UsDelay(microseconds, StartTick);
+            while (Stopwatch.GetElapsedTime(StartTick).Microseconds < microseconds) continue;
         }
 
         public void DisableStepper()

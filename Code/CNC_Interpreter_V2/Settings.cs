@@ -8,7 +8,7 @@ namespace CNC_Interpreter_V2
 {
     internal class Settings
     {
-        public enum workplanes
+        public enum Workplanes
         {
             XY,
             ZX,
@@ -21,10 +21,7 @@ namespace CNC_Interpreter_V2
         private double x;
         private double y;
         private double z;
-        private workplanes workplane;
-        private double mmps = 2.0; // mm/s
-        private double[] stepsPerMM = { 200, 200, 200 };
-        private double[] mmpr = {80.0, 80.0, 400.0}; // mm/rotation [x,y,z]
+        private Workplanes workplane;
         private bool mm = true; // Units default to mm
         private bool spindel = false; // Spindel default off
         private bool spindelDir = true; // True = CW, False = CCW
@@ -40,10 +37,7 @@ namespace CNC_Interpreter_V2
         public double X { get { return x; } set { if (value.GetType() == typeof(double)) { x = value; } } }
         public double Y { get { return y; } set { if (value.GetType() == typeof(double)) { y = value; } } }
         public double Z { get { return z; } set { if (value.GetType() == typeof(double)) { z = value; } } }
-        public workplanes Workplane { get { return workplane; } set { if (Enum.IsDefined(value)) { workplane = value; } } }
-        public double MMpS { get { return mmps; } }
-        public double[] StepsPerMM { get { return stepsPerMM; } set { if (value.Length == 3) { stepsPerMM = value; } } }
-        public double[] MMpR { get { return mmpr; } }
+        public Workplanes Workplane { get { return workplane; } set { if (Enum.IsDefined(value)) { workplane = value; } } }
         public bool MM {  get { return mm; } set { MM = value; } }
         public bool Spindel {  get { return spindel; }  set { if (value.GetType() == typeof(bool) && !emergencyStop) { spindel = value; } } }
         public bool SpindelDir { get { return spindelDir; } set { spindelDir = value; } }

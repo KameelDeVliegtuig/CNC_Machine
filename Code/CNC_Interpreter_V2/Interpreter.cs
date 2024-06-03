@@ -64,17 +64,17 @@ namespace CNC_Interpreter_V2
                 // WorkPlane Select
                 case "G17": // XY
                     Debug.WriteLine("CNC Workspace Planes");
-                    settings.Workplane = (Settings.workplanes)0;
+                    settings.Workplane = (Settings.Workplanes)0;
                     Debug.WriteLine("Workplane: " + settings.Workplane);
                     break;
                 case "G18": // ZX
                     Debug.WriteLine("CNC Workspace Planes");
-                    settings.Workplane = (Settings.workplanes)1;
+                    settings.Workplane = (Settings.Workplanes)1;
                     Debug.WriteLine("Workplane: " + settings.Workplane);
                     break;
                 case "G19": // YZ
                     Debug.WriteLine("CNC Workspace Planes");
-                    settings.Workplane = (Settings.workplanes)2;
+                    settings.Workplane = (Settings.Workplanes)2;
                     Debug.WriteLine("Workplane: " + settings.Workplane);
                     break;
                 case "G20":
