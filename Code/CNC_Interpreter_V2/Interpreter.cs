@@ -562,8 +562,9 @@ namespace CNC_Interpreter_V2
 
         private bool AutoHome(GPIOControl.StepperAxis Axis, GPIOControl.LimitSwitch Switch)
         {
+
             // Make sure everything is off and stationary
-            axisControl.Move(new Coordinate(0,0,0,false));
+            axisControl.Move(new Coordinate(0, 0, 0, false));
 
             double backDistance = 10.0;
             Coordinate Up = new Coordinate(0, 0, 0, false);
@@ -586,8 +587,8 @@ namespace CNC_Interpreter_V2
             {
                 // Connect and press limitswitch manually
                 Console.WriteLine("Connect Z-axis limit switch and press manually");
-                while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
                 while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
+                while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
                 Thread.Sleep(500);
                 Up = new Coordinate(0, 0, backDistance, false);
                 Down = new Coordinate(0, 0, -0.1, false);
@@ -603,7 +604,7 @@ namespace CNC_Interpreter_V2
             Console.WriteLine("Starting Auto Home");
             // Move axis until it is touching limitswitch
             Console.WriteLine("Move axis until it is touching limitswitch");
-            while (!axisControl.ReadLimitSwitch(Switch))
+            while (axisControl.ReadLimitSwitch(Switch))
             {
                 axisControl.Move(Down);
             }
@@ -615,7 +616,7 @@ namespace CNC_Interpreter_V2
 
             // Move down slower
             Console.WriteLine("Moving down slower");
-            while (!axisControl.ReadLimitSwitch(Switch))
+            while (axisControl.ReadLimitSwitch(Switch))
             {
                 axisControl.Move(Down);
                 Thread.Sleep(0);
