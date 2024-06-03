@@ -28,6 +28,10 @@ axisControl.Move(coordinate);
 // Auto Home
 interpreter.Interpret("G28");
 
+Coordinate zerood = new Coordinate(0, 0, -21.5, false);
+
+axisControl.Move(zerood);
+
 gpioControl.ControlSpindel(10, true);
 
 presenceDetector.StartListening();
