@@ -20,9 +20,9 @@ namespace CNC_Interpreter_V2
                     Coordinate G0 = new Coordinate(Input.X, Input.Y, Input.Z, false);
                     G0.Print();
                     result.Append(G0);
-                    break;
+                    return result;
                 case "G1": // Linear move, spindel on
-                    Console.WriteLine("G0 Linear Move With Spindel");
+                    Console.WriteLine("G1 Linear Move With Spindel");
                     result.Append(new Coordinate(Input.X, Input.Y, Input.Z, true));
                     break;
                 case "G2":
