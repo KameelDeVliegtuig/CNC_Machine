@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -261,10 +262,11 @@ namespace CNC_Interpreter_V2
                     {
                         sValue = false;
                     }
-                    if(axisControl.SetPin((int)value.P, sValue))
+                    if (axisControl.SetPin((int)value.P, sValue))
                     {
                         Console.WriteLine("Pin " + value.P + " set to " + sValue);
-                    } else
+                    }
+                    else
                     {
                         Console.WriteLine("Could not set pin " + value.P);
                     }
@@ -363,7 +365,8 @@ namespace CNC_Interpreter_V2
                             if (currentState[0])
                             {
                                 wanted = !currentState[1];
-                            } else
+                            }
+                            else
                             {
                                 Console.WriteLine("Unable to read pin, check pin number");
                                 break;
@@ -371,7 +374,8 @@ namespace CNC_Interpreter_V2
                             break;
                     }
                     currentState = axisControl.ReadPin((int)value.P);
-                    while (currentState[0] && currentState[1] != wanted){
+                    while (currentState[0] && currentState[1] != wanted)
+                    {
                         currentState = axisControl.ReadPin((int)value.P);
                     }
                     break;
@@ -392,7 +396,7 @@ namespace CNC_Interpreter_V2
 
                 case "M400":
                     Debug.WriteLine("Wait for moves to finish");
-                    if(moves.Count != 0)
+                    if (moves.Count != 0)
                     {
                         Console.WriteLine("Moves is not empty");
                     }
@@ -426,7 +430,7 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M512":
                     Debug.WriteLine("Set Passcode");
-                    if((int)value.P == passcode)
+                    if ((int)value.P == passcode)
                     {
                         passcode = (int)value.S;
                     }
@@ -558,19 +562,19 @@ namespace CNC_Interpreter_V2
 
         private bool AutoHome(GPIOControl.StepperAxis Axis, GPIOControl.LimitSwitch Switch)
         {
-            int stepsBack = 400;
+            int backDistance = 50;
             Coordinate Up = new Coordinate(0, 0, 0, false);
             Coordinate Down = new Coordinate(0, 0, 0, false);
 
             if (Axis == GPIOControl.StepperAxis.X)
             {
-                Up = new Coordinate(0.1, 0, 0, false);
+                Up = new Coordinate(backDistance, 0, 0, false);
                 Down = new Coordinate(-0.1, 0, 0, false);
             }
 
             if (Axis == GPIOControl.StepperAxis.Y)
             {
-                Up = new Coordinate(0, 0.1, 0, false);
+                Up = new Coordinate(0, backDistance, 0, false);
                 Down = new Coordinate(0, -0.1, 0, false);
             }
 
@@ -581,52 +585,53 @@ namespace CNC_Interpreter_V2
                 while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
                 while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
 
-                Up = new Coordinate(0, 0, 0.1, false);
+                Up = new Coordinate(0, 0, backDistance, false);
                 Down = new Coordinate(0, 0, -0.1, false);
             }
 
             Console.WriteLine("Starting Auto Home");
             // Move axis until it is touching limitswitch
+            Console.WriteLine("Move axis until it is touching limitswitch");
             while (axisControl.ReadLimitSwitch(Switch))
             {
                 axisControl.Move(Down);
             }
-
+            Console.WriteLine("Press detected");
 
             // Move back up
-            for (int i = 0; i < stepsBack; i++)
-            {
-                axisControl.Move(Up);
-            }
+            Console.WriteLine("Moving back up " + backDistance + "mm");
+            axisControl.Move(Up);
 
             // Move down slower
-            while (axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z))
+            Console.WriteLine("Moving down slower");
+            while (axisControl.ReadLimitSwitch(Switch))
             {
                 axisControl.Move(Down);
-                axisControl.UsDelay(50, Stopwatch.GetTimestamp());
+                Thread.Sleep(0);
             }
+            Console.WriteLine("Press detected");
 
             // Set position to 0
-            settings.Z = 0.0;
+            Console.WriteLine("Setting " + Axis + " to 0.0mm");
+            if (Axis == GPIOControl.StepperAxis.X) settings.X = 0.0;
+            if (Axis == GPIOControl.StepperAxis.Y) settings.Y = 0.0;
+            if (Axis == GPIOControl.StepperAxis.Z) settings.Z = 0.0;
 
             // Move back up to remove switch
-            for (int i = 0; i < stepsBack; i++)
-            {
-                axisControl.Move(Up);
-            }
+            axisControl.Move(Up);
 
             switch (Axis)
             {
                 case GPIOControl.StepperAxis.X:
-                    settings.X = (stepsBack / settings.StepsPerMM[0]) + settings.SpindelToProbe[0];
+                    settings.X = (backDistance) + settings.SpindelToProbe[0];
                     Thread.Sleep(100);
                     break;
                 case GPIOControl.StepperAxis.Y:
-                    settings.Y = stepsBack / settings.StepsPerMM[1] + settings.SpindelToProbe[1];
+                    settings.Y = backDistance + settings.SpindelToProbe[1];
                     Thread.Sleep(100);
                     break;
                 case GPIOControl.StepperAxis.Z:
-                    settings.Z = stepsBack / settings.StepsPerMM[2] + settings.SpindelToProbe[2];
+                    settings.Z = backDistance + settings.SpindelToProbe[2];
                     Console.WriteLine("Remove Z-axis Switch");
                     // Wait 5 seconds for switch to be removed
                     Thread.Sleep(5000);
