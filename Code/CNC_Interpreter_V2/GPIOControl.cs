@@ -40,7 +40,7 @@ namespace CNC_Interpreter_V2
 		public bool ExtenderBusy { get { return extenderBusy; } }
 
 		// Initialize int for current spindle speed
-		private int _currentSpindelSpeed;
+		private double _currentSpindelSpeed;
 
 		// Define the pins for the stepper motor control
 		// Pin definitions on main board
@@ -193,7 +193,6 @@ namespace CNC_Interpreter_V2
 		// Thread.Sleep(0) 400 times is ~100us
 		public bool ControlStep(bool dir, StepperAxis steppers)
 		{
-			Console.WriteLine("ControlStep called" + (int)steppers);
 			extenderBusy = true;
 			_setPin(_stepEnable, false);
 			_ioExtender.WritePin(((int)steppers + 3), dir);
