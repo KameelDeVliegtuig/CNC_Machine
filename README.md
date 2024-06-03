@@ -33,8 +33,8 @@ Pi's standard network is Houtenbos.
 | Axis | Offset (mm) |
 | ---- | ----------- |
 | X | 0 |
-| Y | 0 |
-| Z | 0 |
+| Y | 20 |
+| Z | 21.5 |
 
 #### Contact type buttons & switches
 
