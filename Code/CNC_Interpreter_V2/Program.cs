@@ -16,25 +16,6 @@ Coordinate coordinate = new Coordinate(10, 10, 10, true);
 AxisControl axisControl = new AxisControl(100000, null);
 Debug.WriteLine("Hello, World!");
  
-for(int i = 0; i < 800; i++)
-{
-    gpioControl.ControlStep(true, GPIOControl.StepperAxis.X);
-}
-Console.WriteLine("Done Only Gpio Control");
-Thread.Sleep(1000);
-
-axisControl.Move(coordinate);
-
-// Auto Home
-interpreter.Interpret("G28");
-
-Coordinate zerood = new Coordinate(0, 0, -21.5, false);
-
-axisControl.Move(zerood);
-
-gpioControl.ControlSpindel(10, true);
-
-presenceDetector.StartListening();
 
 while (true)
 {
