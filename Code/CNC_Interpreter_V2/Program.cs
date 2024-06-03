@@ -25,6 +25,9 @@ Thread.Sleep(1000);
 
 axisControl.Move(coordinate);
 
+// Auto Home
+interpreter.Interpret("G28");
+
 gpioControl.ControlSpindel(1, true);
 
 //presenceDetector.StartListening();
