@@ -29,6 +29,7 @@ while (true)
         axisControl.Move(interpreter.Moves[0]);
         interpreter.Moves.RemoveAt(0);
     }
+    interpreter.Interpret("M5"); // Stop spindel at the end
 }
 
 
