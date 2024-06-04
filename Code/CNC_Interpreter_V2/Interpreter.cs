@@ -318,7 +318,7 @@ namespace CNC_Interpreter_V2
                         {
                             if (!double.IsNaN(entry.Temperature.DegreesCelsius))
                             {
-                                Console.WriteLine($"Temperature from {entry.Sensor.ToString()}: {entry.Temperature.DegreesCelsius} °C");
+                                Console.WriteLine($"Temperature from {entry.Sensor.ToString()}: {Math.Round(entry.Temperature.DegreesCelsius,1,MidpointRounding.AwayFromZero)} °C");
                             }
                             else
                             {
