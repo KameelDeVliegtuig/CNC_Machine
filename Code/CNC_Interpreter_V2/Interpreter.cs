@@ -422,9 +422,6 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Set MicroStepping");
                     Console.WriteLine("Microstepping fixed at 1/16");
                     break;
-                case "M355":
-                    Debug.WriteLine("Case Light Control");
-                    break;
 
                 case "M400":
                     Debug.WriteLine("Wait for moves to finish");
@@ -450,6 +447,9 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M428":
                     Debug.WriteLine("Set Home at Current Position");
+                    settings.X = 0.0;
+                    settings.Y = 0.0;
+                    settings.Z = 0.0;
                     break;
 
                 case "M510":
