@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
+using Iot.Device.CpuTemperature;
 
 namespace CNC_Interpreter_V2
 {
@@ -16,7 +17,9 @@ namespace CNC_Interpreter_V2
         Settings settings = new Settings(0.0, 0.0, 0.0);
         GPIOControl gpio = new GPIOControl();
         AxisControl axisControl = new AxisControl(0.1, null);
+        CpuTemperature cpuTemperature = new CpuTemperature();
 
+        const string machineInfo = "Ender 3 v2 CNC Miller v0.1";
         const string firmwareInfo = "CNC Machine V0.1 by Lasse Houtenbos and Kamiel Groot ©2024";
 
         private System.Timers.Timer StopTimer = new System.Timers.Timer();
@@ -139,14 +142,26 @@ namespace CNC_Interpreter_V2
                 case "G61":
                     Debug.WriteLine("Return to saved position");
                     break;
-                case "G90":
-                    Debug.WriteLine("Absolute Positioning");
-                    break;
                 case "G91":
                     Debug.WriteLine("Relative Positioning");
                     break;
                 case "G92": // Disable <0 values
                     Debug.WriteLine("Set Position");
+                    if (value.X > settings.Limit[0]) value.X = settings.Limit[0];
+                    if (value.Y > settings.Limit[1]) value.Y = settings.Limit[1];
+                    if (value.Z > settings.Limit[2]) value.Z = settings.Limit[2];
+
+                    double xMove = value.X - settings.X;
+                    double yMove = value.Y - settings.Y;
+                    double zMove = value.Z - settings.Z;
+                    if (xMove < 0) xMove = 0;
+                    if (yMove < 0) yMove = 0;
+                    if (zMove < 0) zMove = 0;
+
+
+
+                    Coordinate coordinate = new Coordinate(xMove, yMove, zMove, false);
+                    moves.Add(coordinate);
                     break;
 
                 // M codes
@@ -201,6 +216,7 @@ namespace CNC_Interpreter_V2
                 case "M16":
                     // Always return true (no printer check)
                     Debug.WriteLine("Device checker");
+                    Console.WriteLine(machineInfo);
                     break;
                 case "M18":
                 case "M84":
@@ -243,7 +259,7 @@ namespace CNC_Interpreter_V2
 
                 case "M31":
                     Debug.WriteLine("Print Time");
-                        Console.WriteLine("Time Elapsed: " + Stopwatch.GetElapsedTime(startTime));
+                    Console.WriteLine("Time Elapsed: " + Stopwatch.GetElapsedTime(startTime));
                     break;
                 case "M32":
                     Debug.WriteLine("Begin from SD File");
@@ -287,23 +303,38 @@ namespace CNC_Interpreter_V2
                     break;
                 // End LCD
 
-                case "M92":
-                    Debug.WriteLine("Set Axis Steps per unit (mm/in)");
-
-                    if (settings.MM)
-                    {
-                        //if(value.E)
-                    }
-                    break;
                 case "M100":
                     GC.Collect();
-                    //return Process.GetCurrentProcess().PrivateMemorySize64;
+                    Console.WriteLine("Memory in use: " + Process.GetCurrentProcess().WorkingSet64 + " bytes");
                     break;
+
                 case "M105":
+                    // https://mycsharpdeveloper.wordpress.com/2021/09/21/installing-net-6-on-raspberry-pi-4-and-get-cpu-temperature-via-c/
                     Debug.WriteLine("Temperature Report");
+                    if (cpuTemperature.IsAvailable)
+                    {
+                        var temperature = cpuTemperature.ReadTemperatures();
+                        foreach (var entry in temperature)
+                        {
+                            if (!double.IsNaN(entry.Temperature.DegreesCelsius))
+                            {
+                                Console.WriteLine($"Temperature from {entry.Sensor.ToString()}: {entry.Temperature.DegreesCelsius} °C");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unable to read Temperature.");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("CPU temperature is not available");
+                    }
                     break;
+
                 case "M111":
                     Debug.WriteLine("Set debug level");
+
                     break;
                 case "M112":
                     Debug.WriteLine("Full Shutdown");
@@ -322,7 +353,8 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M117":
                     Debug.WriteLine("Set LCD Message");
-                    Console.WriteLine("LCD Message");
+                    if (value.OpenText == null) break;
+                    Console.WriteLine("Message: " + value.OpenText);
                     break;
                 case "M119":
                     Debug.WriteLine("Endstop States");
@@ -538,6 +570,8 @@ namespace CNC_Interpreter_V2
                             Debug.WriteLine("Z: " + value.Z);
                             break;
                         default:
+                            value.OpenText += Input[i];
+                            value.OpenText += " ";
                             break;
                     }
                 }
