@@ -33,6 +33,7 @@ namespace CNC_Interpreter_V2
         private short logging;
         private bool emergencyStop;
         private double[] spindelToProbe = { 0.0, 20.0, 21.5};
+        private double[] limit = { 220, 220, 250};
 
         public double X { get { return x; } set { if (value.GetType() == typeof(double)) { x = value; } } }
         public double Y { get { return y; } set { if (value.GetType() == typeof(double)) { y = value; } } }
@@ -47,6 +48,7 @@ namespace CNC_Interpreter_V2
         public short Logging { get { return logging; } set { if (value.GetType() == typeof(short)) { logging = value; } } }
         public bool EmergencyStop { get { return emergencyStop; } set { emergencyStop = value; } }
         public double[] SpindelToProbe {  get { return spindelToProbe; } }
+        public double[] Limit {  get { return limit; } }
 
         public Settings(double X, double Y, double Z)
         {
