@@ -1,8 +1,8 @@
 # G and M Codes
 
-$${\color{green}STATE}$$ = Implemented and Tested
-$${\color{orange}STATE}$$ = Implemented and NOT Tested
-$${\color{red}STATE}$$ = Not Implemented
+`$${\color{green}STATE}$$ = Implemented and Tested`
+`$${\color{orange}STATE}$$ = Implemented and NOT Tested`
+`$${\color{red}STATE}$$ = Not Implemented`
 
 
 
