@@ -5,7 +5,7 @@
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}TESTED}$$|
-| G2 / G3 | Arc or Circle Move                                  |$${\color{orange}NOT{ }TESTED}$$|
+| G2 / G3 | Arc or Circle Move                                  |$${\color{orange}NOT{ } TESTED}$$|
 | G4      | Dwell                                               |$${\color{orange}NOT TESTED}$$|
 | G5      | Bézier cubic spline                                 |$${\color{orange}NOT TESTED}$$|
 | G6      | Direct Stepper Move                                 |$${\color{orange}NOT TESTED}$$|
