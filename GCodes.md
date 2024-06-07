@@ -30,7 +30,6 @@
 | G61     | Return to saved position                            |   $${\color{red}STATE}$$ |
 | G91     | Relative Positioning (default)                      |$${\color{orange}STATE}$$|
 | G92     | Set Position (Disable <0 values)                    |$${\color{orange}STATE}$$|
-|---------|-----------------------------------------------------|--------------------------|
 | M Codes                                                                                   |
 |---------|-----------------------------------------------------|--------------------------|
 | Code    | Description                                         | Status                   |
