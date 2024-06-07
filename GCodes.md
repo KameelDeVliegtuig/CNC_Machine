@@ -5,10 +5,10 @@
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}TESTED}$$|
-| G2 / G3 | Arc or Circle Move                                  |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
-| G4      | Dwell                                               |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
-| G5      | Bézier cubic spline                                 |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
-| G6      | Direct Stepper Move                                 |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
+| G2 / G3 | Arc or Circle Move                                  |$${\color{orange}IMPLEMENTED \\ NOT TESTED}$$|
+| G4      | Dwell                                               |$${\color{orange}IMPLEMENTED \\ NOT TESTED}$$|
+| G5      | Bézier cubic spline                                 |$${\color{orange}IMPLEMENTED \\ NOT TESTED}$$|
+| G6      | Direct Stepper Move                                 |$${\color{orange}IMPLEMENTED \\ NOT TESTED}$$|
 | G17     | CNC Workspace Plane XY                              |                          |
 | G18     | CNC Workspace Plane ZX                              |                          |
 | G19     | CNC Workspace Plane YZ                              |                          |
