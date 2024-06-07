@@ -30,25 +30,22 @@
 | G61     | Return to saved position                            |   $${\color{red}STATE}$$ |
 | G91     | Relative Positioning (default)                      |$${\color{orange}STATE}$$|
 | G92     | Set Position (Disable <0 values)                    |$${\color{orange}STATE}$$|
-
-## M Codes
-
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | M0 / M1 | Unconditional STOP                                  |$${\color{orange}STATE}$$|
 | M3      | Turn on Spindle CW                                  | $${\color{green}STATE}$$|
 | M4      | Turn on Spindle CCW                                 | $${\color{green}STATE}$$|
 | M5      | Turn off Spindle                                    | $${\color{green}STATE}$$|
-| M16     | Device checker (Always returns true, no printer check) | $${\color{green}STATE}$$|
+| M16     | Device checker                                      | $${\color{green}STATE}$$|
 | M18 / M84 | Disable all steppers                              |$${\color{orange}STATE}$$|
-| M20     | List Items SD card (Only when using SD Card)        |   $${\color{red}STATE}$$ |
-| M21     | Initialize SD card                                  |   $${\color{red}STATE}$$ |
-| M22     | Release SD card                                     |   $${\color{red}STATE}$$ |
-| M23     | Select file on SD                                   |   $${\color{red}STATE}$$ |
-| M24     | Start/Resume SD file                                |   $${\color{red}STATE}$$ |
-| M25     | Pause SD file                                       |   $${\color{red}STATE}$$ |
-| M27     | Report SD Execution Status                          |   $${\color{red}STATE}$$ |
-| M28 / M29 | Start/Stop Write to SD Card (May be discontinued) |   $${\color{red}STATE}$$ |
+| M20     | List Items                                          |   $${\color{red}STATE}$$ |
+| M23     | Select file                                         |   $${\color{red}STATE}$$ |
+| M24     | Start/Resume                                        |   $${\color{red}STATE}$$ |
+| M25     | Pause                                               |   $${\color{red}STATE}$$ |
+| M27     | Report Execution Status                             |   $${\color{red}STATE}$$ |
+| M28 / M29 | Start/Stop Write to SD Card                       |   $${\color{red}STATE}$$ |
 | M30     | Delete file from SD                                 |   $${\color{red}STATE}$$ |
 | M31     | Print Time                                          |$${\color{orange}STATE}$$|
 | M32     | Begin from SD File                                  |   $${\color{red}STATE}$$ |
