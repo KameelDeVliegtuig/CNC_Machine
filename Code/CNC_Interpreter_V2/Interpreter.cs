@@ -228,6 +228,18 @@ namespace CNC_Interpreter_V2
                 // Only when using SD Card
                 case "M20":
                     Debug.WriteLine("List Items SD card");
+                    try
+                    {
+                        string dir = "../"; // Change to correct directory
+                        string[] Files = Directory.GetFiles(dir);
+                        Console.WriteLine("Choose your file:");
+                        for (int i = 0; i < Files.Length; i++)
+                        {
+                            Console.WriteLine(Files[i]);
+                        }
+                    } catch (Exception e) {
+                        Console.WriteLine(e);
+                    }
                     break;
                 case "M21":
                     Debug.WriteLine("Initialize SD card");
