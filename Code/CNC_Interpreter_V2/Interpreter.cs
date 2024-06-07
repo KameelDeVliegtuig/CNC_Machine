@@ -390,7 +390,7 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M114":
                     Debug.WriteLine("Get Current Position");
-                    Coordinate currentPos = new Coordinate(settings.X, settings.Y, settings.Z, settings.Spindel);
+                    currentPos = new Coordinate(settings.X, settings.Y, settings.Z, settings.Spindel);
                     Console.WriteLine("Current Position: ");
                     currentPos.Print();
                     break;
@@ -642,7 +642,11 @@ namespace CNC_Interpreter_V2
                     number += Input[i];
                 }
             }
-            return double.Parse(number.ToString());
+            double value = double.Parse(number.ToString());
+            if (!settings.MM) {
+                value = value / 25.4;
+            }
+            return value;
         }
 
         private bool AutoHome(GPIOControl.StepperAxis Axis, GPIOControl.LimitSwitch Switch)
