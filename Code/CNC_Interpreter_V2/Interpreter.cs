@@ -158,6 +158,7 @@ namespace CNC_Interpreter_V2
                     break;
                 case "G91":
                     Debug.WriteLine("Relative Positioning");
+                    Console.WriteLine("Always relative positioning, it's easier this way");
                     break;
                 case "G92": // Disable <0 values
                     Debug.WriteLine("Set Position");
