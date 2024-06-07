@@ -2,7 +2,7 @@
 
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
-| *G Codes* |                                                     |                          |
+| **G Codes** |                                                     |                          |
 | G0 / G1 | Linear Move                                         | $${\color{green}STATE}$$ |
 | G2 / G3 | Arc or Circle Move                                  | $${\color{orange}STATE}$$|
 | G4      | Dwell                                               | $${\color{orange}STATE}$$|
@@ -29,8 +29,7 @@
 | G61     | Return to saved position                            |   $${\color{red}STATE}$$ |
 | G91     | Relative Positioning (default)                      |$${\color{orange}STATE}$$|
 | G92     | Set Position (Disable <0 values)                    |$${\color{orange}STATE}$$|
-| M Codes                                                                                |
-| Code    | Description                                         | Status                   |
+| **M Codes**                                                                              |
 | M0 / M1 | Unconditional STOP                                  |$${\color{orange}STATE}$$|
 | M3      | Turn on Spindle CW                                  | $${\color{green}STATE}$$|
 | M4      | Turn on Spindle CCW                                 | $${\color{green}STATE}$$|
@@ -81,6 +80,5 @@
 | M575    | Change Serial BaudRate                              |   $${\color{red}STATE}$$ |
 | M928    | Start Logging to SD                                 |   $${\color{red}STATE}$$ |
 | M995    | Calibrate Touchscreen                               |   $${\color{red}STATE}$$ |
-| Custom Codes                                                        |
-| Code | Description                      | Status                   |
+| **Custom Codes**                                                        |
 | X0   | Selective Stop                   |$${\color{orange}STATE}$$|
