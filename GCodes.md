@@ -1,5 +1,11 @@
 # G and M Codes
 
+$${\color{green}STATE}$$ = Implemented and Tested
+$${\color{orange}STATE}$$ = Implemented and NOT Tested
+$${\color{red}STATE}$$ = Not Implemented
+
+
+
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | **G Codes** |                                                     |                          |
