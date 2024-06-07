@@ -1,7 +1,6 @@
 # G and M Codes
 
-## G Codes
-
+|G Codes |
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}STATE}$$ |
@@ -31,9 +30,7 @@
 | G91     | Relative Positioning (default)                      |$${\color{orange}STATE}$$|
 | G92     | Set Position (Disable <0 values)                    |$${\color{orange}STATE}$$|
 | M Codes                                                                                   |
-|---------|-----------------------------------------------------|--------------------------|
 | Code    | Description                                         | Status                   |
-|---------|-----------------------------------------------------|--------------------------|
 | M0 / M1 | Unconditional STOP                                  |$${\color{orange}STATE}$$|
 | M3      | Turn on Spindle CW                                  | $${\color{green}STATE}$$|
 | M4      | Turn on Spindle CCW                                 | $${\color{green}STATE}$$|
@@ -84,9 +81,6 @@
 | M575    | Change Serial BaudRate                              |   $${\color{red}STATE}$$ |
 | M928    | Start Logging to SD                                 |   $${\color{red}STATE}$$ |
 | M995    | Calibrate Touchscreen                               |   $${\color{red}STATE}$$ |
-
-## Custom Codes
-
+| Custom Codes                                                        |
 | Code | Description                      | Status                   |
-|------|----------------------------------|--------------------------|
 | X0   | Selective Stop                   |$${\color{orange}STATE}$$|
