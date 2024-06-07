@@ -1,6 +1,6 @@
 # G and M Codes
 
-|G Codes |
+| ##G Codes                                                                                |
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}STATE}$$ |
@@ -29,7 +29,7 @@
 | G61     | Return to saved position                            |   $${\color{red}STATE}$$ |
 | G91     | Relative Positioning (default)                      |$${\color{orange}STATE}$$|
 | G92     | Set Position (Disable <0 values)                    |$${\color{orange}STATE}$$|
-| M Codes                                                                                   |
+| ##M Codes                                                                                |
 | Code    | Description                                         | Status                   |
 | M0 / M1 | Unconditional STOP                                  |$${\color{orange}STATE}$$|
 | M3      | Turn on Spindle CW                                  | $${\color{green}STATE}$$|
