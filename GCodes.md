@@ -1,6 +1,6 @@
 # G and M Codes
 
-| G Codes                                                                                  |
+| G Codes |                                                     |                          |
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}STATE}$$ |
