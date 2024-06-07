@@ -4,7 +4,7 @@
 
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
-| G0 / G1 | Linear Move                                         |<code style="color : Green">TESTED</code>|
+| G0 / G1 | Linear Move                                         | $${\color{green}TESTED}$$|
 | G2 / G3 | Arc or Circle Move                                  |                          |
 | G4      | Dwell                                               |                          |
 | G5      | Bézier cubic spline                                 |                          |
