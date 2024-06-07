@@ -31,6 +31,10 @@ namespace CNC_Interpreter_V2
 
         private long startTime = Stopwatch.GetTimestamp();
 
+        private string dir = "../";
+        private string currentFile = "";
+        private bool startedFile = false;
+
         public List<Coordinate> Moves { get { return moves; } }
 
         public void Interpret(string GCODE)
@@ -230,7 +234,6 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("List Items SD card");
                     try
                     {
-                        string dir = "../"; // Change to correct directory
                         string[] Files = Directory.GetFiles(dir);
                         Console.WriteLine("Choose your file:");
                         for (int i = 0; i < Files.Length; i++)
@@ -241,14 +244,16 @@ namespace CNC_Interpreter_V2
                         Console.WriteLine(e);
                     }
                     break;
-                case "M21":
-                    Debug.WriteLine("Initialize SD card");
-                    break;
-                case "M22":
-                    Debug.WriteLine("Release SD card");
-                    break;
                 case "M23":
                     Debug.WriteLine("Select file on SD");
+                    try
+                    {
+                        currentFile = dir + value.OpenText;
+                        File.OpenRead(currentFile);
+                    } catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                     break;
                 case "M24":
                     Debug.WriteLine("Start/Resume SD file");
@@ -258,6 +263,13 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M27":
                     Debug.WriteLine("Report SD Execution Status");
+                    if (startedFile)
+                    {
+                        Console.WriteLine("Executing file");
+                    } else
+                    {
+                        Console.WriteLine("Currently not executing file");
+                    }
                     break;
                 case "M28": // May be discontinued
                     Debug.WriteLine("Start Write to SD Card");
@@ -267,6 +279,18 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M30":
                     Debug.WriteLine("Delete file from SD");
+                    if(value.OpenText != null)
+                    {
+                        try
+                        {
+                            string file = dir + value.OpenText;
+                            File.Delete(file);
+                        } catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                        
+                    }
                     break;
 
                 case "M31":
