@@ -35,6 +35,9 @@ namespace CNC_Interpreter_V2
         private double[] spindelToProbe = { 0.0, 20.0, 21.5};
         private double[] limit = { 220, 220, 250};
 
+        private int maxSavedPositions = 16;
+        private List<Coordinate> savedPositions = new List<Coordinate>();
+
         public double X { get { return x; } set { if (value.GetType() == typeof(double)) { x = value; } } }
         public double Y { get { return y; } set { if (value.GetType() == typeof(double)) { y = value; } } }
         public double Z { get { return z; } set { if (value.GetType() == typeof(double)) { z = value; } } }
@@ -49,6 +52,9 @@ namespace CNC_Interpreter_V2
         public bool EmergencyStop { get { return emergencyStop; } set { emergencyStop = value; } }
         public double[] SpindelToProbe {  get { return spindelToProbe; } }
         public double[] Limit {  get { return limit; } }
+
+        public List<Coordinate> SavedPositions { get { return savedPositions; } set { } }
+        public int MaxSavedPositions {  get { return maxSavedPositions; } set { } }
 
         public Settings(double X, double Y, double Z)
         {

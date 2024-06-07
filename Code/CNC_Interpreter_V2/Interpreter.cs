@@ -141,7 +141,17 @@ namespace CNC_Interpreter_V2
                     break;
                 case "G60":
                     Debug.WriteLine("Save Current position");
-
+                    Coordinate currentPos = new Coordinate(settings.X, settings.Y, settings.Z, false);
+                    if ((int)value.S > settings.MaxSavedPositions)
+                    {
+                        Console.WriteLine("Choose a lower slot, maximum amount of slots is " + settings.MaxSavedPositions);
+                        break;
+                    }
+                    while(settings.SavedPositions.Count() < (int)value.S)
+                    {
+                        settings.SavedPositions.Add(new Coordinate(0,0,0,false));
+                    }
+                        settings.SavedPositions[(int)value.S] = currentPos;
                     break;
                 case "G61":
                     Debug.WriteLine("Return to saved position");
