@@ -1,8 +1,8 @@
 # G and M Codes
 
 | G Codes                                                                                  |
-|---------|-----------------------------------------------------|--------------------------|
 | Code    | Description                                         | Status                   |
+|---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}STATE}$$ |
 | G2 / G3 | Arc or Circle Move                                  | $${\color{orange}STATE}$$|
 | G4      | Dwell                                               | $${\color{orange}STATE}$$|
