@@ -5,16 +5,16 @@
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | G0 / G1 | Linear Move                                         | $${\color{green}TESTED}$$|
-| G2 / G3 | Arc or Circle Move                                  |                          |
-| G4      | Dwell                                               |                          |
-| G5      | Bézier cubic spline                                 |                          |
-| G6      | Direct Stepper Move                                 |                          |
+| G2 / G3 | Arc or Circle Move                                  |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
+| G4      | Dwell                                               |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
+| G5      | Bézier cubic spline                                 |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
+| G6      | Direct Stepper Move                                 |$${\color{orange}IMPLEMENTED\\NOT TESTED}$$|
 | G17     | CNC Workspace Plane XY                              |                          |
 | G18     | CNC Workspace Plane ZX                              |                          |
 | G19     | CNC Workspace Plane YZ                              |                          |
-| G21     | Units mm                                            |                          |
+| G21     | Units mm                                            | $${\color{green}TESTED}$$|
 | G27     | Park Toolhead                                       |                          |
-| G28     | Auto Home                                           |                          |
+| G28     | Auto Home                                           | $${\color{green}TESTED}$$|
 | G42     | Move to mesh coordinate                             |                          |
 | G53     | Move in Machine coordinates (fast move)             |                          |
 | G54     | Workspace Coordinate System Slot 1                  |                          |
@@ -36,10 +36,10 @@
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | M0 / M1 | Unconditional STOP                                  |                          |
-| M3      | Turn on Spindle CW                                  |                          |
-| M4      | Turn on Spindle CCW                                 |                          |
-| M5      | Turn off Spindle                                    |                          |
-| M16     | Device checker (Always returns true, no printer check) |                          |
+| M3      | Turn on Spindle CW                                  | $${\color{green}TESTED}$$|
+| M4      | Turn on Spindle CCW                                 | $${\color{green}TESTED}$$|
+| M5      | Turn off Spindle                                    | $${\color{green}TESTED}$$|
+| M16     | Device checker (Always returns true, no printer check) | $${\color{green}TESTED}$$|
 | M18 / M84 | Disable all steppers                              |                          |
 | M20     | List Items SD card (Only when using SD Card)        |                          |
 | M21     | Initialize SD card                                  |                          |
@@ -57,15 +57,15 @@
 | M75     | Start Print Job Timer (LCD)                         |                          |
 | M76     | Pause Print Job Timer (LCD)                         |                          |
 | M77     | Stop Print Job Timer (LCD)                          |                          |
-| M100    | Free Memory                                         |                          |
+| M100    | Free Memory                                         | $${\color{green}TESTED}$$|
 | M105    | Temperature Report                                  |                          |
 | M111    | Set debug level                                     |                          |
 | M112    | Full Shutdown                                       |                          |
 | M114    | Get Current Position                                |                          |
 | M115    | Firmware Info                                       |                          |
 | M117    | Set LCD Message                                     |                          |
-| M119    | Endstop States                                      |                          |
-| M149    | Set Temperature Units (C/F/K) (Fixed at C)          |                          |
+| M119    | Endstop States                                      | $${\color{green}TESTED}$$|
+| M149    | Set Temperature Units (C/F/K) (Fixed at C)          | $${\color{green}TESTED}$$|
 | M150    | Set LED(strip) RGB(W) Color                         |                          |
 | M201    | Set MAX Acceleration                                |                          |
 | M205    | Advanced axis Settings                              |                          |
