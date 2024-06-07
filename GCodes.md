@@ -1,7 +1,7 @@
 # G and M Codes
 
-$${\color{green}Implemented and Tested}$$
-$${\color{orange}Implemented and NOT Tested}$$
+$${\color{green}Implemented and Tested}
+{\color{orange}Implemented and NOT Tested}
 $${\color{red}Not Implemented}$$
 
 
