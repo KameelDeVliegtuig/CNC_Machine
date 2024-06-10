@@ -33,6 +33,7 @@ AxisControl axisControl = new AxisControl(25, null);
 
 Console.WriteLine("Hello, World!");
 
+presenceDetector.StartListening();
 
 while (true)
 {
