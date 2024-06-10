@@ -4,7 +4,7 @@ using System.IO.Ports;
 
 public class PresenceDetector
 {
-    private const int DataLength = 24; // Length of the data frame
+    private const int DataLength =30; // Length of the data frame
     private SerialPort serialPort;
     private bool currentState;
 
