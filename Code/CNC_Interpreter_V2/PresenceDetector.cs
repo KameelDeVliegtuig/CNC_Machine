@@ -59,16 +59,14 @@ public class PresenceDetector
                 // Extract the valid frame
                 byte[] frame = new byte[DataLength];
                 Array.Copy(buffer, i, frame, 0, DataLength);
-
+                Console.WriteLine(BitConverter.ToString(frame));
                 // Process the frame
                 ProcessFrame(frame);
 
                 // Skip to the next potential frame start
                 i += DataLength - 1;
             }
-        }
-        Console.WriteLine("Buffer processed");
-        
+        }        
     }
 
     private void ProcessFrame(byte[] frame)
@@ -80,7 +78,7 @@ public class PresenceDetector
         // Check if presence is detected within a certain range
         IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 1000); // Example range: 1000 mm
 
-        Console.WriteLine(BitConverter.ToString(frame));
+        
 
         Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
     }
