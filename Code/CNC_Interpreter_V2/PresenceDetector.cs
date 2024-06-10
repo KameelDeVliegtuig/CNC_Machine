@@ -53,8 +53,7 @@ public class PresenceDetector
         for (int i = 0; i <= bufferLength - DataLength; i++)
         {
             // Check for the header and end of frame bytes
-            if (buffer[i] == 0xAA && buffer[i + 1] == 0xFF && buffer[i + 2] == 0x03 && buffer[i + 3] == 0x00 &&
-                buffer[i + DataLength - 2] == 0x55 && buffer[i + DataLength - 1] == 0xCC)
+            if (buffer[i] == 0xAA && buffer[i + 1] == 0xFF)
             {
                 // Extract the valid frame
                 byte[] frame = new byte[DataLength];
