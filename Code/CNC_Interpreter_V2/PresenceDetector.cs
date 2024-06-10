@@ -89,7 +89,7 @@ public class PresenceDetector
         short yCoordinate = BitConverter.ToInt16(frame, 6);
 
         // Check if presence is detected within a certain range
-        IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 1000); // Example range: 1000 mm
+        IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 400); // Example range: 1000 mm
 
         Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
     }
