@@ -26,6 +26,7 @@ public class PresenceDetector
         }
         catch (Exception ex)
         {
+
             Console.WriteLine($"Error: {ex.Message}");
         }
         finally

@@ -12,7 +12,7 @@ using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorit
 //{
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
-PresenceDetector presenceDetector = new PresenceDetector("/dev/ttyUSB0", 256000);
+PresenceDetector presenceDetector = new PresenceDetector("/dev/ttyUSB0", 9600);
 Coordinate coordinate = new Coordinate(10, 10, 10, true);
 
 AxisControl axisControl = new AxisControl(25, null);
