@@ -152,7 +152,8 @@ namespace CNC_Interpreter_V2
 			if (Speed > 100)
 			{
 				Speed = 100;
-			}
+                _currentSpindelSpeed = Speed;
+            }
 
 			if (Speed == 0)
 			{
