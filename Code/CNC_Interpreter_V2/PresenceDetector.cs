@@ -1,11 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO.Ports;
 
 public class PresenceDetector
 {
-    private const int DataLength =30; // Length of the data frame
+    private const int DataLength = 30; // Length of the data frame
     private SerialPort serialPort;
+    private byte[] buffer = new byte[DataLength * 2]; // Buffer for received data
+    private int bufferIndex = 0; // Current index in the buffer
     private bool currentState;
 
     public bool IsPresenceDetected { get; private set; }
@@ -39,33 +40,46 @@ public class PresenceDetector
     {
         SerialPort serialPort = (SerialPort)sender;
 
-        // Read all available data into a temporary buffer
-        byte[] tempBuffer = new byte[serialPort.BytesToRead];
-        serialPort.Read(tempBuffer, 0, tempBuffer.Length);
-        
+        // Read all available data into the buffer
+        int bytesRead = serialPort.Read(buffer, bufferIndex, buffer.Length - bufferIndex);
+        bufferIndex += bytesRead;
+
         // Process the buffer to find valid frames
-        ProcessBuffer(tempBuffer);
+        ProcessBuffer();
     }
 
-    private void ProcessBuffer(byte[] buffer)
+    private void ProcessBuffer()
     {
-        int bufferLength = buffer.Length;
-        for (int i = 0; i <= bufferLength - DataLength; i++)
+        int i = 0;
+        while (i <= bufferIndex - DataLength)
         {
             // Check for the header and end of frame bytes
-            if (buffer[i] == 0xAA && buffer[i + 1] == 0xFF)
+            if (buffer[i] == 0xAA && buffer[i + 1] == 0xFF && buffer[i + 2] == 0x03 && buffer[i + 3] == 0x00 &&
+                buffer[i + DataLength - 2] == 0x55 && buffer[i + DataLength - 1] == 0xCC)
             {
                 // Extract the valid frame
                 byte[] frame = new byte[DataLength];
                 Array.Copy(buffer, i, frame, 0, DataLength);
-                Console.WriteLine(BitConverter.ToString(frame));
+
                 // Process the frame
                 ProcessFrame(frame);
 
-                // Skip to the next potential frame start
-                i += DataLength - 1;
+                // Move past this frame in the buffer
+                i += DataLength;
             }
-        }        
+            else
+            {
+                i++;
+            }
+        }
+
+        // Shift any remaining bytes to the beginning of the buffer
+        int remainingBytes = bufferIndex - i;
+        if (remainingBytes > 0)
+        {
+            Array.Copy(buffer, i, buffer, 0, remainingBytes);
+        }
+        bufferIndex = remainingBytes;
     }
 
     private void ProcessFrame(byte[] frame)
@@ -76,8 +90,6 @@ public class PresenceDetector
 
         // Check if presence is detected within a certain range
         IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 1000); // Example range: 1000 mm
-
-        
 
         Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
     }
