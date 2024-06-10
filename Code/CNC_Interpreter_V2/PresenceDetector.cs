@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO.Ports;
 
 public class PresenceDetector
@@ -26,7 +27,6 @@ public class PresenceDetector
         }
         catch (Exception ex)
         {
-
             Console.WriteLine($"Error: {ex.Message}");
         }
         finally
@@ -39,29 +39,50 @@ public class PresenceDetector
     {
         SerialPort serialPort = (SerialPort)sender;
 
-        // Check if enough bytes are available in the input buffer
-        if (serialPort.BytesToRead < DataLength)
+        // Read all available data into a temporary buffer
+        byte[] tempBuffer = new byte[serialPort.BytesToRead];
+        serialPort.Read(tempBuffer, 0, tempBuffer.Length);
+        
+        // Process the buffer to find valid frames
+        ProcessBuffer(tempBuffer);
+    }
+
+    private void ProcessBuffer(byte[] buffer)
+    {
+        int bufferLength = buffer.Length;
+        for (int i = 0; i <= bufferLength - DataLength; i++)
         {
-            return;
+            // Check for the header and end of frame bytes
+            if (buffer[i] == 0xAA && buffer[i + 1] == 0xFF && buffer[i + 2] == 0x03 && buffer[i + 3] == 0x00 &&
+                buffer[i + DataLength - 2] == 0x55 && buffer[i + DataLength - 1] == 0xCC)
+            {
+                // Extract the valid frame
+                byte[] frame = new byte[DataLength];
+                Array.Copy(buffer, i, frame, 0, DataLength);
+
+                // Process the frame
+                ProcessFrame(frame);
+
+                // Skip to the next potential frame start
+                i += DataLength - 1;
+            }
         }
+        Console.WriteLine("Buffer processed");
+        
+    }
 
-        // Read the data into the buffer
-        byte[] buffer = new byte[DataLength];
-        serialPort.Read(buffer, 0, DataLength);
-        Console.WriteLine(BitConverter.ToString(buffer));
+    private void ProcessFrame(byte[] frame)
+    {
+        // Extract target information
+        short xCoordinate = BitConverter.ToInt16(frame, 4);
+        short yCoordinate = BitConverter.ToInt16(frame, 6);
 
-        // Check if the received data matches the expected format
-        if (buffer[0] == 0xAA && buffer[1] == 0xFF && buffer[2] == 0x03 && buffer[3] == 0x00 && buffer[DataLength - 2] == 0x55 && buffer[DataLength - 1] == 0xCC)
-        {
-            // Extract target information
-            short xCoordinate = BitConverter.ToInt16(buffer, 4);
-            short yCoordinate = BitConverter.ToInt16(buffer, 6);
+        // Check if presence is detected within a certain range
+        IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 1000); // Example range: 1000 mm
 
-            // Check if presence is detected within a certain range
-            IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 1000); // Example range: 1000 mm
+        Console.WriteLine(BitConverter.ToString(frame));
 
-            Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
-        }
+        Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
     }
 
     private bool CheckPresenceDetected(short xDistance, short yDistance, int range)
@@ -76,4 +97,3 @@ public class PresenceDetector
         return isDetected;
     }
 }
-
