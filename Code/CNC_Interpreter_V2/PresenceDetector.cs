@@ -97,7 +97,7 @@ public class PresenceDetector
     private bool CheckPresenceDetected(short xDistance, short yDistance, int range)
     {
         // Check if the presence is within the specified range
-        bool isDetected = (xDistance >= -range && xDistance <= range) && (yDistance >= -range && yDistance <= range);
+        bool isDetected = xDistance <= 400 && xDistance > 0;
 
         // Flip the current state
         currentState = !currentState;
