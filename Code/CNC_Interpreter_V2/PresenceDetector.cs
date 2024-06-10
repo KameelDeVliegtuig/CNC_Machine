@@ -11,7 +11,7 @@ public class PresenceDetector
 
     public PresenceDetector(string portName, int baudRate)
     {
-        serialPort = new SerialPort(portName, baudRate);
+        serialPort = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
         serialPort.DataReceived += SerialPortDataReceived;
         currentState = false;
     }
@@ -48,6 +48,7 @@ public class PresenceDetector
         // Read the data into the buffer
         byte[] buffer = new byte[DataLength];
         serialPort.Read(buffer, 0, DataLength);
+        Console.WriteLine(BitConverter.ToString(buffer));
 
         // Check if the received data matches the expected format
         if (buffer[0] == 0xAA && buffer[1] == 0xFF && buffer[2] == 0x03 && buffer[3] == 0x00 && buffer[DataLength - 2] == 0x55 && buffer[DataLength - 1] == 0xCC)
