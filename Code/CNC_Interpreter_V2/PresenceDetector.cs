@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Numerics;
 
 public class PresenceDetector
 {
@@ -87,6 +88,8 @@ public class PresenceDetector
         // Extract target information
         short xCoordinate = BitConverter.ToInt16(frame, 4);
         short yCoordinate = BitConverter.ToInt16(frame, 6);
+        xCoordinate = (short)(0 - xCoordinate);
+        yCoordinate = (short)(yCoordinate - 32768);
 
         // Check if presence is detected within a certain range
         IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 400); // Example range: 1000 mm
