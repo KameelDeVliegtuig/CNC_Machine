@@ -162,7 +162,7 @@ namespace CNC_Interpreter_V2
 				while (_currentSpindelSpeed > 10)
 				{
 					_currentSpindelSpeed = _currentSpindelSpeed - 1 ;
-					//_setPWM(true, 1, 0, (double)_currentSpindelSpeed / 100);
+					_setPWM(true, 1, 0, (double)(_currentSpindelSpeed / 100));
 					Console.WriteLine("Spindel speed: " + _currentSpindelSpeed);
 					Thread.Sleep(800);
 				}
