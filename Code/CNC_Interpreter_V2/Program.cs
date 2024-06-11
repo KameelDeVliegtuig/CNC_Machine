@@ -17,7 +17,22 @@ Coordinate coordinate = new Coordinate(10, 10, 10, true);
 
 AxisControl axisControl = new AxisControl(25, null);
 
+Thread presenceThread = new Thread(() =>
+{
+    while (true)
+    {
+        if (presenceDetector.IsPresenceDetected)
+        {
+            Console.WriteLine("Presence detected! Stopping machine.");
+            Environment.Exit(0); // This will stop the entire program
+        }
 
+        // Sleep for a short time to reduce CPU usage
+        Thread.Sleep(100);
+    }
+});
+
+presenceThread.Start();
 
 //if (args.Length == 0)
 //{
@@ -31,12 +46,11 @@ AxisControl axisControl = new AxisControl(25, null);
 //    }
 //}
 
-Console.WriteLine("Hello, World!");
-
-presenceDetector.StartListening();
+Console.WriteLine("Program started!");
 
 while (true)
 {
+
     string? GCode = Console.ReadLine();
     if (GCode == null) break;
     try

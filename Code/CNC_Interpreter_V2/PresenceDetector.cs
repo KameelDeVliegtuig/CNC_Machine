@@ -9,6 +9,8 @@ public class PresenceDetector
     private byte[] buffer = new byte[DataLength * 2]; // Buffer for received data
     private int bufferIndex = 0; // Current index in the buffer
     private bool currentState;
+    private Thread listeningThread;
+    public bool IsDetected { get; private set; }
 
     public bool IsPresenceDetected { get; private set; }
 
@@ -17,6 +19,11 @@ public class PresenceDetector
         serialPort = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
         serialPort.DataReceived += SerialPortDataReceived;
         currentState = false;
+
+        // Start a new thread to listen for data
+        listeningThread = new Thread(StartListening);
+        listeningThread.Start();
+
     }
 
     public void StartListening()
@@ -24,8 +31,7 @@ public class PresenceDetector
         try
         {
             serialPort.Open();
-            Console.WriteLine("Listening for radar data. Press Enter to exit.");
-            Console.ReadLine(); // Keep the program running until Enter is pressed
+            while (true) { } // Keep the program running (listening for data)
         }
         catch (Exception ex)
         {
