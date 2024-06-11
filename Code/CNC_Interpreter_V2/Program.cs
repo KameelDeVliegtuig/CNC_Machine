@@ -24,7 +24,7 @@ Thread presenceThread = new Thread(() =>
         if (presenceDetector.IsPresenceDetected)
         {
             Console.WriteLine("Presence detected! Stopping machine.");
-            Environment.Exit(0); // This will stop the entire program
+            gpioControl.EmergencyStop();
         }
 
         // Sleep for a short time to reduce CPU usage
