@@ -65,4 +65,5 @@ static class Globals
 {
     public static bool stop = false;
     public static bool brake = false;
+    public static int currentSpindelSpeed = 0;
 }

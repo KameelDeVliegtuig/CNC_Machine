@@ -60,6 +60,7 @@ public class PresenceDetector
             {
                 if (currentLocation.X < brakingLimitX && currentLocation.Y < brakingLimitY && currentLocation.X > stopLimitX && currentLocation.Y > stopLimitY)
                 {
+                    
                     gpioControl.ControlSpindel(30);
                     Globals.brake = true;
                     Console.WriteLine("Braking");
@@ -155,22 +156,5 @@ public class PresenceDetector
         currentLocation.X = xCoordinate;
         currentLocation.Y = yCoordinate;
 
-        // Check if presence is detected within a certain range
-        IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 400); // Example range: 1000 mm
-
-        Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
-
-    }
-
-    private bool CheckPresenceDetected(short xDistance, short yDistance, int range)
-    {
-        // Check if the presence is within the specified range
-        bool isDetected = (xDistance <= 452 && xDistance > 0) && (yDistance <= 500);
-
-        // Flip the current state
-        currentState = !currentState;
-
-        // Return the detection status
-        return isDetected;
     }
 }

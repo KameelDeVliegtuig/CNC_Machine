@@ -166,7 +166,7 @@ namespace CNC_Interpreter_V2
 					Console.WriteLine("Spindel speed: " + _currentSpindelSpeed);
 					Thread.Sleep(100);
 				}
-
+				Globals.currentSpindelSpeed = 0;
 				_setPWM(false, 1, 0, 0);
 				return true;
 			}
@@ -174,6 +174,7 @@ namespace CNC_Interpreter_V2
 			{
 				_setPWM(false, 1, 0, 0);
 				_currentSpindelSpeed = Speed;
+				Globals.currentSpindelSpeed = Speed;
 			}
 			else if (Speed > 0 && Speed <= 100 && !Globals.brake && !Globals.stop)
 			{
@@ -186,6 +187,7 @@ namespace CNC_Interpreter_V2
                 }
 				
 				_currentSpindelSpeed = Speed;
+				Globals.currentSpindelSpeed = Speed;
 				Console.WriteLine("Set spindel to: " + Speed);
 
 			}
