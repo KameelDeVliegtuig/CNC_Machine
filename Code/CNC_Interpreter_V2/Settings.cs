@@ -27,7 +27,7 @@ namespace CNC_Interpreter_V2
         private bool spindelDir = true; // True = CW, False = CCW
         private bool stepperEnable = false;
         // CurrentFile string??
-        private int lineCounter;
+        private int lineCounter = 0;
         private bool locked;
         private int passcode;
         private short logging;
