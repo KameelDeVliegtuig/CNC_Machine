@@ -11,15 +11,15 @@ namespace CNC_Interpreter_V2
     internal class Value
     {
         private string command = "";
-        private double x;
-        private double y;
-        private double z;
-        private double i;
-        private double j;
-        private double p;
-        private double q;
-        private double r;
-        private double s; // Spindel On/Off
+        private double x = -0.0;
+        private double y = -0.0;
+        private double z = -0.0;
+        private double i = -0.0;
+        private double j = -0.0;
+        private double p = -0.0;
+        private double q = -0.0;
+        private double r = -0.0;
+        private double s = -0.0; // Spindel
         private Settings.Workplanes workplane;
         private bool mm;
         private string? openText;

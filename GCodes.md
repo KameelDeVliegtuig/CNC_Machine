@@ -1,11 +1,5 @@
 # G and M Codes
 
-$${\color{green}Implemented and Tested}
-{\color{orange}Implemented and NOT Tested}
-$${\color{red}Not Implemented}$$
-
-
-
 | Code    | Description                                         | Status                   |
 |---------|-----------------------------------------------------|--------------------------|
 | **G Codes** |                                                     |                          |
@@ -13,7 +7,6 @@ $${\color{red}Not Implemented}$$
 | G2 / G3 | Arc or Circle Move                                  | $${\color{orange}STATE}$$|
 | G4      | Dwell                                               | $${\color{orange}STATE}$$|
 | G5      | Bézier cubic spline                                 | $${\color{orange}STATE}$$|
-| G6      | Direct Stepper Move                                 | $${\color{orange}STATE}$$|
 | G17     | CNC Workspace Plane XY                              | $${\color{orange}STATE}$$|
 | G18     | CNC Workspace Plane ZX                              | $${\color{orange}STATE}$$|
 | G19     | CNC Workspace Plane YZ                              | $${\color{orange}STATE}$$|
