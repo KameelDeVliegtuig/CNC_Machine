@@ -28,13 +28,13 @@ public class PresenceDetector
     public bool IsDetected { get; private set; }
 
     //  Define the limits for presence detection when to slow down and when to stop
-    private const short brakingLimitX = 452;
-    private const short brakingLimitY = 500;
-    private const short stopLimitX = 0;
-    private const short stopLimitY = 0;
+
+    private const short stopLimitX = 452;
+    private const short stopLimitY = 500;
+    private const short brakingLimitX = stopLimitX + 200 ;
+    private const short brakingLimitY = stopLimitY + 200;
 
 
-    
 
 
     public bool IsPresenceDetected { get; private set; }
@@ -62,18 +62,20 @@ public class PresenceDetector
                 {
                     gpioControl.ControlSpindel(30);
                     Globals.brake = true;
-                    
+                    Console.WriteLine("Braking");
 
                 }
                 else if(currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY)
                 {
                     Globals.stop = true;
                     gpioControl.ControlSpindel(-1);
+                    Console.WriteLine("Stopping");
                 }
                 else
                 {
                     Globals.brake = false;
                     Globals.stop = false;
+                    Console.WriteLine("Clear");
                 }
 
 
@@ -144,11 +146,11 @@ public class PresenceDetector
 
         if (xCoordinate < 0)
         {
-            xCoordinate = 0;
+            xCoordinate = 32767;
         }
         if (yCoordinate < 0)
         {
-            yCoordinate = 0;
+            yCoordinate = 32767;
         }
 
         currentLocation.X = xCoordinate;

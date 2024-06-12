@@ -172,7 +172,6 @@ namespace CNC_Interpreter_V2
 			}
 			else if (Speed < 0)
 			{
-				Console.WriteLine("Emergency stop");
 				_setPWM(false, 1, 0, 0);
 				_currentSpindelSpeed = Speed;
 			}
