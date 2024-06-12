@@ -22,15 +22,14 @@ public class PresenceDetector
     private byte[] buffer = new byte[DataLength * 2]; // Buffer for received data
     private int bufferIndex = 0; 
 
-    // Define the current state and listening thread
-    private bool currentState;
+
     private Thread listeningThread;
     public bool IsDetected { get; private set; }
 
     //  Define the limits for presence detection when to slow down and when to stop
 
-    private const short stopLimitX = 452;
-    private const short stopLimitY = 500;
+    private const short stopLimitX = 300;
+    private const short stopLimitY = 200;
     private const short brakingLimitX = stopLimitX + 200 ;
     private const short brakingLimitY = stopLimitY + 200;
 
@@ -43,7 +42,6 @@ public class PresenceDetector
     {
         serialPort = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
         serialPort.DataReceived += SerialPortDataReceived;
-        currentState = false;
 
         // Start a new thread to listen for data
         listeningThread = new Thread(StartListening);
