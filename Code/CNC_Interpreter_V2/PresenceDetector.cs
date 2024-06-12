@@ -75,7 +75,6 @@ public class PresenceDetector
                 {
                     Globals.brake = false;
                     Globals.stop = false;
-                    Console.WriteLine("Clear");
                 }
 
 
