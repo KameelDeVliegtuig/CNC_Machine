@@ -144,7 +144,7 @@ namespace CNC_Interpreter_V2
 		}
 
 		// Control the spindle speed, direction and stop mode with PWM 
-		public bool ControlSpindel(int Speed, bool Dir)
+		public bool ControlSpindel(int Speed, bool? Dir = null)
 		{
 			// Constrain speed to 100
 			// If speed is lessthan 0, stop the spindle in a hard manner
@@ -176,11 +176,16 @@ namespace CNC_Interpreter_V2
 				_setPWM(false, 1, 0, 0);
 				_currentSpindelSpeed = Speed;
 			}
-			else if (Speed > 0 && Speed <= 100)
+			else if (Speed > 0 && Speed <= 100 && !Globals.brake && !Globals.stop)
 			{
 				double DutyCycle = (double)Speed / 100;
 				_setPWM(true, 1, 0, DutyCycle);
-				_setPin(6, Dir);
+				
+				if(Dir != null)
+				{
+                    _setPin(6, (bool)Dir);
+                }
+				
 				_currentSpindelSpeed = Speed;
 				Console.WriteLine("Set spindel to: " + Speed);
 
@@ -193,23 +198,32 @@ namespace CNC_Interpreter_V2
 		// Thread.Sleep(0) 400 times is ~100us
 		public bool ControlStep(bool dir, StepperAxis steppers)
 		{
+
 			extenderBusy = true;
-			_setPin(_stepEnable, false);
-			_ioExtender.WritePin(((int)steppers + 3), dir);
 
-			_ioExtender.WritePin((int)steppers, true);
-			for (int i = 0; i < 200; i++)
+            if (Globals.brake || Globals.stop) 
 			{
-				Thread.Sleep(0);
+				_setPin(_stepEnable, true);
+				return false;
 			}
-			_ioExtender.WritePin((int)steppers, false);
-			for (int i = 0; i < 200; i++)
+			else
 			{
-				Thread.Sleep(0);
-			}
-			extenderBusy = false;
+				_setPin(_stepEnable, false);
+				_ioExtender.WritePin(((int)steppers + 3), dir);
 
-			return true;
+				_ioExtender.WritePin((int)steppers, true);
+				for (int i = 0; i < 200; i++)
+				{
+					Thread.Sleep(0);
+				}
+				_ioExtender.WritePin((int)steppers, false);
+				for (int i = 0; i < 200; i++)
+				{
+					Thread.Sleep(0);
+				}
+				extenderBusy = false;
+
+				return true; }
 		}
 
 		public bool ToggleStepPin()

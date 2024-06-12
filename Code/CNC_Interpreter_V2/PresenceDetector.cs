@@ -1,16 +1,41 @@
-﻿using System;
+﻿using CNC_Interpreter_V2;
+using System;
 using System.IO.Ports;
 using System.Numerics;
+using UnitsNet;
 
 public class PresenceDetector
 {
+
+    struct Location
+    {
+        public short X;
+        public short Y;
+    }
+    private Location currentLocation = new Location();
+
+    GPIOControl gpioControl = new GPIOControl();
+    
+    //  Define the data frame structure and settings
     private const int DataLength = 30; // Length of the data frame
-    private SerialPort serialPort;
+    private SerialPort serialPort; // Serial port for communication
     private byte[] buffer = new byte[DataLength * 2]; // Buffer for received data
-    private int bufferIndex = 0; // Current index in the buffer
+    private int bufferIndex = 0; 
+
+    // Define the current state and listening thread
     private bool currentState;
     private Thread listeningThread;
     public bool IsDetected { get; private set; }
+
+    //  Define the limits for presence detection when to slow down and when to stop
+    private const short brakingLimitX = 452;
+    private const short brakingLimitY = 500;
+    private const short stopLimitX = 0;
+    private const short stopLimitY = 0;
+
+
+    
+
 
     public bool IsPresenceDetected { get; private set; }
 
@@ -31,7 +56,28 @@ public class PresenceDetector
         try
         {
             serialPort.Open();
-            while (true) { } // Keep the program running (listening for data)
+            while (true)
+            {
+                if (currentLocation.X < brakingLimitX && currentLocation.Y < brakingLimitY && currentLocation.X > stopLimitX && currentLocation.Y > stopLimitY)
+                {
+                    gpioControl.ControlSpindel(30);
+                    Globals.brake = true;
+                    
+
+                }
+                else if(currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY)
+                {
+                    Globals.stop = true;
+                    gpioControl.ControlSpindel(-1);
+                }
+                else
+                {
+                    Globals.brake = false;
+                    Globals.stop = false;
+                }
+
+
+            } // Keep the program running (listening for data)
         }
         catch (Exception ex)
         {
@@ -96,10 +142,23 @@ public class PresenceDetector
         short yCoordinate = BitConverter.ToInt16(frame, 6);
         yCoordinate = (short)(yCoordinate - 32768);
 
+        if (xCoordinate < 0)
+        {
+            xCoordinate = 0;
+        }
+        if (yCoordinate < 0)
+        {
+            yCoordinate = 0;
+        }
+
+        currentLocation.X = xCoordinate;
+        currentLocation.Y = yCoordinate;
+
         // Check if presence is detected within a certain range
         IsPresenceDetected = CheckPresenceDetected(xCoordinate, yCoordinate, 400); // Example range: 1000 mm
 
         Console.WriteLine($"Presence detected: {IsPresenceDetected}, X: {xCoordinate}, Y: {yCoordinate}");
+
     }
 
     private bool CheckPresenceDetected(short xDistance, short yDistance, int range)

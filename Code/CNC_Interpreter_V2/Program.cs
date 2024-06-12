@@ -10,29 +10,14 @@ using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorit
 
 //static void Main(string[] args)
 //{
+
 Interpreter interpreter = new Interpreter();
 GPIOControl gpioControl = new GPIOControl();
 PresenceDetector presenceDetector = new PresenceDetector("/dev/ttyUSB0", 115200);
 Coordinate coordinate = new Coordinate(10, 10, 10, true);
-
 AxisControl axisControl = new AxisControl(25, null);
 
-Thread presenceThread = new Thread(() =>
-{
-    while (true)
-    {
-        if (presenceDetector.IsPresenceDetected)
-        {
-            Console.WriteLine("Presence detected! Stopping machine.");
-            gpioControl.EmergencyStop();
-        }
 
-        // Sleep for a short time to reduce CPU usage
-        Thread.Sleep(100);
-    }
-});
-
-presenceThread.Start();
 
 //if (args.Length == 0)
 //{
@@ -64,6 +49,10 @@ while (true)
     Console.WriteLine("Moves length: " + interpreter.Moves.Count());
     for (int i = 0; i < interpreter.Moves.Count; i++)
     {
+        if (Globals.brake || Globals.stop)
+        {
+            break;
+        }
         interpreter.Moves[0].Print();
         axisControl.Move(interpreter.Moves[0]);
         interpreter.Moves.RemoveAt(0);
@@ -71,11 +60,9 @@ while (true)
 
 }
 
-//}
-//interpreter.Interpret("G1");
-//interpreter.Interpret("X0 Y4 Z0.1");
-//interpreter.Interpret("M0 P2000");
-//interpreter.Interpret("M0 S5");
-//interpreter.Interpret("G0 X6 Y-2 Z2");
-//interpreter.Interpret("G5 I0 J0 P5 Q2 X10 Y5");
-//Console.WriteLine("Interpreter has finished");    
+
+static class Globals
+{
+    public static bool stop = false;
+    public static bool brake = false;
+}
