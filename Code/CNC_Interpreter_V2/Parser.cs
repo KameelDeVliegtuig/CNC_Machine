@@ -22,16 +22,34 @@ namespace CNC_Interpreter_V2
                 case "G1": // Linear move, spindel on
                     result.Add(new Coordinate(Input.X, Input.Y, Input.Z, true));
                     break;
-                case "G2":
-                    break;
-                case "G3":
-                    break;
-                case "G4":
+                case "G2": // Clockwise arc
+                case "G3": // CounterClockwise arc
+                    double[] begin = new[] { 0.0, 0.0 };
+                    double[] end = new double[2];
+                    double[]? offset = null;
+                    double? radius = null;
+                    bool direction = Input.Command == "G2"; // if true CW, otherwise CCW
+
+                    if (Input.X == -0.0 && Input.Y == -0.0)
+                    {
+                        end = new[] { 0.0, 0.0 };
+                    }
+                    else
+                    {
+                        end = new[] { Input.X, Input.Y };
+                    }
+                    if (Input.I != -0.0 && Input.J != -0.0)
+                    {
+                        offset = new[] { Input.I, Input.J };
+                    }
+                    if(Input.R != -0.0)
+                    {
+                        radius = Input.R;
+                    }
+                    _calculator.Arc(begin, end, offset, radius, direction);
                     break;
                 case "G5":
                     return _calculator.Bezier(current[0], current[1], Input);
-                case "G6":
-                    break;
                 default:
                     break;
             }

@@ -31,7 +31,7 @@ namespace CNC_Interpreter_V2
 
         private long startTime = Stopwatch.GetTimestamp();
 
-        private string dir = "../";
+        private string dir = "/bin";
         private string currentFile = "";
         private bool startedFile = false;
 
@@ -51,12 +51,8 @@ namespace CNC_Interpreter_V2
                 case "G2":
                 case "G3":
                 //Debug.WriteLine("Arc or Circle Move");
-                case "G4":
-                //Debug.WriteLine("Dwell");
                 case "G5":
                 //Debug.WriteLine("Bézier cubic spline");
-                case "G6":
-                    //Debug.WriteLine("Direct Stepper Move");
                     Console.WriteLine("To Parser to calculate coordinates");
                     try
                     {
@@ -67,7 +63,19 @@ namespace CNC_Interpreter_V2
                         Console.WriteLine(e);
                     }
                     break;
-
+                case "G4": // Dwell (Pause)
+                    //Debug.WriteLine("Dwell");
+                    if (value.P != -0.0)
+                    {
+                        Console.WriteLine("Waiting " + value.P + " milliseconds");
+                        Interpret("M0 P" +  value.P);
+                    }
+                    else if (value.S != -0.0)
+                    {
+                        Console.WriteLine("Waiting " +  value.S + " seconds");
+                        Interpret("M0 S" + value.S);
+                    }
+                    break;
                 // WorkPlane Select
                 case "G17": // XY
                     Debug.WriteLine("CNC Workspace Planes");
@@ -162,9 +170,9 @@ namespace CNC_Interpreter_V2
                     break;
                 case "G92": // Disable <0 values
                     Debug.WriteLine("Set Position");
-                    if (value.X > settings.Limit[0]) value.X = settings.Limit[0];
-                    if (value.Y > settings.Limit[1]) value.Y = settings.Limit[1];
-                    if (value.Z > settings.Limit[2]) value.Z = settings.Limit[2];
+                    if (value.X > settings.Limit[0] && (settings.X - value.X >= 0)) value.X = settings.Limit[0];
+                    if (value.Y > settings.Limit[1] && (settings.Y - value.Y >= 0)) value.Y = settings.Limit[1];
+                    if (value.Z > settings.Limit[2] && (settings.Z - value.Z >= 0)) value.Z = settings.Limit[2];
 
                     double xMove = value.X - settings.X;
                     double yMove = value.Y - settings.Y;

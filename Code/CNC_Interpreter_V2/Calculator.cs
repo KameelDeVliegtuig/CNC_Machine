@@ -61,6 +61,126 @@ namespace CNC_Interpreter_V2
             return result;
         }
 
+        public List<double[]> Arc(double[] start, double[] end, double[]? offset, double? radius, bool clockwise)
+        {
+            bool checkStart = (start[0] == -0.0 && start[1] == -0.0); // True if not correct
+            bool checkEnd = (end[0] == -0.0 && end[1] == -0.0); // True if not correct
+
+            if (checkStart  || checkEnd || ((offset == null || offset[0] == -0.0 || offset[1] == -0.0) && (radius == null || radius == -0.0)))
+            {
+                Console.WriteLine("Arc: Not enough arguments");
+            }
+
+            double r;
+            int clockwiseCorrector = 1;
+
+            double mx = 0, my = 0;
+            double previousX = 0, previousY = 0;
+
+            double minX, minY, maxX, maxY;
+            double dAB = linearDistance(start[0], end[0], start[1], end[1]);
+
+            // Set range for arc
+            if (start[0] > end[0])
+            {
+                minX = end[0];
+                maxX = start[0];
+            }
+            else
+            {
+                minX = start[0];
+                maxX = end[0];
+            }
+
+            if (start[1] > end[1])
+            {
+                minY = end[1];
+                maxY = start[1];
+            }
+            else
+            {
+                minY = start[1];
+                maxY = end[1];
+            }
+
+
+            if (!clockwise)
+            {
+                clockwiseCorrector = -1;
+            }
+
+            // Middlepoint
+            if (offset != null)
+            {
+                mx = (start[0] + offset[0]);
+                my = (start[1] + offset[1]);
+            }
+            else if(radius != null)
+            {
+
+                double midX = (start[0] + end[0]) / 2;
+                double midY = (start[1] + end[1]) / 2;
+
+                // Calculate the distance from the midpoint to the center of the circle
+                double d = Math.Sqrt((double)radius * (double)radius - (dAB / 2) * (dAB / 2));
+
+                // Calculate the slopes of the line segments connecting the points and the center of the circle
+                double m1 = (end[1] - start[1]) / (end[0] - start[0]);
+                double m2 = -1 / m1;
+
+                // Calculate the x and y coordinates of the center of the circle
+                mx = midX + (d * clockwiseCorrector) / Math.Sqrt(1 + m2 * m2);
+                my = midY + m2 * (mx - midX);
+            } else
+            {
+                Console.WriteLine("Arc: Both offset and radius are null");
+            }
+
+            // Radius
+            if (radius == null)
+            {
+                r = linearDistance(mx, start[0], my, start[1]);
+            }
+            else
+            {
+                r = (double)radius;
+            }
+
+            if (dAB > 2 * r)
+            {
+                throw new Exception("Distance too big!");
+            }
+
+            // Coordinates
+            List<double[]> coordinates = new List<double[]>();
+            for (double i = 0; i <= (2 * Math.PI); i += 0.001)
+            {
+                double x = (r * Math.Cos(i * clockwiseCorrector)) + mx;// + (start[0] + end[0])/2;
+                double y = (r * Math.Sin(i * clockwiseCorrector)) + my;// + (start[1] + end[1])/2;
+
+                bool ifCW = (x >= minX && x <= maxX && y <= maxY && my >= maxY) || (x >= minX && x <= maxX && y >= minY && my <= maxY);
+                bool ifCCW = (x <= maxX && x >= minX && y >= minY && maxY >= my) || (x <= maxX && x >= minX && y <= maxY && maxY <= my);
+
+                if ((clockwise && ifCW) || (!clockwise && ifCCW))
+                {
+                    if (linearDistance(previousX, x, previousY, y) >= accuracy)
+                    {
+                        previousX = x;
+                        previousY = y;
+                        double[] newcoordinate = new double[2];
+                        newcoordinate[0] = x; newcoordinate[1] = y;
+                        coordinates.Add(newcoordinate);
+                        //Debug.WriteLine("(" + x + ", " + y + "),");
+                    }
+                }
+
+
+            }
+            //Debug.WriteLine("Radius: " + r + ", M(" + mx + "," + my + ")");
+
+            return coordinates;
+        }
+
 
         private double linearDistance(double x1, double x2, double y1, double y2)
         {
