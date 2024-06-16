@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,7 +62,7 @@ namespace CNC_Interpreter_V2
             return result;
         }
 
-        public List<double[]> Arc(double[] start, double[] end, double[]? offset, double? radius, bool clockwise)
+        public List<Coordinate> Arc(double[] start, double[] end, double[]? offset, double? radius, bool clockwise, Settings.Workplanes workplane)
         {
             bool checkStart = (start[0] == -0.0 && start[1] == -0.0); // True if not correct
             bool checkEnd = (end[0] == -0.0 && end[1] == -0.0); // True if not correct
@@ -152,7 +153,7 @@ namespace CNC_Interpreter_V2
             }
 
             // Coordinates
-            List<double[]> coordinates = new List<double[]>();
+            List<Coordinate> coordinates = new List<Coordinate>();
             for (double i = 0; i <= (2 * Math.PI); i += 0.001)
             {
                 double x = (r * Math.Cos(i * clockwiseCorrector)) + mx;// + (start[0] + end[0])/2;
@@ -167,9 +168,8 @@ namespace CNC_Interpreter_V2
                     {
                         previousX = x;
                         previousY = y;
-                        double[] newcoordinate = new double[2];
-                        newcoordinate[0] = x; newcoordinate[1] = y;
-                        coordinates.Add(newcoordinate);
+                        Coordinate newcoordinate = new Coordinate(x, y, 0, true);
+                        coordinates.Add(newCoordinate(newcoordinate, workplane));
                         //Debug.WriteLine("(" + x + ", " + y + "),");
                     }
                 }

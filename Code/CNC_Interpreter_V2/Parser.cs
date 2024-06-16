@@ -54,8 +54,15 @@ namespace CNC_Interpreter_V2
                     {
                         radius = Input.R;
                     }
-                    _calculator.Arc(begin, end, offset, radius, direction);
-                    break;
+
+                    try
+                    {
+                        return _calculator.Arc(begin, end, offset, radius, direction, Input.Workplane);
+                    }
+                    catch (Exception e) { 
+                        Console.WriteLine(e);
+                        break;
+                    }
                 case "G5":
                     return _calculator.Bezier(current[0], current[1], Input);
                 default:
