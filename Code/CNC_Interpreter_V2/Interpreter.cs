@@ -483,10 +483,8 @@ namespace CNC_Interpreter_V2
 
                 case "M400":
                     Debug.WriteLine("Wait for moves to finish");
-                    if (moves.Count != 0)
-                    {
-                        Console.WriteLine("Moves is not empty");
-                    }
+                    Console.WriteLine("Waiting for moves to finish...");
+                    while (moves.Count != 0) continue;
                     break;
                 case "M401":
                     Debug.WriteLine("Deploy Bed Probe");
@@ -499,6 +497,7 @@ namespace CNC_Interpreter_V2
                 case "M410":
                     Debug.WriteLine("Stop all stepper instantly");
                     axisControl.DisableStepper();
+                    Globals.stop = true;
                     break;
                 case "M420":
                     Debug.WriteLine("Get/Set Bed Leveling State");
@@ -543,6 +542,7 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Selective Stop");
                     settings.EmergencyStop = true;
                     axisControl.EmergencyStop();
+                    Globals.stop = true;
                     break;
                 default:
                     Debug.WriteLine("Code not Found");
