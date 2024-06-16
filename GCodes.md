@@ -45,13 +45,12 @@
 | M31     | Print Time                                          |$${\color{green}STATE}$$|
 | M32     | Begin from SD File                                  |   $${\color{red}STATE}$$ |
 | M42     | Set pin state (Digital pins on extender)            |$${\color{orange}STATE}$$|
-| M73     | Manually set progress (LCD)                         |   $${\color{red}STATE}$$ |
+| M73     | Manually set progress (LCD)                         |   $${\color{orange}STATE}$$ |
 | M75     | Start Print Job Timer (LCD)                         |   $${\color{red}STATE}$$ |
 | M76     | Pause Print Job Timer (LCD)                         |   $${\color{red}STATE}$$ |
 | M77     | Stop Print Job Timer (LCD)                          |   $${\color{red}STATE}$$ |
 | M100    | Free Memory                                         | $${\color{green}STATE}$$|
 | M105    | Temperature Report                                  |$${\color{green}STATE}$$|
-| M111    | Set debug level                                     |   $${\color{red}STATE}$$ |
 | M112    | Full Shutdown                                       | $${\color{green}STATE}$$|
 | M114    | Get Current Position                                |$${\color{green}STATE}$$|
 | M115    | Firmware Info                                       |$${\color{green}STATE}$$|
@@ -59,8 +58,6 @@
 | M119    | Endstop States                                      | $${\color{green}STATE}$$|
 | M149    | Set Temperature Units (C/F/K) (Fixed at C)          | $${\color{green}STATE}$$|
 | M150    | Set LED(strip) RGB(W) Color                         |   $${\color{red}STATE}$$ |
-| M201    | Set MAX Acceleration                                |   $${\color{red}STATE}$$ |
-| M205    | Advanced axis Settings                              |   $${\color{red}STATE}$$ |
 | M206    | Home Offset                                         |   $${\color{red}STATE}$$ |
 | M226    | Wait for pin state (0/1/-1)                         |$${\color{orange}STATE}$$|
 | M256    | Set/Get LCD Brightness                              |   $${\color{red}STATE}$$ |
