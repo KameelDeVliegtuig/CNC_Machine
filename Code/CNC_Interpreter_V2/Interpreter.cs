@@ -349,6 +349,22 @@ namespace CNC_Interpreter_V2
                 // LCD
                 case "M73":
                     Debug.WriteLine("Mannually set progress");
+                    Console.WriteLine("Manual progress: ");
+                    if (value.P != -0.0)
+                    {
+                        Console.WriteLine("Percent: " + value.P + "%");
+                    } else
+                    {
+                        Console.WriteLine("Percent: Unknown");
+                    }
+                    if (value.R != -0.0)
+                    {
+                        Console.WriteLine("Time remaining: " + value.R + " minutes");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Time remaining: Unknown");
+                    }
                     break;
                 case "M75":
                     Debug.WriteLine("Start Print Job Timer");
