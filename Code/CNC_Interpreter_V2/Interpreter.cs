@@ -18,6 +18,7 @@ namespace CNC_Interpreter_V2
         GPIOControl gpio = new GPIOControl();
         AxisControl axisControl = new AxisControl(0.1, null);
         CpuTemperature cpuTemperature = new CpuTemperature();
+        FileManager fileManager = new FileManager();
 
         const string machineInfo = "Ender 3 v2 CNC Miller v0.1";
         const string firmwareInfo = "CNC Machine V0.1 by Lasse Houtenbos and Kamiel Groot ©2024";
@@ -267,8 +268,10 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
-                        currentFile = dir + value.OpenText;
-                        File.OpenRead(currentFile);
+                        if(File.Exists(dir + value.OpenText))
+                        {
+                            fileManager.SetFile = dir + value.OpenText;
+                        }
                     } catch (Exception e)
                     {
                         Console.WriteLine(e);

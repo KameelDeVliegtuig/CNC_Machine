@@ -19,7 +19,7 @@ namespace CNC_Interpreter_V2
         public int LineCounter { get { return lineCounter; } }
         public int TotalLines { get { return lines; } }
         public string FileName { get { return file;} }
-        public string SetFile {  set { file = value; lines = File.ReadLines(value).Count(); } }
+        public string SetFile {  set { if (File.Exists(value)) { file = value; lines = File.ReadLines(value).Count(); } } }
 
         public string GetLine(int lineNumber)
         {
