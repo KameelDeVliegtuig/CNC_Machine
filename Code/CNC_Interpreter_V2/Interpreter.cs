@@ -301,7 +301,7 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M30":
                     Debug.WriteLine("Delete file from SD");
-                    if(value.OpenText != null)
+                    if(value.OpenText != null && File.Exists(dir + value.OpenText))
                     {
                         try
                         {
