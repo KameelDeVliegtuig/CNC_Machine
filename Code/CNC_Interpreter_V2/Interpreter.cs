@@ -432,9 +432,6 @@ namespace CNC_Interpreter_V2
                 case "M201":
                     Debug.WriteLine("Set MAX Acceleration");
                     break;
-                case "M205":
-                    Debug.WriteLine("Advanced axis Settings");
-                    break;
                 case "M206":
                     Debug.WriteLine("Home Offset");
                     break;
