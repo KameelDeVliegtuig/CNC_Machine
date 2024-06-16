@@ -428,10 +428,6 @@ namespace CNC_Interpreter_V2
                 case "M150":
                     Debug.WriteLine("Set LED(strip) RGB(W) Color");
                     break;
-
-                case "M201":
-                    Debug.WriteLine("Set MAX Acceleration");
-                    break;
                 case "M206":
                     Debug.WriteLine("Home Offset");
                     break;
