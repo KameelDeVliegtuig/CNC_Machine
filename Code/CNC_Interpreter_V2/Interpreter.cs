@@ -389,11 +389,6 @@ namespace CNC_Interpreter_V2
                         Console.WriteLine("CPU temperature is not available");
                     }
                     break;
-
-                case "M111":
-                    Debug.WriteLine("Set debug level");
-
-                    break;
                 case "M112":
                     Debug.WriteLine("Full Shutdown");
                     Console.WriteLine("Shutting down within 1 minute...");
