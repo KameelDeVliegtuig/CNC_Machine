@@ -412,7 +412,7 @@ namespace CNC_Interpreter_V2
                 case "M117":
                     Debug.WriteLine("Set LCD Message");
                     if (value.OpenText == null) break;
-                    Console.WriteLine("Message: " + value.OpenText);
+                    Console.WriteLine("LCD message: " + value.OpenText);
                     break;
                 case "M119":
                     Debug.WriteLine("Endstop States");
