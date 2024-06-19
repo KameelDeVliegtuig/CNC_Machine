@@ -58,6 +58,7 @@ namespace CNC_Interpreter_V2
                     previousX = x;
                     previousY = y;
                     Debug.WriteLine("(" + x + ", " + y + "),");
+                    Coordinate move = new Coordinate(x, y, 0, true);
                     result.Add(newCoordinate(move, CurveValues.Workplane));
                 }
             }
