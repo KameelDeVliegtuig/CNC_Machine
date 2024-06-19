@@ -5,8 +5,6 @@ using Iot.Device.Nmea0183.Ais;
 using System.ComponentModel.Design;
 using System.Device.Pwm;
 using System.Diagnostics;
-using (Process p = Process.GetCurrentProcess()) p.PriorityClass = ProcessPriorityClass.RealTime; // Hoogste prioriteit
-
 
 
 //static void Main(string[] args)
