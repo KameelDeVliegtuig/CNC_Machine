@@ -58,11 +58,13 @@ public class PresenceDetector
             {
                 if (currentLocation.X < brakingLimitX && currentLocation.Y < brakingLimitY && currentLocation.X > stopLimitX && currentLocation.Y > stopLimitY)
                 {
+                    if (Globals.currentSpindelSpeed > 30)
+                    {
 
-                    gpioControl.ControlSpindel(30);
-                    Globals.brake = true;
-                    Console.WriteLine("Braking");
-
+                        gpioControl.ControlSpindel(30);
+                        Globals.brake = true;
+                        Console.WriteLine("Braking");
+                    }
                 }
                 else if (currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY)
                 {
