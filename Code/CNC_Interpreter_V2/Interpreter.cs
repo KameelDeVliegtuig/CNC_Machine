@@ -558,10 +558,14 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Code not Found");
                     break;
             }
-            settings.X += moves[moves.Count - 1].X;
-            settings.Y += moves[moves.Count - 1].Y;
-            settings.Z += moves[moves.Count - 1].Z;
-            settings.Spindel = moves[moves.Count - 1].Spindel;
+
+            if (moves.Count > 0)
+            {
+                settings.X += moves[moves.Count - 1].X;
+                settings.Y += moves[moves.Count - 1].Y;
+                settings.Z += moves[moves.Count - 1].Z;
+                settings.Spindel = moves[moves.Count - 1].Spindel;
+            }
         }
 
         private void StopTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
