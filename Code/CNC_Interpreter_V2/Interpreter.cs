@@ -53,7 +53,7 @@ namespace CNC_Interpreter_V2
                 case "G3":
                 //Debug.WriteLine("Arc or Circle Move");
                 case "G5":
-                //Debug.WriteLine("Bézier cubic spline");
+                    //Debug.WriteLine("Bézier cubic spline");
                     Console.WriteLine("To Parser to calculate coordinates");
                     try
                     {
@@ -69,11 +69,11 @@ namespace CNC_Interpreter_V2
                     if (value.P != -0.0)
                     {
                         Console.WriteLine("Waiting " + value.P + " milliseconds");
-                        Interpret("M0 P" +  value.P);
+                        Interpret("M0 P" + value.P);
                     }
                     else if (value.S != -0.0)
                     {
-                        Console.WriteLine("Waiting " +  value.S + " seconds");
+                        Console.WriteLine("Waiting " + value.S + " seconds");
                         Interpret("M0 S" + value.S);
                     }
                     break;
@@ -156,11 +156,11 @@ namespace CNC_Interpreter_V2
                         Console.WriteLine("Choose a lower slot, maximum amount of slots is " + settings.MaxSavedPositions);
                         break;
                     }
-                    while(settings.SavedPositions.Count() < (int)value.S)
+                    while (settings.SavedPositions.Count() < (int)value.S)
                     {
-                        settings.SavedPositions.Add(new Coordinate(0,0,0,false));
+                        settings.SavedPositions.Add(new Coordinate(0, 0, 0, false));
                     }
-                        settings.SavedPositions[(int)value.S] = currentPos;
+                    settings.SavedPositions[(int)value.S] = currentPos;
                     break;
                 case "G61":
                     Debug.WriteLine("Return to saved position");
@@ -260,7 +260,9 @@ namespace CNC_Interpreter_V2
                         {
                             Console.WriteLine(Files[i]);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         Console.WriteLine(e);
                     }
                     break;
@@ -268,11 +270,12 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
-                        if(File.Exists(dir + value.OpenText))
+                        if (File.Exists(dir + value.OpenText))
                         {
                             fileManager.SetFile = dir + value.OpenText;
                         }
-                    } catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Console.WriteLine(e);
                     }
@@ -288,7 +291,8 @@ namespace CNC_Interpreter_V2
                     if (startedFile)
                     {
                         Console.WriteLine("Executing file");
-                    } else
+                    }
+                    else
                     {
                         Console.WriteLine("Currently not executing file");
                     }
@@ -301,17 +305,18 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M30":
                     Debug.WriteLine("Delete file from SD");
-                    if(value.OpenText != null && File.Exists(dir + value.OpenText))
+                    if (value.OpenText != null && File.Exists(dir + value.OpenText))
                     {
                         try
                         {
                             string file = dir + value.OpenText;
                             File.Delete(file);
-                        } catch (Exception e)
+                        }
+                        catch (Exception e)
                         {
                             Console.WriteLine(e);
                         }
-                        
+
                     }
                     break;
 
@@ -353,7 +358,8 @@ namespace CNC_Interpreter_V2
                     if (value.P != -0.0)
                     {
                         Console.WriteLine("Percent: " + value.P + "%");
-                    } else
+                    }
+                    else
                     {
                         Console.WriteLine("Percent: Unknown");
                     }
@@ -392,7 +398,7 @@ namespace CNC_Interpreter_V2
                         {
                             if (!double.IsNaN(entry.Temperature.DegreesCelsius))
                             {
-                                Console.WriteLine($"Temperature from {entry.Sensor.ToString()}: {Math.Round(entry.Temperature.DegreesCelsius,1,MidpointRounding.AwayFromZero)} °C");
+                                Console.WriteLine($"Temperature from {entry.Sensor.ToString()}: {Math.Round(entry.Temperature.DegreesCelsius, 1, MidpointRounding.AwayFromZero)} °C");
                             }
                             else
                             {
@@ -658,7 +664,8 @@ namespace CNC_Interpreter_V2
                 }
             }
             double value = double.Parse(number.ToString());
-            if (!settings.MM) {
+            if (!settings.MM)
+            {
                 value = value / 25.4;
             }
             return value;

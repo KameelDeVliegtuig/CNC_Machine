@@ -15,12 +15,12 @@ public class PresenceDetector
     private Location currentLocation = new Location();
 
     GPIOControl gpioControl = new GPIOControl();
-    
+
     //  Define the data frame structure and settings
     private const int DataLength = 30; // Length of the data frame
     private SerialPort serialPort; // Serial port for communication
     private byte[] buffer = new byte[DataLength * 2]; // Buffer for received data
-    private int bufferIndex = 0; 
+    private int bufferIndex = 0;
 
 
     private Thread listeningThread;
@@ -30,7 +30,7 @@ public class PresenceDetector
 
     private const short stopLimitX = 300;
     private const short stopLimitY = 200;
-    private const short brakingLimitX = stopLimitX + 200 ;
+    private const short brakingLimitX = stopLimitX + 200;
     private const short brakingLimitY = stopLimitY + 200;
 
 
@@ -58,13 +58,13 @@ public class PresenceDetector
             {
                 if (currentLocation.X < brakingLimitX && currentLocation.Y < brakingLimitY && currentLocation.X > stopLimitX && currentLocation.Y > stopLimitY)
                 {
-                    
+
                     gpioControl.ControlSpindel(30);
                     Globals.brake = true;
                     Console.WriteLine("Braking");
 
                 }
-                else if(currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY)
+                else if (currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY)
                 {
                     Globals.stop = true;
                     gpioControl.ControlSpindel(-1);

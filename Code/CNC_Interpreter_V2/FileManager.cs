@@ -18,8 +18,8 @@ namespace CNC_Interpreter_V2
 
         public int LineCounter { get { return lineCounter; } }
         public int TotalLines { get { return lines; } }
-        public string FileName { get { return file;} }
-        public string SetFile {  set { if (File.Exists(value)) { file = value; lines = File.ReadLines(value).Count(); } } }
+        public string FileName { get { return file; } }
+        public string SetFile { set { if (File.Exists(value)) { file = value; lines = File.ReadLines(value).Count(); } } }
 
         public string GetLine(int lineNumber)
         {
@@ -28,7 +28,7 @@ namespace CNC_Interpreter_V2
 
         public string GetNext()
         {
-            if(lineCounter >= lines)
+            if (lineCounter >= lines)
             {
                 Console.WriteLine("All lines done");
                 return "";
@@ -39,7 +39,9 @@ namespace CNC_Interpreter_V2
             {
                 line = File.ReadLines(file).Skip(lineCounter).Take(1).First();
                 lineCounter++;
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
             return line;

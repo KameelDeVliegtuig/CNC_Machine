@@ -32,8 +32,8 @@ namespace CNC_Interpreter_V2
         private int passcode;
         private short logging;
         private bool emergencyStop;
-        private double[] spindelToProbe = { 0.0, 20.0, 21.5};
-        private double[] limit = { 220, 220, 250};
+        private double[] spindelToProbe = { 0.0, 20.0, 21.5 };
+        private double[] limit = { 220, 220, 250 };
 
         private int maxSavedPositions = 16;
         private List<Coordinate> savedPositions = new List<Coordinate>();
@@ -42,19 +42,19 @@ namespace CNC_Interpreter_V2
         public double Y { get { return y; } set { if (value.GetType() == typeof(double)) { y = value; } } }
         public double Z { get { return z; } set { if (value.GetType() == typeof(double)) { z = value; } } }
         public Workplanes Workplane { get { return workplane; } set { if (Enum.IsDefined(value)) { workplane = value; } } }
-        public bool MM {  get { return mm; } set { MM = value; } }
-        public bool Spindel {  get { return spindel; }  set { if (value.GetType() == typeof(bool) && !emergencyStop) { spindel = value; } } }
+        public bool MM { get { return mm; } set { MM = value; } }
+        public bool Spindel { get { return spindel; } set { if (value.GetType() == typeof(bool) && !emergencyStop) { spindel = value; } } }
         public bool SpindelDir { get { return spindelDir; } set { spindelDir = value; } }
-        public bool StepperEnable { get { return stepperEnable; } set { if (value.GetType() == typeof(bool) && !emergencyStop) {  stepperEnable = value; } } }
+        public bool StepperEnable { get { return stepperEnable; } set { if (value.GetType() == typeof(bool) && !emergencyStop) { stepperEnable = value; } } }
         public int LineCounter { get { return lineCounter; } }
         public bool Locked { get { return locked; } }
         public short Logging { get { return logging; } set { if (value.GetType() == typeof(short)) { logging = value; } } }
         public bool EmergencyStop { get { return emergencyStop; } set { emergencyStop = value; } }
-        public double[] SpindelToProbe {  get { return spindelToProbe; } }
-        public double[] Limit {  get { return limit; } }
+        public double[] SpindelToProbe { get { return spindelToProbe; } }
+        public double[] Limit { get { return limit; } }
 
         public List<Coordinate> SavedPositions { get { return savedPositions; } set { } }
-        public int MaxSavedPositions {  get { return maxSavedPositions; } set { } }
+        public int MaxSavedPositions { get { return maxSavedPositions; } set { } }
 
         public Settings(double X, double Y, double Z)
         {
@@ -84,11 +84,11 @@ namespace CNC_Interpreter_V2
 
         public void SetOffset(double[] Offset)
         {
-            if(Offset.Length != 3)
+            if (Offset.Length != 3)
             {
                 return;
             }
-            for(int i = 0; i < Offset.Length; i++)
+            for (int i = 0; i < Offset.Length; i++)
             {
                 if (Double.IsNaN(Offset[i])) return;
             }
@@ -97,13 +97,13 @@ namespace CNC_Interpreter_V2
 
         public Coordinate ParkTool(double P)
         {
-            Coordinate parkLocation = new Coordinate(0,0,0,false);
-            if(P == 0)
+            Coordinate parkLocation = new Coordinate(0, 0, 0, false);
+            if (P == 0)
             {
                 parkLocation = NOZZLE_PARK_POINT;
                 parkLocation.Z = (double)NOZZLE_PARK_Z_RAISE_MIN;
             }
-            if(P == 1)
+            if (P == 1)
             {
                 parkLocation = NOZZLE_PARK_POINT;
             }

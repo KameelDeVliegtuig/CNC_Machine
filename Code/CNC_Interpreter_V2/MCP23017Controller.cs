@@ -20,7 +20,7 @@ public class MCP23017Controller : Mcp23017
     }
 
     public bool ReadPin(int pin)
-    {   
+    {
         return Read(pin) == PinValue.High;
     }
 }

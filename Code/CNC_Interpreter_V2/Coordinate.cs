@@ -24,7 +24,7 @@ namespace CNC_Interpreter_V2
         public double X { get { return x; } set { if (!Double.IsNaN(value)) { this.x = value; }; } }
         public double Y { get { return y; } set { if (!Double.IsNaN(value)) { this.y = value; }; } }
         public double Z { get { return z; } set { if (!Double.IsNaN(value)) { this.z = value; }; } }
-        public bool Spindel { get {  return spindel; } }
+        public bool Spindel { get { return spindel; } }
 
         public void Print()
         {

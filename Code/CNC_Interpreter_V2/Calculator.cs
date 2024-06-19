@@ -11,10 +11,12 @@ namespace CNC_Interpreter_V2
     internal class Calculator
     {
         private double accuracy;
-        public Calculator(double Accuracy) {
+        public Calculator(double Accuracy)
+        {
             accuracy = Accuracy;
         }
-        public List<Coordinate> Bezier(double CurrentX, double CurrentY, Value CurveValues) {
+        public List<Coordinate> Bezier(double CurrentX, double CurrentY, Value CurveValues)
+        {
             // Xstart, Ystart, P, Q, Xend, Yend must be set
             // I, J optional
             // Z must be 0 (not set)
@@ -26,7 +28,8 @@ namespace CNC_Interpreter_V2
             {
                 point1[0] = CurveValues.I - CurrentX;
                 point1[1] = CurveValues.J - CurrentY;
-            } else
+            }
+            else
             {
                 point1[0] = CurveValues.X - CurrentX;
                 point1[1] = CurveValues.Y - CurrentY;
@@ -42,9 +45,9 @@ namespace CNC_Interpreter_V2
             List<Coordinate> result = new List<Coordinate>();
             double previousX = 0, previousY = 0;
             bool Spindel = bool.Parse(CurveValues.S.ToString());
-            double[] origin = {CurrentX, CurrentY};
-            double[] point2 = { CurveValues.P-CurrentX, CurveValues.Q-CurrentY };
-            double[] destination = { CurveValues.X-CurrentX,  CurveValues.Y-CurrentY};
+            double[] origin = { CurrentX, CurrentY };
+            double[] point2 = { CurveValues.P - CurrentX, CurveValues.Q - CurrentY };
+            double[] destination = { CurveValues.X - CurrentX, CurveValues.Y - CurrentY };
             for (double t = 0; t <= 1; t += 0.001)
             {
                 double x = (1 - t) * ((1 - t) * ((1 - t) * origin[0] + t * point1[0]) + t * ((1 - t) * point1[0] + t * point2[0])) + t * ((1 - t) * ((1 - t) * point1[0] + t * point2[0]) + t * ((1 - t) * point2[0] + t * destination[0]));
@@ -52,7 +55,6 @@ namespace CNC_Interpreter_V2
 
                 if (linearDistance(previousX, x, previousY, y) >= accuracy)
                 {
-                    Coordinate move = new Coordinate(x, y, CurveValues.Z , Spindel);
                     previousX = x;
                     previousY = y;
                     Debug.WriteLine("(" + x + ", " + y + "),");
@@ -67,7 +69,7 @@ namespace CNC_Interpreter_V2
             bool checkStart = (start[0] == -0.0 && start[1] == -0.0); // True if not correct
             bool checkEnd = (end[0] == -0.0 && end[1] == -0.0); // True if not correct
 
-            if (checkStart  || checkEnd || ((offset == null || offset[0] == -0.0 || offset[1] == -0.0) && (radius == null || radius == -0.0)))
+            if (checkStart || checkEnd || ((offset == null || offset[0] == -0.0 || offset[1] == -0.0) && (radius == null || radius == -0.0)))
             {
                 Console.WriteLine("Arc: Not enough arguments");
             }
@@ -116,7 +118,7 @@ namespace CNC_Interpreter_V2
                 mx = (start[0] + offset[0]);
                 my = (start[1] + offset[1]);
             }
-            else if(radius != null)
+            else if (radius != null)
             {
 
                 double midX = (start[0] + end[0]) / 2;
@@ -132,7 +134,8 @@ namespace CNC_Interpreter_V2
                 // Calculate the x and y coordinates of the center of the circle
                 mx = midX + (d * clockwiseCorrector) / Math.Sqrt(1 + m2 * m2);
                 my = midY + m2 * (mx - midX);
-            } else
+            }
+            else
             {
                 Console.WriteLine("Arc: Both offset and radius are null");
             }
@@ -201,7 +204,7 @@ namespace CNC_Interpreter_V2
                 case Settings.Workplanes.ZX: // (X, Y) -> (Z, X)
                     return new Coordinate(Coordinate.Y, Coordinate.Z, Coordinate.X, Coordinate.Spindel);
                 default:
-                    return new Coordinate(0,0,0,false);
+                    return new Coordinate(0, 0, 0, false);
             }
         }
     }

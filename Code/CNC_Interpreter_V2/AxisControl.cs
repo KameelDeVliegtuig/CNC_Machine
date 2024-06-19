@@ -58,7 +58,8 @@ namespace CNC_Interpreter_V2
                     if (i == 2)
                     {
                         this.stepPerSecond[i] = 5000;
-                    } else
+                    }
+                    else
                     {
                         this.stepPerSecond[i] = 1000;
                     }
@@ -124,14 +125,15 @@ namespace CNC_Interpreter_V2
                             timeStamp[0] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("X");
 
-                            if(gpioControl.ControlStep(!dir[0], StepperAxis.X)) stepsDone[0]++;
+                            if (gpioControl.ControlStep(!dir[0], StepperAxis.X)) stepsDone[0]++;
 
                             if (stepsDone[0] >= stepsToDo[0])
                             {
                                 done[0] = true;
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         done[0] = true;
                     }
@@ -150,7 +152,8 @@ namespace CNC_Interpreter_V2
                                 done[1] = true;
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         done[1] = true;
                     }
@@ -169,7 +172,8 @@ namespace CNC_Interpreter_V2
                                 done[2] = true;
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         done[2] = true;
                     }
@@ -293,6 +297,6 @@ namespace CNC_Interpreter_V2
             return true;
         }
 
-        
+
     }
 }

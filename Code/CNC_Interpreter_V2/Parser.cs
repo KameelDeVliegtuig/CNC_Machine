@@ -59,7 +59,8 @@ namespace CNC_Interpreter_V2
                     {
                         return _calculator.Arc(begin, end, offset, radius, direction, Input.Workplane);
                     }
-                    catch (Exception e) { 
+                    catch (Exception e)
+                    {
                         Console.WriteLine(e);
                         break;
                     }
