@@ -201,8 +201,8 @@ namespace CNC_Interpreter_V2
             }
             if (ratio[2] != double.PositiveInfinity && ratio[2] != double.NegativeInfinity)
             {
-                Console.WriteLine("Z time: " + (500 / (stepPerSecond[2] * ratio[2])) * 125);
-                isrTimes[2] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[2] * ratio[2])) * 125); // Aangepaste tijd voor Z-as
+                Console.WriteLine("Z time: " + (100 / (stepPerSecond[2] * ratio[2])) * 125);
+                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 125); // Aangepaste tijd voor Z-as
             }
             
             
