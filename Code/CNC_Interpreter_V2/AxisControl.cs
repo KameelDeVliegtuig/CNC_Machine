@@ -189,9 +189,9 @@ namespace CNC_Interpreter_V2
         private TimeSpan[] isrTime()
         {
             TimeSpan[] isrTimes = new TimeSpan[3];
-            isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 10);
-            isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 10);
-            isrTimes[2] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[2] * ratio[2])) * 12.5); // Aangepaste tijd voor Z-as
+            isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])));
+            isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])));
+            isrTimes[2] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[2] * ratio[2])) * 1.25); // Aangepaste tijd voor Z-as
             
             return isrTimes;
         }
