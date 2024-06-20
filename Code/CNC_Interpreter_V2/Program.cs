@@ -46,10 +46,6 @@ while (true)
     {
         Console.WriteLine(e);
     }
-    if(interpreter.Moves.Count > 0)
-    {
-        interpreter.Moves[interpreter.Moves.Count - 1].Print();
-    }
     Console.WriteLine("Moves length: " + interpreter.Moves.Count);
 }
 
