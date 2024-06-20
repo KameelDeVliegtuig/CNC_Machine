@@ -257,7 +257,7 @@ namespace CNC_Interpreter_V2
 
             isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0])) * 1000;
             isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1])) * 1000;
-            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 1000;
+            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 500;
             //isrTimes[0] = 1;
             //isrTimes[1] = 1;
             //isrTimes[2] = 1;
