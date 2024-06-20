@@ -191,7 +191,7 @@ namespace CNC_Interpreter_V2
             double[] isrTimes = new double[3];
             isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0])) * 2;
             isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1])) * 2;
-            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 5; // Aangepaste tijd voor Z-as
+            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 2.5; // Aangepaste tijd voor Z-as
 
             return isrTimes;
         }
