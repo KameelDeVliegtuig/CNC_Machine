@@ -121,7 +121,7 @@ namespace CNC_Interpreter_V2
                     TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
                     if (coordinate.X != 0 && done[0] == false)
                     {
-                        if (ElapsedTime[0].Microseconds % (isrTimes[0]/2) != ElapsedTime[0].Microseconds)
+                        if (ElapsedTime[0].Microseconds % (isrTimes[0] / 2) != ElapsedTime[0].Microseconds)
                         {
                             Console.WriteLine("X Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[0]).Microseconds);
                             timeStamp[0] = Stopwatch.GetTimestamp();
@@ -144,7 +144,7 @@ namespace CNC_Interpreter_V2
 
                     if (coordinate.Y != 0 && done[1] == false)
                     {
-                        if (ElapsedTime[1].Microseconds % (isrTimes[1]/2) != ElapsedTime[1].Microseconds)
+                        if (ElapsedTime[1].Microseconds % (isrTimes[1] / 2) != ElapsedTime[1].Microseconds)
                         {
                             Console.WriteLine("Y Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[1]).Microseconds);
                             timeStamp[1] = Stopwatch.GetTimestamp();
@@ -167,7 +167,7 @@ namespace CNC_Interpreter_V2
 
                     if (coordinate.Z != 0 && done[2] == false)
                     {
-                        if (ElapsedTime[2].Microseconds % (isrTimes[2]/2) != ElapsedTime[2].Microseconds)
+                        if (ElapsedTime[2].Microseconds % (isrTimes[2] / 2) != ElapsedTime[2].Microseconds)
                         {
                             Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]).Microseconds);
                             timeStamp[2] = Stopwatch.GetTimestamp();
@@ -255,9 +255,9 @@ namespace CNC_Interpreter_V2
             double[] isrTimes = new double[3];
 
 
-            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0]));
-            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1]));
-            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2]));
+            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0])) * 1000;
+            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1])) * 1000;
+            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 1000;
             //isrTimes[0] = 1;
             //isrTimes[1] = 1;
             //isrTimes[2] = 1;
