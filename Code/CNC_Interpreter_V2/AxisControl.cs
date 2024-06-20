@@ -108,7 +108,7 @@ namespace CNC_Interpreter_V2
             try
             {
                 double[] isrTimes = isrTime();
-                //Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
+                Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
 
                 // Spindel on or off depending on given variable
                 gpioControl.ControlSpindel(coordinate.Spindel ? SpindelSpeed : 0, true);
