@@ -129,6 +129,7 @@ namespace CNC_Interpreter_V2
 
                                 if (stepsDone[i] >= stepsToDo[i])
                                 {
+                                    Console.WriteLine("Axis " + (StepperAxis)i + " done");
                                     done[i] = true;
                                 }
                             }
