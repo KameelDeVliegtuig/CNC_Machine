@@ -119,6 +119,29 @@ namespace CNC_Interpreter_V2
                 while (!done[0] || !done[1] || !done[2])
                 {
                     TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
+                    if ((coordinate.Z != 0 || coordinate.Z != -0) && done[2] == false)
+                    {
+                        if (ElapsedTime[2].Microseconds > (isrTimes[2] / 2))
+                        {
+                            Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]).Microseconds);
+                            timeStamp[2] = Stopwatch.GetTimestamp();
+                            //Console.WriteLine("Z");
+
+                            if (gpioControl.ToggleStep(dir[2], StepperAxis.Z) && toggleStage[2]) stepsDone[2]++;
+                            toggleStage[2] = !toggleStage[2];
+
+                            if (stepsDone[2] >= stepsToDo[2])
+                            {
+                                Console.WriteLine("Z done");
+                                done[2] = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        done[2] = true;
+                    }
+
                     if ((coordinate.X != 0 || coordinate.X != -0) && done[0] == false)
                     {
                         if (ElapsedTime[0].Microseconds > (isrTimes[0] / 2))
@@ -163,29 +186,6 @@ namespace CNC_Interpreter_V2
                     else
                     {
                         done[1] = true;
-                    }
-
-                    if ((coordinate.Z != 0 || coordinate.Z != -0) && done[2] == false)
-                    {
-                        if (ElapsedTime[2].Microseconds > (isrTimes[2] / 2))
-                        {
-                            Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]).Microseconds);
-                            timeStamp[2] = Stopwatch.GetTimestamp();
-                            //Console.WriteLine("Z");
-
-                            if (gpioControl.ToggleStep(dir[2], StepperAxis.Z) && toggleStage[2]) stepsDone[2]++;
-                            toggleStage[2] = !toggleStage[2];
-
-                            if (stepsDone[2] >= stepsToDo[2])
-                            {
-                                Console.WriteLine("Z done");
-                                done[2] = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        done[2] = true;
                     }
                 }
             }
