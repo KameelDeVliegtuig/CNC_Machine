@@ -189,15 +189,15 @@ namespace CNC_Interpreter_V2
         private TimeSpan[] isrTime()
         {
             TimeSpan[] isrTimes = new TimeSpan[3];
-            if (ratio[0] == double.PositiveInfinity)
+            if (ratio[0] != double.PositiveInfinity && ratio[0] != double.NegativeInfinity)
             {
                 isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 100);
             }
-            if (ratio[1] == double.PositiveInfinity)
+            if (ratio[1] != double.PositiveInfinity && ratio[1] != double.NegativeInfinity)
             {
                 isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 100);
             }
-            if (ratio[2] == double.PositiveInfinity)
+            if (ratio[2] != double.PositiveInfinity && ratio[2] != double.NegativeInfinity)
             {
                 isrTimes[2] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[2] * ratio[2])) * 125); // Aangepaste tijd voor Z-as
             }
@@ -219,7 +219,7 @@ namespace CNC_Interpreter_V2
         }
 
         public void DisableStepper()
-        {
+        { 
             gpioControl.DisableSteppers();
         }
 
