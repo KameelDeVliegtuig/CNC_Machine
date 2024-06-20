@@ -227,6 +227,20 @@ namespace CNC_Interpreter_V2
             }
         }
 
+        public bool ToggleStep(bool dir, StepperAxis steppers)
+        {
+            if (Globals.brake || Globals.stop)
+            {
+                return false;
+            }
+            else
+            {
+                _setPin(_stepEnable, false);
+                _ioExtender.WritePin(((int)steppers + 3), dir);
+                _ioExtender.WritePin((int)steppers, !_ioExtender.ReadPin((int)steppers));
+            }
+            return true;
+        }
         public bool ToggleStepPin()
         {
 

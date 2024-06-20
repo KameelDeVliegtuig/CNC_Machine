@@ -115,18 +115,20 @@ namespace CNC_Interpreter_V2
 
                 // Move axis
                 long[] timeStamp = { Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp() };
+                bool[] toggleStage = { false, false, false };
                 while (!done[0] || !done[1] || !done[2])
                 {
                     TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
                     if (coordinate.X != 0 && done[0] == false)
                     {
-                        if (ElapsedTime[0].Microseconds % isrTimes[0] != ElapsedTime[0].Microseconds)
+                        if (ElapsedTime[0].Microseconds % (isrTimes[0]/2) != ElapsedTime[0].Microseconds)
                         {
                             Console.WriteLine("X Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[0]).Microseconds);
                             timeStamp[0] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("X");
 
-                            if (gpioControl.ControlStep(!dir[0], StepperAxis.X)) stepsDone[0]++;
+                            if (gpioControl.ControlStep(!dir[0], StepperAxis.X) && toggleStage[0]) stepsDone[0]++;
+                            toggleStage[0] = !toggleStage[0];
 
                             if (stepsDone[0] >= stepsToDo[0])
                             {
@@ -142,13 +144,14 @@ namespace CNC_Interpreter_V2
 
                     if (coordinate.Y != 0 && done[1] == false)
                     {
-                        if (ElapsedTime[1].Microseconds % isrTimes[1] != ElapsedTime[1].Microseconds)
+                        if (ElapsedTime[1].Microseconds % (isrTimes[1]/2) != ElapsedTime[1].Microseconds)
                         {
                             Console.WriteLine("Y Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[1]).Microseconds);
                             timeStamp[1] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("Y");
 
-                            if (gpioControl.ControlStep(!dir[1], StepperAxis.Y)) stepsDone[1]++;
+                            if (gpioControl.ToggleStep(!dir[1], StepperAxis.Y) && toggleStage[1]) stepsDone[1]++;
+                            toggleStage[1] = !toggleStage[1];
 
                             if (stepsDone[1] >= stepsToDo[1])
                             {
@@ -164,13 +167,14 @@ namespace CNC_Interpreter_V2
 
                     if (coordinate.Z != 0 && done[2] == false)
                     {
-                        if (ElapsedTime[2].Microseconds % isrTimes[2] != ElapsedTime[2].Microseconds)
+                        if (ElapsedTime[2].Microseconds % (isrTimes[2]/2) != ElapsedTime[2].Microseconds)
                         {
                             Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]).Microseconds);
                             timeStamp[2] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("Z");
 
-                            if (gpioControl.ControlStep(dir[2], StepperAxis.Z)) stepsDone[2]++;
+                            if (gpioControl.ToggleStep(dir[2], StepperAxis.Z) && toggleStage[2]) stepsDone[2]++;
+                            toggleStage[2] = !toggleStage[2];
 
                             if (stepsDone[2] >= stepsToDo[2])
                             {
