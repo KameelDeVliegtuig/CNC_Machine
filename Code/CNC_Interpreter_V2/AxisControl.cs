@@ -122,7 +122,7 @@ namespace CNC_Interpreter_V2
                     {
                         if (ElapsedTime[0].Microseconds % isrTimes[0] != ElapsedTime[0].Microseconds)
                         {
-                            Console.WriteLine("X Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[0]));
+                            Console.WriteLine("X Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[0]).Microseconds);
                             timeStamp[0] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("X");
 
@@ -144,7 +144,7 @@ namespace CNC_Interpreter_V2
                     {
                         if (ElapsedTime[1].Microseconds % isrTimes[1] != ElapsedTime[1].Microseconds)
                         {
-                            Console.WriteLine("Y Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[1]));
+                            Console.WriteLine("Y Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[1]).Microseconds);
                             timeStamp[1] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("Y");
 
@@ -166,7 +166,7 @@ namespace CNC_Interpreter_V2
                     {
                         if (ElapsedTime[2].Microseconds % isrTimes[2] != ElapsedTime[2].Microseconds)
                         {
-                            Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]));
+                            Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]).Microseconds);
                             timeStamp[2] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("Z");
 
