@@ -204,7 +204,6 @@ namespace CNC_Interpreter_V2
 
             if (Globals.brake || Globals.stop)
             {
-                _setPin(_stepEnable, true);
                 return false;
             }
             else
