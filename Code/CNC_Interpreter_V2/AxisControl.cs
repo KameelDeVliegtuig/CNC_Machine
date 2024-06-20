@@ -121,7 +121,7 @@ namespace CNC_Interpreter_V2
                 {
                     if (coordinate.X > 0 && done[0] == false)
                     {
-                        if (ElapsedTime[0].Microseconds % (isrTimes[0] / 2) != ElapsedTime[0].Microseconds)
+                        if (ElapsedTime[0].Microseconds > (isrTimes[0] / 2))
                         {
                             Console.WriteLine("X Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[0]).Microseconds);
                             timeStamp[0] = Stopwatch.GetTimestamp();
@@ -144,7 +144,7 @@ namespace CNC_Interpreter_V2
 
                     if (coordinate.Y > 0 && done[1] == false)
                     {
-                        if (ElapsedTime[1].Microseconds % (isrTimes[1] / 2) != ElapsedTime[1].Microseconds)
+                        if (ElapsedTime[1].Microseconds > (isrTimes[1] / 2))
                         {
                             Console.WriteLine("Y Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[1]).Microseconds);
                             timeStamp[1] = Stopwatch.GetTimestamp();
@@ -167,7 +167,7 @@ namespace CNC_Interpreter_V2
 
                     if (coordinate.Z > 0 && done[2] == false)
                     {
-                        if (ElapsedTime[2].Microseconds % (isrTimes[2] / 2) != ElapsedTime[2].Microseconds)
+                        if (ElapsedTime[2].Microseconds > (isrTimes[2] / 2))
                         {
                             Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]).Microseconds);
                             timeStamp[2] = Stopwatch.GetTimestamp();
