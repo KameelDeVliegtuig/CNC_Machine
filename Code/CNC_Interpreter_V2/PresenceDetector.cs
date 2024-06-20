@@ -56,9 +56,9 @@ public class PresenceDetector
             serialPort.Open();
             while (true)
             {
-                if (currentLocation.X < brakingLimitX && currentLocation.Y < brakingLimitY && currentLocation.X > stopLimitX && currentLocation.Y > stopLimitY)
+                if (currentLocation.X < brakingLimitX && currentLocation.Y < brakingLimitY && currentLocation.X > stopLimitX && currentLocation.Y > stopLimitY || gpioControl.GetSoftStop()) 
                 {
-                    if (Globals.currentSpindelSpeed > 30)
+                    if (Globals.currentSpindelSpeed > 30 )
                     {
 
                         gpioControl.ControlSpindel(30);
@@ -66,7 +66,7 @@ public class PresenceDetector
                         Console.WriteLine("Braking");
                     }
                 }
-                else if (currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY)
+                else if (currentLocation.X <= stopLimitX && currentLocation.Y <= stopLimitY || gpioControl.GetSoftStop())
                 {
                     Globals.stop = true;
                     gpioControl.ControlSpindel(-1);

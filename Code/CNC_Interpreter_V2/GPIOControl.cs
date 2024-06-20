@@ -259,6 +259,21 @@ namespace CNC_Interpreter_V2
             else { return false; }
         }
 
+        public bool GetSoftStop()
+        {
+            if (_ioControl.Read(_softStopButton) == PinValue.High)
+            {
+                _setPin(_softStopLED, true);
+                return true;
+            }
+            else
+            {
+                _setPin(_softStopLED, false);
+                return false;
+            }
+        }
+
+
         // Emergency stop function
         public bool EmergencyStop()
         {
