@@ -129,6 +129,7 @@ namespace CNC_Interpreter_V2
 
                             if (stepsDone[0] >= stepsToDo[0])
                             {
+                                Console.WriteLine("X done");
                                 done[0] = true;
                             }
                         }
@@ -149,6 +150,7 @@ namespace CNC_Interpreter_V2
 
                             if (stepsDone[1] >= stepsToDo[1])
                             {
+                                Console.WriteLine("Y done");
                                 done[1] = true;
                             }
                         }
@@ -169,6 +171,7 @@ namespace CNC_Interpreter_V2
 
                             if (stepsDone[2] >= stepsToDo[2])
                             {
+                                Console.WriteLine("Z done");
                                 done[2] = true;
                             }
                         }
