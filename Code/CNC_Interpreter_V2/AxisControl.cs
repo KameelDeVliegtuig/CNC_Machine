@@ -91,8 +91,8 @@ namespace CNC_Interpreter_V2
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
-            //Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]);
-            //Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
+            Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]);
+            Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
 
             try
             {
@@ -122,6 +122,7 @@ namespace CNC_Interpreter_V2
                     {
                         if (ElapsedTime[0].Microseconds % isrTimes[0] != ElapsedTime[0].Microseconds)
                         {
+                            Console.WriteLine("X Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[0]));
                             timeStamp[0] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("X");
 
@@ -143,6 +144,7 @@ namespace CNC_Interpreter_V2
                     {
                         if (ElapsedTime[1].Microseconds % isrTimes[1] != ElapsedTime[1].Microseconds)
                         {
+                            Console.WriteLine("Y Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[1]));
                             timeStamp[1] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("Y");
 
@@ -164,6 +166,7 @@ namespace CNC_Interpreter_V2
                     {
                         if (ElapsedTime[2].Microseconds % isrTimes[2] != ElapsedTime[2].Microseconds)
                         {
+                            Console.WriteLine("Z Elapsed Time: " + Stopwatch.GetElapsedTime(timeStamp[2]));
                             timeStamp[2] = Stopwatch.GetTimestamp();
                             //Console.WriteLine("Z");
 
