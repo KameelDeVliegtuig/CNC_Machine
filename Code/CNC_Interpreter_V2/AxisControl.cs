@@ -121,7 +121,7 @@ namespace CNC_Interpreter_V2
                     {
                         if ((coordinate[i] != 0 || coordinate[i] != -0) && done[i] == false)
                         {
-                            if (ElapsedTime[i].Microseconds > (isrTimes[i] / 2))
+                            if (ElapsedTime[i].Milliseconds > (isrTimes[i] / 2))
                             {
                                 timeStamp[i] = Stopwatch.GetTimestamp();
                                 if (gpioControl.ToggleStep(dir[i], (StepperAxis)i) && toggleStage[i]) stepsDone[i]++;
@@ -189,9 +189,9 @@ namespace CNC_Interpreter_V2
         private double[] isrTime()
         {
             double[] isrTimes = new double[3];
-            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0])) * 2000;
-            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1])) * 2000;
-            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 5000; // Aangepaste tijd voor Z-as
+            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0])) * 2;
+            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1])) * 2;
+            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 5; // Aangepaste tijd voor Z-as
 
             return isrTimes;
         }
