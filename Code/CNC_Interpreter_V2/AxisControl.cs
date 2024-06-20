@@ -106,7 +106,7 @@ namespace CNC_Interpreter_V2
 
             try
             {
-                double[] isrTimes = isrTime();
+                TimeSpan[] isrTimes = isrTime();
                 Console.WriteLine("ISR Times: " + isrTimes[0] + " " + isrTimes[1] + " " + isrTimes[2]);
 
                 gpioControl.ControlSpindel(coordinate.Spindel ? SpindelSpeed : 0, true);
@@ -121,7 +121,7 @@ namespace CNC_Interpreter_V2
                     {
                         if ((coordinate[i] != 0 || coordinate[i] != -0) && done[i] == false)
                         {
-                            if (ElapsedTime[i].Milliseconds > (isrTimes[i] / 2))
+                            if (ElapsedTime[i] > isrTimes[i])
                             {
                                 timeStamp[i] = Stopwatch.GetTimestamp();
                                 if (gpioControl.ToggleStep(dir[i], (StepperAxis)i) && toggleStage[i]) stepsDone[i]++;
@@ -186,13 +186,13 @@ namespace CNC_Interpreter_V2
             return max;
         }
 
-        private double[] isrTime()
+        private TimeSpan[] isrTime()
         {
-            double[] isrTimes = new double[3];
-            isrTimes[0] = (500 / (stepPerSecond[0] * ratio[0])) * 20;
-            isrTimes[1] = (500 / (stepPerSecond[1] * ratio[1])) * 20;
-            isrTimes[2] = (500 / (stepPerSecond[2] * ratio[2])) * 25; // Aangepaste tijd voor Z-as
-
+            TimeSpan[] isrTimes = new TimeSpan[3];
+            isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 10);
+            isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 10);
+            isrTimes[2] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[2] * ratio[2])) * 12.5); // Aangepaste tijd voor Z-as
+            
             return isrTimes;
         }
 
