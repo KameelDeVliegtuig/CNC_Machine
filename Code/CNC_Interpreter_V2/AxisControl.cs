@@ -191,11 +191,11 @@ namespace CNC_Interpreter_V2
             TimeSpan[] isrTimes = new TimeSpan[3];
             if (ratio[0] != double.PositiveInfinity && ratio[0] != double.NegativeInfinity)
             {
-                isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 100);
+                isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 200);
             }
             if (ratio[1] != double.PositiveInfinity && ratio[1] != double.NegativeInfinity)
             {
-                isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 100);
+                isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 200);
             }
             if (ratio[2] != double.PositiveInfinity && ratio[2] != double.NegativeInfinity)
             {
