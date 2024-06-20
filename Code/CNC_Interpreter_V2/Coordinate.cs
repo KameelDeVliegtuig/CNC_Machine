@@ -21,6 +21,20 @@ namespace CNC_Interpreter_V2
             this.spindel = Spindel;
         }
 
+        public double this[int index]
+        {
+            get
+            {
+                return index switch
+                {
+                    0 => X,
+                    1 => Y,
+                    2 => Z,
+                    _ => throw new IndexOutOfRangeException()
+                };
+            }
+        }
+
         public double X { get { return x; } set { if (!Double.IsNaN(value)) { this.x = value; }; } }
         public double Y { get { return y; } set { if (!Double.IsNaN(value)) { this.y = value; }; } }
         public double Z { get { return z; } set { if (!Double.IsNaN(value)) { this.z = value; }; } }
