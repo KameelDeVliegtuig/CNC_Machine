@@ -56,7 +56,6 @@ void RunGCodes()
         try
         {
             while (interpreter.Moves.Count == 0 || Globals.brake || Globals.stop) continue;
-            interpreter.Moves[0].Print();
             axisControl.Move(interpreter.Moves[0]);
             interpreter.Moves.RemoveAt(0);
         } catch (Exception e)
