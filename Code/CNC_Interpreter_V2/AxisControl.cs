@@ -123,7 +123,7 @@ namespace CNC_Interpreter_V2
                             if (ElapsedTime[i] > isrTimes[i])
                             {
                                 timeStamp[i] = Stopwatch.GetTimestamp();
-                                if (gpioControl.ControlStep(dir[i], (StepperAxis)i)) stepsDone[i]++;
+                                if (gpioControl.ControlStep(dir[i], (GPIOControl.StepperAxis)i)) stepsDone[i]++;
 
                                 if (stepsDone[i] >= stepsToDo[i])
                                 {

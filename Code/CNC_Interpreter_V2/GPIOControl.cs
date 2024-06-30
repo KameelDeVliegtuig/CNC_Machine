@@ -208,7 +208,7 @@ namespace CNC_Interpreter_V2
             }
             else
             {
-                Console.WriteLine("ControlStep axis" + steppers);
+                Console.WriteLine("ControlStep axis " + steppers);
                 _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
 
