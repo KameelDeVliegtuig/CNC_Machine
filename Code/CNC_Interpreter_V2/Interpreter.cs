@@ -562,6 +562,13 @@ namespace CNC_Interpreter_V2
                         Thread.Sleep(200);
                     }
                     break;
+                case "X2":
+                    Console.WriteLine("Setting new boundries");
+                    Globals.stopLimitX = (short)value.X;
+                    Globals.stopLimitY = (short)value.Y;
+                    Globals.brakingLimitX = (short)((short)value.X + 200);
+                    Globals.brakingLimitY = (short)((short)value.Y + 200);
+                    break;
                 default:
                     Debug.WriteLine("Code not Found");
                     break;
