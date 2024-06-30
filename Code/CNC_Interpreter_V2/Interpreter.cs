@@ -554,6 +554,10 @@ namespace CNC_Interpreter_V2
                     axisControl.EmergencyStop();
                     Globals.stop = true;
                     break;
+                case "X1":
+                    Console.WriteLine("Single step X-axis");
+                    axisControl.ControlStep(true, (GPIOControl.StepperAxis)0);
+                    break;
                 default:
                     Debug.WriteLine("Code not Found");
                     break;

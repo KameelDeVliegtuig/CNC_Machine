@@ -250,6 +250,11 @@ namespace CNC_Interpreter_V2
             return true;
         }
 
+        public bool ControlStep(bool dir, StepperAxis steppers)
+        {
+            return gpioControl.ControlStep(dir, steppers);
+        }
+
 
     }
 }
