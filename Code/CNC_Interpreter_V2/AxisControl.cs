@@ -112,7 +112,6 @@ namespace CNC_Interpreter_V2
                 gpioControl.ControlSpindel(coordinate.Spindel ? SpindelSpeed : 0, true);
 
                 long[] timeStamp = { Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp() };
-                bool[] toggleStage = { false, false, false };
                 while (!done[0] || !done[1] || !done[2])
                 {
                     TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
@@ -124,8 +123,18 @@ namespace CNC_Interpreter_V2
                             if (ElapsedTime[i] > isrTimes[i])
                             {
                                 timeStamp[i] = Stopwatch.GetTimestamp();
-                                if (gpioControl.ToggleStep(dir[i], (StepperAxis)i) && toggleStage[i]) stepsDone[i]++;
-                                toggleStage[i] = !toggleStage[i];
+                                GPIOControl.StepperAxis axis;
+                                if(i == 0)
+                                {
+                                    axis = StepperAxis.X;
+                                } else if(i == 1)
+                                {
+                                    axis = StepperAxis.Y;
+                                } else
+                                {
+                                    axis = StepperAxis.Z;
+                                }
+                                if (gpioControl.ControlStep(dir[i], axis)) stepsDone[i]++;
 
                                 if (stepsDone[i] >= stepsToDo[i])
                                 {
@@ -191,15 +200,15 @@ namespace CNC_Interpreter_V2
             double[] times = new double[3];
             if (ratio[0] > 0)
             {
-                isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 200);
+                isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 400);
             }
             if (ratio[1] > 0)
             {
-                isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 200);
+                isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 400);
             }
             if (ratio[2] > 0)
             {
-                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 125); // Aangepaste tijd voor Z-as
+                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 250); // Aangepaste tijd voor Z-as
             }
             
             

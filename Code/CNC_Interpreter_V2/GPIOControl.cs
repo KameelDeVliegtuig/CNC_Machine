@@ -208,7 +208,7 @@ namespace CNC_Interpreter_V2
             }
             else
             {
-                Console.WriteLine("ControlStep");
+                Console.WriteLine("ControlStep axis " + steppers);
                 _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
 
@@ -228,7 +228,7 @@ namespace CNC_Interpreter_V2
             }
         }
 
-        public bool ToggleStep(bool dir, StepperAxis steppers)
+        public bool ToggleStep(bool dir, StepperAxis steppers, bool value)
         {
             if (Globals.brake || Globals.stop)
             {
@@ -239,7 +239,7 @@ namespace CNC_Interpreter_V2
                 Console.WriteLine("Toggle step on " + steppers.ToString() + " axis");
                 _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
-                _ioExtender.WritePin((int)steppers, !_ioExtender.ReadPin((int)steppers));
+                _ioExtender.WritePin((int)steppers, value);
             }
             return true;
         }
