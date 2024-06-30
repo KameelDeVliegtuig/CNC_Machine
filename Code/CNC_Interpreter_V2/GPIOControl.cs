@@ -235,6 +235,7 @@ namespace CNC_Interpreter_V2
             }
             else
             {
+                Console.WriteLine("Toggle step on " + steppers.ToString() + " axis");
                 _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
                 _ioExtender.WritePin((int)steppers, !_ioExtender.ReadPin((int)steppers));
