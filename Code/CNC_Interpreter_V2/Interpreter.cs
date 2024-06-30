@@ -555,8 +555,11 @@ namespace CNC_Interpreter_V2
                     Globals.stop = true;
                     break;
                 case "X1":
-                    Console.WriteLine("Single step X-axis");
-                    axisControl.ControlStep(true, (GPIOControl.StepperAxis)0);
+                    Console.WriteLine("100 steps X-axis");
+                    for (int i = 0; i < 100; i++)
+                    {
+                        axisControl.ControlStep(true, (GPIOControl.StepperAxis)0);
+                    }
                     break;
                 default:
                     Debug.WriteLine("Code not Found");
