@@ -58,7 +58,7 @@ public class PresenceDetector
                     if (Globals.currentSpindelSpeed > 30 )
                     {
 
-                        gpioControl.ControlSpindel(30);
+                        gpioControl.ControlSpindel(0);
                         Globals.brake = true;
                         Console.WriteLine("Braking");
                     }
