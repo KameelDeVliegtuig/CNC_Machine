@@ -559,6 +559,7 @@ namespace CNC_Interpreter_V2
                     for (int i = 0; i < 100; i++)
                     {
                         axisControl.ControlStep(true, (GPIOControl.StepperAxis)0);
+                        Thread.Sleep(200);
                     }
                     break;
                 default:
