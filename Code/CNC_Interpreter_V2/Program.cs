@@ -34,10 +34,6 @@ Thread GCodeThread = new(RunGCodes);
 Console.WriteLine("Program started!");
 GCodeThread.Start();
 
-for(int i  = 0; i < 100; i++)
-{
-    gpioControl.ControlStep(true, GPIOControl.StepperAxis.Y);
-}
 
 while (true)
 {
