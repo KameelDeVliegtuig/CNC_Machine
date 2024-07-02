@@ -22,7 +22,7 @@ namespace CNC_Interpreter_V2
         private double speed; // millimeter per second
         private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
         private double[] stepPerSecond = new double[3];
-        private bool[] done = { false, false, false };
+        private bool[] done = { true, true, false };
 
         private int[] stepsToDo = new int[3];
         private int[] stepsDone = new int[] { 0, 0, 0 };
@@ -81,7 +81,7 @@ namespace CNC_Interpreter_V2
             {
                 if (moveLocation[i] < 0)
                 {
-                    dir[i] = NEGATIVE;
+                    dir[i] = !dir[i];
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i] * -1);
                     moveLocation[i] = moveLocation[i] * -1;
                 }
@@ -122,10 +122,6 @@ namespace CNC_Interpreter_V2
                         {
                             if (ElapsedTime[i] > isrTimes[i])
                             {
-                                if (ElapsedTime[i] < TimeSpan.FromMicroseconds(22000))
-                                {
-                                    Console.WriteLine("Elapsed Time: " + ElapsedTime[i] + ", ISR time: " + isrTimes[i]);
-                                }
                                 timeStamp[i] = Stopwatch.GetTimestamp();
                                 GPIOControl.StepperAxis axis;
                                 if(i == 0)
@@ -204,11 +200,11 @@ namespace CNC_Interpreter_V2
             double[] times = new double[3];
             if (ratio[0] > 0)
             {
-                isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 400);
+                isrTimes[0] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[0] * ratio[0])) * 200);
             }
             if (ratio[1] > 0)
             {
-                isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 400);
+                isrTimes[1] = TimeSpan.FromMicroseconds((500 / (stepPerSecond[1] * ratio[1])) * 200);
             }
             if (ratio[2] > 0)
             {
