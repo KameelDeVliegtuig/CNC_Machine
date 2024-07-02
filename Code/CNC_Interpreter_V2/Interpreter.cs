@@ -785,7 +785,7 @@ namespace CNC_Interpreter_V2
             {
                 case GPIOControl.StepperAxis.Y:
                     Up = new Coordinate(0, settings.SpindelToProbe[1], 0, false);
-                    axisControl.Move(Up);
+                    moves.Add(Up);
                     break;
                 case GPIOControl.StepperAxis.Z:
                     axisControl.Move(Up);
