@@ -48,6 +48,10 @@ namespace CNC_Interpreter_V2
         }
         public void Interpret(string GCODE)
         {
+            while (GCODE[GCODE.Length - 1] == ' ')
+            {
+                GCODE.Remove(GCODE.Length - 1);
+            }
             string[] splitted = GCODE.Split(' ');
             Value value = createValue(splitted);
             //value.Print();
