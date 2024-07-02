@@ -199,7 +199,6 @@ namespace CNC_Interpreter_V2
         // Thread.Sleep(0) 400 times is ~100us
         public bool ControlStep(bool dir, StepperAxis steppers)
         {
-
             extenderBusy = true;
 
             if (Globals.brake || Globals.stop)
@@ -209,7 +208,6 @@ namespace CNC_Interpreter_V2
             else
             {
                 Console.WriteLine("ControlStep axis " + steppers);
-                _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
 
                 _ioExtender.WritePin((int)steppers, true);
