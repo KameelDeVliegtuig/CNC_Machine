@@ -129,6 +129,7 @@ namespace CNC_Interpreter_V2
                     AutoHome(GPIOControl.StepperAxis.Z, GPIOControl.LimitSwitch.Z);
                     AutoHome(GPIOControl.StepperAxis.X, GPIOControl.LimitSwitch.X);
                     AutoHome(GPIOControl.StepperAxis.Y, GPIOControl.LimitSwitch.Y);
+                    moves.Add(new Coordinate(0, 0, -settings.SpindelToProbe[2], false));
                     Debug.WriteLine("Auto Home Complete");
                     break;
                 //case "G34": // Checks if Z-rods are at the same position
@@ -797,7 +798,6 @@ namespace CNC_Interpreter_V2
                     Console.WriteLine("Remove Z-axis Switch");
                     // Wait for switch to be removed
                     Thread.Sleep(5000);
-                    moves.Add(new Coordinate(0, 0, -settings.SpindelToProbe[2], false));
                     break;
                 default:
                     break;
