@@ -22,11 +22,11 @@ namespace CNC_Interpreter_V2
         private double speed; // millimeter per second
         private int[] steps = { 80, 80, 400 }; // Steps per mm (default 80, 80, 400)
         private double[] stepPerSecond = new double[3];
-        private bool[] done = { true, true, false };
+        private bool[] done = { false, false, false };
 
         private int[] stepsToDo = new int[3];
         private int[] stepsDone = new int[] { 0, 0, 0 };
-        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE }; // All increasing distance compared to 0
+        private bool[] dir = new bool[] { NEGATIVE, NEGATIVE, POSITIVE }; // All increasing distance compared to 0
 
         private double[] ratio = new double[3];
 
@@ -76,6 +76,7 @@ namespace CNC_Interpreter_V2
             moveLocation[2] = coordinate.Z;
 
             this.done = new[] { false, false, false };
+            this.dir = new[] { NEGATIVE, NEGATIVE, POSITIVE };
             stepsDone = new int[] { 0, 0, 0 };
             for (int i = 0; i < moveLocation.Length; i++)
             {
@@ -87,7 +88,6 @@ namespace CNC_Interpreter_V2
                 }
                 else
                 {
-                    dir[i] = POSITIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
