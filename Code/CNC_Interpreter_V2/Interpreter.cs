@@ -797,7 +797,7 @@ namespace CNC_Interpreter_V2
                     Console.WriteLine("Remove Z-axis Switch");
                     // Wait for switch to be removed
                     Thread.Sleep(5000);
-                    moves.Add(new Coordinate(0, 0, settings.SpindelToProbe[2], false));
+                    moves.Add(new Coordinate(0, 0, -settings.SpindelToProbe[2], false));
                     break;
                 default:
                     break;
