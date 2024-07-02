@@ -208,7 +208,7 @@ namespace CNC_Interpreter_V2
             }
             if (ratio[2] > 0)
             {
-                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 250); // Aangepaste tijd voor Z-as
+                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 125); // Aangepaste tijd voor Z-as
             }
             
             
