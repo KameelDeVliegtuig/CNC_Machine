@@ -76,4 +76,5 @@ static class Globals
     public static short stopLimitY = 300;
     public static short brakingLimitX = 400;
     public static short brakingLimitY = 300;
+    public static int lastSpindleSpeed; 
 }

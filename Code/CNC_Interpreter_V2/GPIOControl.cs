@@ -186,6 +186,7 @@ namespace CNC_Interpreter_V2
                     _setPin(6, (bool)Dir);
                 }
 
+                Globals.lastSpindleSpeed = Speed;
                 _currentSpindelSpeed = Speed;
                 Globals.currentSpindelSpeed = Speed;
                 Console.WriteLine("Set spindel to: " + Speed);
@@ -287,7 +288,6 @@ namespace CNC_Interpreter_V2
         // Emergency stop function
         public bool EmergencyStop()
         {
-            _setPin(_stepEnable, true);
             ControlSpindel(-1, false);
             return true;
         }

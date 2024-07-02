@@ -73,6 +73,7 @@ public class PresenceDetector
                 {
                     Globals.brake = false;
                     Globals.stop = false;
+                    gpioControl.ControlSpindel(Globals.lastSpindleSpeed);
                 }
 
 
