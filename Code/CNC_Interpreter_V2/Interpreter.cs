@@ -34,7 +34,7 @@ namespace CNC_Interpreter_V2
 
         private long startTime = Stopwatch.GetTimestamp();
 
-        private string dir = "~/gcode/";
+        private string dir = "/home/cnc/gcode/";
         private string currentFile = "";
         private bool startedFile = false;
 
