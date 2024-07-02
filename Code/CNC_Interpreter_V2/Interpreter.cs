@@ -279,6 +279,8 @@ namespace CNC_Interpreter_V2
                     try
                     {
                         DirectoryInfo directoryinfo = new DirectoryInfo(dir);
+                        string path = Directory.GetCurrentDirectory();
+                        Console.WriteLine("The current directory is {0}", path);
                         Console.WriteLine($"Filesecurity: {directoryinfo}" );
                         Console.WriteLine($"Given filename: {dir}{value.OpenText}");
                         Console.WriteLine("Existing file: " + File.Exists($@"{dir}{value.OpenText}"));
