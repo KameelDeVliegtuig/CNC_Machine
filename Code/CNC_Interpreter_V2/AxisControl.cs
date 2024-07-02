@@ -122,7 +122,7 @@ namespace CNC_Interpreter_V2
                         {
                             if (ElapsedTime[i] > isrTimes[i])
                             {
-                                if (ElapsedTime[i] < TimeSpan.FromMicroseconds(24000))
+                                if (ElapsedTime[i] < TimeSpan.FromMicroseconds(22000))
                                 {
                                     Console.WriteLine("Elapsed Time: " + ElapsedTime[i] + ", ISR time: " + isrTimes[i]);
                                 }
