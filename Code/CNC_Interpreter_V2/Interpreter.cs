@@ -38,6 +38,12 @@ namespace CNC_Interpreter_V2
 
         public List<Coordinate> Moves { get { return moves; } }
 
+        private Thread autoInterpret;
+
+        public Interpreter()
+        {
+            autoInterpret = new(ExecuteFile);
+        }
         public void Interpret(string GCODE)
         {
             string[] splitted = GCODE.Split(' ');
@@ -270,9 +276,13 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
-                        if (File.Exists(dir + value.OpenText))
+                        Console.WriteLine("Given filename: " + value.OpenText);
+                        if (value.OpenText != null && File.Exists(dir + value.OpenText))
                         {
                             fileManager.SetFile = dir + value.OpenText;
+                            currentFile = value.OpenText;
+                            Console.WriteLine("Set file to: " + fileManager.FileName);
+                            Console.WriteLine("Lines: " + fileManager.LineCounter);
                         }
                     }
                     catch (Exception e)
@@ -282,9 +292,21 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M24":
                     Debug.WriteLine("Start/Resume SD file");
+                    startedFile = true;
+                    try
+                    {
+                        if (autoInterpret.ThreadState == System.Threading.ThreadState.Unstarted)
+                        {
+                            autoInterpret.Start();
+                        }
+                    } catch(Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                     break;
                 case "M25":
                     Debug.WriteLine("Pause SD file");
+                    startedFile = false;
                     break;
                 case "M27":
                     Debug.WriteLine("Report SD Execution Status");
@@ -770,6 +792,22 @@ namespace CNC_Interpreter_V2
                     break;
             }
             return true;
+        }
+
+        private void ExecuteFile()
+        {
+            while(true)
+            {
+                try
+                {
+                    if (!startedFile) break;
+                    if (moves.Count != 0) break;
+                    Interpret(fileManager.GetNext());
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
         }
 
     }
