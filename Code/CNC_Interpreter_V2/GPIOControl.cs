@@ -199,7 +199,6 @@ namespace CNC_Interpreter_V2
         // Thread.Sleep(0) 400 times is ~100us
         public bool ControlStep(bool dir, StepperAxis steppers)
         {
-
             extenderBusy = true;
 
             if (Globals.brake || Globals.stop)
@@ -208,7 +207,6 @@ namespace CNC_Interpreter_V2
             }
             else
             {
-                _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
 
                 _ioExtender.WritePin((int)steppers, true);
@@ -227,7 +225,7 @@ namespace CNC_Interpreter_V2
             }
         }
 
-        public bool ToggleStep(bool dir, StepperAxis steppers)
+        public bool ToggleStep(bool dir, StepperAxis steppers, bool value)
         {
             if (Globals.brake || Globals.stop)
             {
@@ -235,9 +233,8 @@ namespace CNC_Interpreter_V2
             }
             else
             {
-                _setPin(_stepEnable, false);
                 _ioExtender.WritePin(((int)steppers + 3), dir);
-                _ioExtender.WritePin((int)steppers, !_ioExtender.ReadPin((int)steppers));
+                _ioExtender.WritePin((int)steppers, value);
             }
             return true;
         }

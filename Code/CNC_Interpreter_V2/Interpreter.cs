@@ -8,6 +8,8 @@ using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
 using Iot.Device.CpuTemperature;
+using System.IO;
+using System.Security.AccessControl;
 
 namespace CNC_Interpreter_V2
 {
@@ -38,8 +40,18 @@ namespace CNC_Interpreter_V2
 
         public List<Coordinate> Moves { get { return moves; } }
 
+        private Thread autoInterpret;
+
+        public Interpreter()
+        {
+            autoInterpret = new(ExecuteFile);
+        }
         public void Interpret(string GCODE)
         {
+            while (GCODE[GCODE.Length - 1] == ' ')
+            {
+                GCODE.Remove(GCODE.Length - 1);
+            }
             string[] splitted = GCODE.Split(' ');
             Value value = createValue(splitted);
             //value.Print();
@@ -117,6 +129,7 @@ namespace CNC_Interpreter_V2
                     AutoHome(GPIOControl.StepperAxis.Z, GPIOControl.LimitSwitch.Z);
                     AutoHome(GPIOControl.StepperAxis.X, GPIOControl.LimitSwitch.X);
                     AutoHome(GPIOControl.StepperAxis.Y, GPIOControl.LimitSwitch.Y);
+                    moves.Add(new Coordinate(0, 0, -settings.SpindelToProbe[2], false));
                     Debug.WriteLine("Auto Home Complete");
                     break;
                 //case "G34": // Checks if Z-rods are at the same position
@@ -270,9 +283,17 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
-                        if (File.Exists(dir + value.OpenText))
+                        DirectoryInfo directoryinfo = new DirectoryInfo(dir);
+                        Console.WriteLine($"Filesecurity: {directoryinfo}" );
+                        Directory.SetCurrentDirectory(dir);
+                        Console.WriteLine($"Given filename: {value.OpenText}");
+                        Console.WriteLine("Existing file: " + File.Exists($@"{value.OpenText}"));
+                        if (value.OpenText != null && File.Exists(value.OpenText))
                         {
                             fileManager.SetFile = dir + value.OpenText;
+                            currentFile = value.OpenText;
+                            Console.WriteLine("Set file to: " + fileManager.FileName);
+                            Console.WriteLine("Lines: " + fileManager.LineCounter);
                         }
                     }
                     catch (Exception e)
@@ -282,9 +303,21 @@ namespace CNC_Interpreter_V2
                     break;
                 case "M24":
                     Debug.WriteLine("Start/Resume SD file");
+                    startedFile = true;
+                    try
+                    {
+                        if (autoInterpret.ThreadState == System.Threading.ThreadState.Unstarted)
+                        {
+                            autoInterpret.Start();
+                        }
+                    } catch(Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                     break;
                 case "M25":
                     Debug.WriteLine("Pause SD file");
+                    startedFile = false;
                     break;
                 case "M27":
                     Debug.WriteLine("Report SD Execution Status");
@@ -554,6 +587,21 @@ namespace CNC_Interpreter_V2
                     axisControl.EmergencyStop();
                     Globals.stop = true;
                     break;
+                case "X1":
+                    Console.WriteLine("100 steps X-axis");
+                    for (int i = 0; i < 100; i++)
+                    {
+                        axisControl.ControlStep(true, (GPIOControl.StepperAxis)0);
+                        Thread.Sleep(200);
+                    }
+                    break;
+                case "X2":
+                    Console.WriteLine("Setting new boundries");
+                    Globals.stopLimitX = (short)value.X;
+                    Globals.stopLimitY = (short)value.Y;
+                    Globals.brakingLimitX = (short)((short)value.X + 200);
+                    Globals.brakingLimitY = (short)((short)value.Y + 200);
+                    break;
                 default:
                     Debug.WriteLine("Code not Found");
                     break;
@@ -688,14 +736,14 @@ namespace CNC_Interpreter_V2
 
             if (Axis == GPIOControl.StepperAxis.X)
             {
-                Up = new Coordinate(-backDistance, 0, 0, false);
-                Down = new Coordinate(0.1, 0, 0, false);
+                Up = new Coordinate(backDistance, 0, 0, false);
+                Down = new Coordinate((-0.1), 0, 0, false);
             }
 
             if (Axis == GPIOControl.StepperAxis.Y)
             {
-                Up = new Coordinate(0, -backDistance, 0, false);
-                Down = new Coordinate(0, 0.1, 0, false);
+                Up = new Coordinate(0, backDistance, 0, false);
+                Down = new Coordinate(0, (-0.1), 0, false);
             }
 
             if (Axis == GPIOControl.StepperAxis.Z)
@@ -706,7 +754,7 @@ namespace CNC_Interpreter_V2
                 while (!axisControl.ReadLimitSwitch(GPIOControl.LimitSwitch.Z)) continue;
                 Thread.Sleep(2000);
                 Up = new Coordinate(0, 0, backDistance, false);
-                Down = new Coordinate(0, 0, (-0.1), false);
+                Down = new Coordinate(0, 0, (-0.3), false);
             }
 
 
@@ -721,7 +769,7 @@ namespace CNC_Interpreter_V2
 
             // Move back up
             Console.WriteLine("Moving back up " + backDistance + "mm");
-            axisControl.Move(Up);
+            moves.Add(Up);
 
             // Move down slower
             Console.WriteLine("Moving down slower");
@@ -741,8 +789,8 @@ namespace CNC_Interpreter_V2
             switch (Axis)
             {
                 case GPIOControl.StepperAxis.Y:
-                    Up = new Coordinate(0, -settings.SpindelToProbe[1], 0, false);
-                    axisControl.Move(Up);
+                    Up = new Coordinate(0, settings.SpindelToProbe[1], 0, false);
+                    moves.Add(Up);
                     break;
                 case GPIOControl.StepperAxis.Z:
                     axisControl.Move(Up);
@@ -755,6 +803,22 @@ namespace CNC_Interpreter_V2
                     break;
             }
             return true;
+        }
+
+        private void ExecuteFile()
+        {
+            while(true)
+            {
+                try
+                {
+                    if (!startedFile) break;
+                    if (moves.Count != 0) break;
+                    Interpret(fileManager.GetNext());
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
         }
 
     }

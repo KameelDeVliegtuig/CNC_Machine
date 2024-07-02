@@ -34,6 +34,7 @@ Thread GCodeThread = new(RunGCodes);
 Console.WriteLine("Program started!");
 GCodeThread.Start();
 
+
 while (true)
 {
     string? GCode = Console.ReadLine();
@@ -71,4 +72,8 @@ static class Globals
     public static bool stop = false;
     public static bool brake = false;
     public static int currentSpindelSpeed = 0;
+    public static short stopLimitX = 400;
+    public static short stopLimitY = 300;
+    public static short brakingLimitX = 400;
+    public static short brakingLimitY = 300;
 }

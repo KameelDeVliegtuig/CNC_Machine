@@ -26,7 +26,7 @@ namespace CNC_Interpreter_V2
 
         private int[] stepsToDo = new int[3];
         private int[] stepsDone = new int[] { 0, 0, 0 };
-        private bool[] dir = new bool[] { POSITIVE, POSITIVE, POSITIVE }; // All increasing distance compared to 0
+        private bool[] dir = new bool[] { NEGATIVE, NEGATIVE, POSITIVE }; // All increasing distance compared to 0
 
         private double[] ratio = new double[3];
 
@@ -76,23 +76,23 @@ namespace CNC_Interpreter_V2
             moveLocation[2] = coordinate.Z;
 
             this.done = new[] { false, false, false };
+            this.dir = new[] { NEGATIVE, NEGATIVE, POSITIVE };
             stepsDone = new int[] { 0, 0, 0 };
             for (int i = 0; i < moveLocation.Length; i++)
             {
                 if (moveLocation[i] < 0)
                 {
-                    dir[i] = NEGATIVE;
+                    dir[i] = !dir[i];
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i] * -1);
                     moveLocation[i] = moveLocation[i] * -1;
                 }
                 else
                 {
-                    dir[i] = POSITIVE;
                     stepsToDo[i] = (int)(moveLocation[i] * steps[i]);
                 }
             }
-            //Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]);
-            //Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
+            Console.WriteLine("Move Location: " + moveLocation[0] + " " + moveLocation[1] + " " + moveLocation[2]);
+            Console.WriteLine("Steps to do: " + stepsToDo[0] + " " + stepsToDo[1] + " " + stepsToDo[2]);
 
             try
             {
@@ -112,7 +112,6 @@ namespace CNC_Interpreter_V2
                 gpioControl.ControlSpindel(coordinate.Spindel ? SpindelSpeed : 0, true);
 
                 long[] timeStamp = { Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp(), Stopwatch.GetTimestamp() };
-                bool[] toggleStage = { false, false, false };
                 while (!done[0] || !done[1] || !done[2])
                 {
                     TimeSpan[] ElapsedTime = { Stopwatch.GetElapsedTime(timeStamp[0]), Stopwatch.GetElapsedTime(timeStamp[1]), Stopwatch.GetElapsedTime(timeStamp[2]) };
@@ -124,8 +123,18 @@ namespace CNC_Interpreter_V2
                             if (ElapsedTime[i] > isrTimes[i])
                             {
                                 timeStamp[i] = Stopwatch.GetTimestamp();
-                                if (gpioControl.ToggleStep(dir[i], (StepperAxis)i) && toggleStage[i]) stepsDone[i]++;
-                                toggleStage[i] = !toggleStage[i];
+                                GPIOControl.StepperAxis axis;
+                                if(i == 0)
+                                {
+                                    axis = StepperAxis.X;
+                                } else if(i == 1)
+                                {
+                                    axis = StepperAxis.Y;
+                                } else
+                                {
+                                    axis = StepperAxis.Z;
+                                }
+                                if (gpioControl.ControlStep(dir[i], axis)) stepsDone[i]++;
 
                                 if (stepsDone[i] >= stepsToDo[i])
                                 {
@@ -199,7 +208,7 @@ namespace CNC_Interpreter_V2
             }
             if (ratio[2] > 0)
             {
-                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 125); // Aangepaste tijd voor Z-as
+                isrTimes[2] = TimeSpan.FromMicroseconds((100 / (stepPerSecond[2] * ratio[2])) * 250); // Aangepaste tijd voor Z-as
             }
             
             
@@ -248,6 +257,11 @@ namespace CNC_Interpreter_V2
                 return false;
             }
             return true;
+        }
+
+        public bool ControlStep(bool dir, StepperAxis steppers)
+        {
+            return gpioControl.ControlStep(dir, steppers);
         }
 
 
