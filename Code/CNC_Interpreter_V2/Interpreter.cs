@@ -276,10 +276,13 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
+                        Console.WriteLine("Given filename: " + value.OpenText);
                         if (value.OpenText != null && File.Exists(dir + value.OpenText))
                         {
                             fileManager.SetFile = dir + value.OpenText;
                             currentFile = value.OpenText;
+                            Console.WriteLine("Set file to: " + fileManager.FileName);
+                            Console.WriteLine("Lines: " + fileManager.LineCounter);
                         }
                     }
                     catch (Exception e)
