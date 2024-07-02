@@ -277,7 +277,7 @@ namespace CNC_Interpreter_V2
                     try
                     {
                         Console.WriteLine("Given filename: " + dir + value.OpenText);
-                        Console.WriteLine("Existing file: " + File.Exists(dir+value.OpenText));
+                        Console.WriteLine("Existing file: " + File.Exists("@" +dir+value.OpenText));
                         if (value.OpenText != null && File.Exists(dir + value.OpenText))
                         {
                             fileManager.SetFile = dir + value.OpenText;
