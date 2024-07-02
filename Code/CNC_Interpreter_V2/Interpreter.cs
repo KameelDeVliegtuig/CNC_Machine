@@ -8,6 +8,8 @@ using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
 using Iot.Device.CpuTemperature;
+using System.IO;
+using System.Security.AccessControl;
 
 namespace CNC_Interpreter_V2
 {
@@ -276,6 +278,8 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
+                        DirectoryInfo directoryinfo = new DirectoryInfo(dir);
+                        Console.WriteLine($"Filesecurity: {directoryinfo}" );
                         Console.WriteLine($"Given filename: {dir}{value.OpenText}");
                         Console.WriteLine("Existing file: " + File.Exists($@"{dir}{value.OpenText}"));
                         if (value.OpenText != null && File.Exists(dir + value.OpenText))
