@@ -768,7 +768,7 @@ namespace CNC_Interpreter_V2
 
             // Move back up
             Console.WriteLine("Moving back up " + backDistance + "mm");
-            axisControl.Move(Up);
+            moves.Add(Up);
 
             // Move down slower
             Console.WriteLine("Moving down slower");
