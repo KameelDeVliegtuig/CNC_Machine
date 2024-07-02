@@ -280,9 +280,10 @@ namespace CNC_Interpreter_V2
                     {
                         DirectoryInfo directoryinfo = new DirectoryInfo(dir);
                         Console.WriteLine($"Filesecurity: {directoryinfo}" );
-                        Console.WriteLine($"Given filename: {dir}{value.OpenText}");
-                        Console.WriteLine("Existing file: " + File.Exists($@"{dir}{value.OpenText}"));
-                        if (value.OpenText != null && File.Exists(dir + value.OpenText))
+                        Directory.SetCurrentDirectory(dir);
+                        Console.WriteLine($"Given filename: {value.OpenText}");
+                        Console.WriteLine("Existing file: " + File.Exists($@"{value.OpenText}"));
+                        if (value.OpenText != null && File.Exists(value.OpenText))
                         {
                             fileManager.SetFile = dir + value.OpenText;
                             currentFile = value.OpenText;
