@@ -276,7 +276,7 @@ namespace CNC_Interpreter_V2
                     Debug.WriteLine("Select file on SD");
                     try
                     {
-                        Console.WriteLine("Given filename: " + value.OpenText);
+                        Console.WriteLine("Given filename: " + dir + value.OpenText);
                         Console.WriteLine("Existing file: " + File.Exists(dir+value.OpenText));
                         if (value.OpenText != null && File.Exists(dir + value.OpenText))
                         {
