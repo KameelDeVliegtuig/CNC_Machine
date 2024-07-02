@@ -122,7 +122,10 @@ namespace CNC_Interpreter_V2
                         {
                             if (ElapsedTime[i] > isrTimes[i])
                             {
-                                Console.WriteLine("Elapsed Time: " + ElapsedTime[i] + ", ISR time: " + isrTimes[i]);
+                                if (ElapsedTime[i] < TimeSpan.FromMicroseconds(2400))
+                                {
+                                    Console.WriteLine("Elapsed Time: " + ElapsedTime[i] + ", ISR time: " + isrTimes[i]);
+                                }
                                 timeStamp[i] = Stopwatch.GetTimestamp();
                                 GPIOControl.StepperAxis axis;
                                 if(i == 0)
