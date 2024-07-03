@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,8 @@ namespace CNC_Interpreter_V2
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        //Console.WriteLine(e);
+                        Debug.WriteLine(e);
                         break;
                     }
                 case "G5":

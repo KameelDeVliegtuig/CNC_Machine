@@ -45,7 +45,9 @@ while (true)
     }
     catch (Exception e)
     {
-        Console.WriteLine(e);
+        //Console.WriteLine(e);
+        Debug.WriteLine(e);
+        Console.WriteLine("Unable to fully interpret GCode");
     }
     Console.WriteLine("Moves length: " + interpreter.Moves.Count);
 }

@@ -816,7 +816,8 @@ namespace CNC_Interpreter_V2
                     Interpret(fileManager.GetNext());
                 } catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    //Console.WriteLine(e);
+                    Debug.WriteLine(e);
                 }
             }
         }
