@@ -2,7 +2,7 @@
 
 - 3-assige CNC machine
 - Foutherkenning
-- Rpi Zero W2
+- Rpi 4B 8GB
 
 ## Documentation
 
