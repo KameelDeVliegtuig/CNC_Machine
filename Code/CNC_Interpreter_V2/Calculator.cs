@@ -153,7 +153,7 @@ namespace CNC_Interpreter_V2
 
             if (dAB > 2 * r)
             {
-                throw new Exception("Distance too big!");
+                Console.WriteLine("Arc: Distance too big!");
             }
 
             // Coordinates
